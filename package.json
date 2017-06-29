@@ -1,0 +1,22 @@
+{
+  "name": "nicu-hook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david855033/NICU-Hook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david855033/NICU-Hook/issues"
+  },
+  "homepage": "https://github.com/david855033/NICU-Hook#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
