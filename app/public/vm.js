@@ -11,14 +11,17 @@ var vm = new Vue({
                 url: "HTTPRequest",
                 type:"POST",
                 data: JSON.stringify({ 
-                    "hostname": "www.google.com.tw",
-                    "method": "GET",
-                    "path":"/"
+                    hostname: 'www.google22.com.tw',
+                    path: '/',
+                    method:"GET"
                  }),
                 contentType: "application/json; charset=utf-8",
-                dataType   : "json",
-                success:function(result){vm.recievedData=result;}
-            });
+                dataType   : "text",
+                success: function (msg, status, jqXHR) {
+                    vm.recievedData = msg;
+                    console.log('ok');
+                }
+            })
         }
     }
 });
