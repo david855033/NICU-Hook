@@ -20,11 +20,13 @@ router.post('/', function(req, res, next) {
               httpResponse.on('end',function(){
                 res.send(output);
               });
-
-              httpResponse.on('error',function(err){
-                console.log('err:'+err);
-              });
           });
+
+      httpConnection.on('error',function(err){
+        console.log('ERR');
+          res.send("ERR");
+      });
+
       httpConnection.end();
 });
 
