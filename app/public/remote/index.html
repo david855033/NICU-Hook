@@ -11,8 +11,17 @@
 </head>
 <body>
     <div id="vm">
-        <h1>below is retrieved data</h1>
+        <h1>this page is data from remote server,</p> below is retrieved data from vgh server</h1>
         <div v-html="recievedData"></div>
+        <div class='logInBox' >
+            <form action="javascript:void(0);">
+                <label>Account</label>
+                <input type="text" v-model="account">
+                <label>PW</label>
+                <input type="text" v-model="password">
+                <button>sign in</button>
+            </form>
+        </div>
     </div>
 </body>
     <script src="vm.js"></script>

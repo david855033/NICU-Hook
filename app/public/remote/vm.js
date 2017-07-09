@@ -28,12 +28,19 @@ var Parser={
 var vm = new Vue({
     el: '#vm',
     data: {
-        recievedData:""
+        recievedData:"",
+        account:"",
+        password:""
+    },
+    methods:{
+        signIn:function(){
+
+        }
     },
     mounted:function(){
         var remote = {
             hostname:"localhost",
-            path:"/remote/remote.html",
+            path:"/VGHServerStub/remote.html",
             port:3010
         };
         SendHTTPRequest(remote);
