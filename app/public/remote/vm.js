@@ -1,5 +1,5 @@
 'use strict';
-var SendHTTPRequest=function(options){
+var SendHTTPRequest=function(options, callback){
     if(!options.port) {options.port='80';}
     $.ajax({
         url: "HTTPRequest",
@@ -8,7 +8,7 @@ var SendHTTPRequest=function(options){
         contentType: "application/json; charset=utf-8",
         dataType   : "text",
         success: function (msg, status, jqXHR) {
-            vm.recievedData = Parser.getBodyContent(msg);
+            callback && callback(msg, status, jqXHR);
         }
     })
 }
@@ -30,11 +30,21 @@ var vm = new Vue({
     data: {
         recievedData:"",
         account:"",
-        password:""
+        password:"",
+        cookieContainer:""
     },
     methods:{
         signIn:function(){
-            
+            var remote = {
+                hostname:"localhost",
+                path:"/VGHServerStub/remote.html",
+                port:3010,
+                cookieContainer: vm.cookieContainer
+            };
+            SendHTTPRequest(remote,function(data,status,xhr){
+                vm.recievedData = Parser.getBodyContent(data) + "</br>" + status + "</br> cookie: " + xhr.getResponseHeader('cookie-container');
+                vm.cookieContainer=xhr.getResponseHeader('cookie-container');
+            });
         }
     },
     mounted:function(){
@@ -43,6 +53,9 @@ var vm = new Vue({
             path:"/VGHServerStub/remote.html",
             port:3010
         };
-        SendHTTPRequest(remote);
+        SendHTTPRequest(remote,function(data,status,xhr){
+            vm.recievedData = Parser.getBodyContent(data) + "</br>" + status + "</br> cookie: " + xhr.getResponseHeader('cookie-container');
+            vm.cookieContainer=xhr.getResponseHeader('cookie-container');
+        });
     }
 });

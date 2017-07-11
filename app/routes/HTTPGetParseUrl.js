@@ -12,6 +12,7 @@ router.get('/*', function(req, res, next) {
       port:3010,
       Portacal:http
   };
+  
   // var options=
   // {
   //     hostname:"david855033.github.io",
@@ -19,6 +20,7 @@ router.get('/*', function(req, res, next) {
   //     Portacal:https
   // };
 
+  if(!req.baseUrl){options.path+="/index.html";}
   var Portacal=options.Portacal;
   console.log(":::parse get request to: "+options.path);
 

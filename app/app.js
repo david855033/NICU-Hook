@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var LocalPublic = require('./routes/LocalPublic');
+var HTTPGetParseUrl = require('./routes/HTTPGetParseUrl');
 var HTTPRequest = require('./routes/HTTPRequest');
 var NoResponse = require('./routes/NoResponse');
 
@@ -21,10 +21,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/*HTTPRequest*',HTTPRequest);
-app.use('/favicon',NoResponse);
-app.use('/*', LocalPublic);
-
-
+app.use('/favicon*',NoResponse);
+app.use('/*', HTTPGetParseUrl);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
