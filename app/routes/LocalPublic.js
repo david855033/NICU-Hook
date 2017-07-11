@@ -3,20 +3,24 @@ var router = express.Router();
 var http = require("http");
 var https = require("https");
 
-
+/* get reqeust to url*/
 router.get('/*', function(req, res, next) { 
-  if(req.baseUrl&&(req.baseUrl.indexOf("remote")>=0||req.baseUrl.indexOf("favicon")>=0))
-  {
-    next();
-  }
-
-  console.log(req.baseUrl);
   var options=
   {
       hostname:"localhost",
-      path: req.baseUrl,
-      port:3010
+      path: '/remote'+req.baseUrl,
+      port:3010,
+      Portacal:http
   };
+  // var options=
+  // {
+  //     hostname:"david855033.github.io",
+  //     path: req.baseUrl,
+  //     Portacal:https
+  // };
+
+  var Portacal=options.Portacal;
+  console.log(":::parse get request to: "+options.path);
 
   var contentType="text/html";
   if(req.baseUrl.indexOf(".js")>=0)
@@ -28,20 +32,20 @@ router.get('/*', function(req, res, next) {
   }
   res.setHeader('content-type', contentType);
 
-  var httpConnection = http.request(options,
-          function(httpResponse){
-              var output="";
-              httpResponse.on('data',function(chunk){
-                output+=chunk;
-              });
-              httpResponse.on('end',function(){
-                res.end(output);
-              });
-          });
+  var httpConnection = Portacal.request(options,
+    function(httpResponse){
+      var output="";
+      httpResponse.on('data',function(chunk){
+          output+=chunk;
+        });
+        httpResponse.on('end',function(){
+          res.end(output);
+        });
+      });
 
       httpConnection.on('error',function(err){
         res.setHeader('content-type', 'application/x-javascript');
-        res.end("console.log('ERR "+req.baseUrl+"');");
+        res.end("console.log('ERR "+options.path+"');");
       });
 
       httpConnection.end();

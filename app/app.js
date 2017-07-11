@@ -5,12 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+var LocalPublic = require('./routes/LocalPublic');
 var HTTPRequest = require('./routes/HTTPRequest');
+var NoResponse = require('./routes/NoResponse');
 
 var app = express();
 
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -21,7 +21,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/*HTTPRequest*',HTTPRequest);
-app.use('/*', index);
+app.use('/favicon',NoResponse);
+app.use('/*', LocalPublic);
 
 
 

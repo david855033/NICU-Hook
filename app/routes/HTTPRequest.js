@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 var http = require("http");
 
-/* get HTML */
+/* transfered post data to HTTP request, called by framework */
 router.post('/', function(req, res, next) {
     var options=req.body;
-    console.log("http request! option sended: "+ JSON.stringify(options));
+    console.log("::::: Sedn http request, option: "+ JSON.stringify(options));
 
       var httpConnection = http.request(options,
           function(httpResponse){

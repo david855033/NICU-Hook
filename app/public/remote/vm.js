@@ -34,7 +34,7 @@ var vm = new Vue({
     },
     methods:{
         signIn:function(){
-
+            
         }
     },
     mounted:function(){
