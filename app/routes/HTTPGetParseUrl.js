@@ -15,25 +15,48 @@ router.get('/*', function(req, res, next) {
   
   // var options=
   // {
+  //     hostname:"www.google.com.tw",
+  //     path: req.baseUrl,
+  //     Portacal: https
+  // };
+
+  // var options=
+  // {
   //     hostname:"david855033.github.io",
   //     path: req.baseUrl,
   //     Portacal:https
   // };
 
-  if(!req.baseUrl){options.path+="/index.html";}
+  //if(!req.baseUrl){options.path+="/index.html";}
   var Portacal=options.Portacal;
-  console.log(":::parse get request to: "+options.path);
+ 
 
   var contentType="text/html";
-  if(req.baseUrl.indexOf(".js")>=0)
+  if(req.baseUrl.indexOf(".jsp")>=0)
+  {
+  }else if(req.baseUrl.indexOf(".js")>=0)
   {
     contentType='application/x-javascript';
   }else if(req.baseUrl.indexOf(".css")>=0)
   {
     contentType='text/css';
+  }else if(req.baseUrl.indexOf(".png")>=0)
+  {
+    contentType='image/png';
+  }else if(req.baseUrl.indexOf(".ico")>=0)
+  {
+    contentType='image/x-icon';
+  }else if(req.baseUrl.indexOf(".gif")>=0)
+  {
+    contentType='image/gif';
+  }  else if(req.baseUrl.indexOf(".jpg")>=0)
+  {
+    contentType='image/jpg';
   }
-  res.setHeader('content-type', contentType);
 
+  console.log(":::parse get request to: "+options.hostname + options.path+", type: "+contentType);
+
+  res.setHeader('content-type', contentType);
   var httpConnection = Portacal.request(options,
     function(httpResponse){
       var output="";
@@ -47,7 +70,8 @@ router.get('/*', function(req, res, next) {
 
       httpConnection.on('error',function(err){
         res.setHeader('content-type', 'application/x-javascript');
-        res.end("console.log('ERR "+options.path+"');");
+        console.log('Err Message=> '+err)
+        res.end("ERR: "+options.hostname + options.path);
       });
 
       httpConnection.end();

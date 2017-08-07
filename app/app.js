@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/*HTTPRequest*',HTTPRequest);
 app.use('/favicon*',NoResponse);
+app.use('/remote*',NoResponse);
 app.use('/*', HTTPGetParseUrl);
 
 // catch 404 and forward to error handler

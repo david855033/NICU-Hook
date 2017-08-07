@@ -8,11 +8,14 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="jquery-3.2.1.js"></script>
     <script src="vue.js"></script>
+    <script src="parser.js"></script>
+    <script src="sendHttpRequest.js"></script>
 </head>
 <body>
     <div id="vm">
-        <h1>this page is data from remote server,</p> below is retrieved data from vgh server</h1>
-        <div v-html="recievedData"></div>
+        <h1>this page is data from remote server</h1>
+        
+        <h3>Logging Box</h3>
         <div class='logInBox' >
             <form action="javascript:void(0);">
                 <label>Account</label>
@@ -21,6 +24,11 @@
                 <input type="text" v-model="password">
                 <button @click="signIn">sign in</button>
             </form>
+        </div>
+
+        <h1>below is retrieved data from target(vgh) server</h1>
+        <div>
+            {{recievedData}}
         </div>
     </div>
 </body>
