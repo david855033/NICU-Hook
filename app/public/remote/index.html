@@ -1,36 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>NeoVue local dev</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NeoVue">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NICU hook</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="jquery-3.2.1.js"></script>
-    <script src="vue.js"></script>
-    <script src="parser.js"></script>
-    <script src="sendHttpRequest.js"></script>
+    <script type="text/javascript" src="libraries/jquery-3.2.1.js"></script>
+	<link rel="stylesheet" type="text/css" href="libraries/jquery-ui-1.12.1/jquery-ui.min.css">    
+    <script type="text/javascript" src="libraries/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="libraries/vue.js"></script>
+    <script type="text/javascript" src="libraries/d3.js"></script>
+    <link rel="stylesheet" type="text/css" href="neo-vue-style.css">
 </head>
 <body>
-    <div id="vm">
-        <h1>this page is data from remote server</h1>
-        
-        <h3>Logging Box</h3>
-        <div class='logInBox' >
-            <form action="javascript:void(0);">
-                <label>Account</label>
-                <input type="text" v-model="account">
-                <label>PW</label>
-                <input type="text" v-model="password">
-                <button @click="signIn">sign in</button>
-            </form>
-        </div>
-
-        <h1>below is retrieved data from target(vgh) server</h1>
-        <div>
-            {{recievedData}}
-        </div>
-    </div>
+    
 </body>
-    <script src="vm.js"></script>
+<script type="text/javascript" src="http-req-node-server.js"></script>
+<script type="text/javascript" src="data-stub.js"></script> <!-- for dev -->
+<script type="text/javascript" src="view-model.js"></script>
 </html>

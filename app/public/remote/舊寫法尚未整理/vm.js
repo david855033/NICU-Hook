@@ -26,7 +26,7 @@ var vm = new Vue({
                     'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"                    
                 }
             };
-            SendHTTPRequest(options,function(data,status,xhr){
+            PostHTTPRequest(options,function(data,status,xhr){
                 vm.recievedData = "DATA: "+data + "</br>STATUS: " + status ;
             });
         }

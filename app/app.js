@@ -20,10 +20,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/*HTTPRequest*',HTTPRequest);
+app.use('/*HTTPRequest*',HTTPRequest);   //接受post request, 將內容作為HTTPRequest送出
 app.use('/favicon*',NoResponse);
-app.use('/remote*',NoResponse);
-app.use('/*', HTTPGetParseUrl);
+app.use('/remote/remote*',NoResponse);  //如果再local端找不到檔案，中斷連續迴圈
+app.use('/*', HTTPGetParseUrl);    //除了HTTPRequest的get,都會被轉到指定Url（在HTTPGetParseUrl內定義伺服器位置），用來放repo的資料
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

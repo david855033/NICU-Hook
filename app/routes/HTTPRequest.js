@@ -3,10 +3,11 @@ var router = express.Router();
 var http = require("http");
 var https = require("https");
 
-/* transfered post data to HTTP request for VGHServer, called by html framework */
+/* transfered post data to HTTP request, called by html framework */
 router.post('/', function(req, res, next) {
     var options=req.body;
 
+    //讀取http protocal並設定default port
     var connection = http;
     if(options.HTTPprotocol=="HTTPS"){
       console.log('HTTPS');
@@ -16,9 +17,7 @@ router.post('/', function(req, res, next) {
       if(!options.port){options.port='80';}
     }
     delete options.HTTPprotocol;
-    //options.cookieContainer;
 
-    //res.set('cookie-container', TestCookieNumber );
     console.log("::::: Send http request, option: "+ JSON.stringify(options));
 
       var httpConnection = connection.request(options,
@@ -36,8 +35,8 @@ router.post('/', function(req, res, next) {
           });
 
       httpConnection.on('error',function(err){
-        console.log('ERR '+err.stack);
-          res.send("error message -> "+err);
+          console.log('ERR '+err.stack);
+          res.send("HTTP Request failed-> "+err);
       });
 
       httpConnection.end();

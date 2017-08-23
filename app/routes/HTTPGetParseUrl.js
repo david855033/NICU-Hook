@@ -3,37 +3,31 @@ var router = express.Router();
 var http = require("http");
 var https = require("https");
 
-/* get reqeust to url*/
+/* parse get reqeust to url, in dev enviroment, is remote, else is my repo*/
 router.get('/*', function(req, res, next) { 
-  var options=
+  var options=    //for dev
   {
       hostname:"localhost",
       path: '/remote'+req.baseUrl,
       port:3010,
-      Portacal:http
+      Protocal:http
   };
-  
-  // var options=
-  // {
-  //     hostname:"www.google.com.tw",
-  //     path: req.baseUrl,
-  //     Portacal: https
-  // };
 
-  // var options=
+  // var options=    //for pub
   // {
   //     hostname:"david855033.github.io",
   //     path: req.baseUrl,
-  //     Portacal:https
+  //     Protocal:https
   // };
 
   //if(!req.baseUrl){options.path+="/index.html";}
-  var Portacal=options.Portacal;
+  var Protocal=options.Protocal;
  
 
-  var contentType="text/html";
+  var contentType="text/html"; //default
   if(req.baseUrl.indexOf(".jsp")>=0)
   {
+    contentType ="text/html";
   }else if(req.baseUrl.indexOf(".js")>=0)
   {
     contentType='application/x-javascript';
@@ -57,7 +51,7 @@ router.get('/*', function(req, res, next) {
   console.log(":::parse get request to: "+options.hostname + options.path+", type: "+contentType);
 
   res.setHeader('content-type', contentType);
-  var httpConnection = Portacal.request(options,
+  var httpConnection = Protocal.request(options,
     function(httpResponse){
       var output="";
       httpResponse.on('data',function(chunk){
