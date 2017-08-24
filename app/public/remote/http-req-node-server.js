@@ -17,6 +17,7 @@ var PostHTTPRequest=function(options, callback){
 var defaulOption = function(){
     this.HTTPprotocol="HTTPS";
     this.hostname="web9.vghtpe.gov.tw";
+    this.path="/";
     this.method= 'GET';
     this.rejectUnauthorized= false;
     this.headers={
@@ -40,8 +41,20 @@ server.signIn=function(){
         return;
     }
     var option = new defaulOption();
-    option.path="/Signon/login.jsp";
+    option.method="POST";
+    option.path="/Signon/j_security_check";
+    option.postData="data=123";
+    option.headers["Content-Type"]="application/x-www-form-urlencoded";
+    
     PostHTTPRequest(option, function(data,status,xhr){
-        console.log("DATA: "+data + "</br>STATUS: " + status) ; // for dev
+        console.log("DATA: \r\n"+data + "\r\nSTATUS: \r\n" + status) ; // for dev
     });
 };
+
+server.test=function(){
+    var option = new defaulOption();
+    option.path="/Signon/login.jsp"
+    PostHTTPRequest(option, function(data,status,xhr){
+        //console.log("DATA: \r\n"+data + "\r\nSTATUS: \r\n" + status + "\r\nCOOKIES: \r\n" + JSON.stringify(xhr)) ; // for dev
+    });
+}

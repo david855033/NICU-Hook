@@ -4,42 +4,46 @@ var http = require("http");
 var https = require("https");
 
 /* transfered post data to HTTP request, called by html framework */
-router.post('/', function(req, res, next) {
-    var options=req.body;
+router.post('/', function(expReq, expRes, next) {
+    var options=expReq.body;
 
     //讀取http protocal並設定default port
-    var connection = http;
+    var nodeConn = http;
     if(options.HTTPprotocol=="HTTPS"){
-      console.log('HTTPS');
-      connection=https;
-      if(!options.port){options.port='443';}
+      nodeConn=https;
+      options.port=options.port||'443';
     }else{
-      if(!options.port){options.port='80';}
+      options.port=options.port||'80';
     }
     delete options.HTTPprotocol;
 
     console.log("::::: Send http request, option: "+ JSON.stringify(options));
 
-      var httpConnection = connection.request(options,
-          function(httpResponse){
-              var output="";
-
-              httpResponse.on('data',function(chunk){
-                output+=chunk;
-              });
-
-              httpResponse.on('end',function(){
-                console.log(output);
-                res.send(output);
-              });
+      var nodeReq = nodeConn.request(options,
+        function(nodeRes){
+          var output="";
+          nodeRes.on('data',function(chunk){
+            output+=chunk;
           });
+          
+          nodeRes.on('end',function(){
+            var headers=nodeRes.headers;
+            var setcookie=headers['set-cookie'];
+            var c= JSON.stringify(setcookie);
+            console.log(c);
+            expRes.send(output+c);
+          });
+        }
+      );
 
-      httpConnection.on('error',function(err){
-          console.log('ERR '+err.stack);
-          res.send("HTTP Request failed-> "+err);
+      nodeReq.on('error',function(err){
+        console.log('ERR '+err.stack);
+        expRes.send("HTTP Request failed-> "+err);
       });
 
-      httpConnection.end();
+      options.postData && nodeReq.write(options.postData);
+
+      nodeReq.end();
 });
 
 module.exports = router;
