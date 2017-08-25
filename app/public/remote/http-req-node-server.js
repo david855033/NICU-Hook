@@ -16,25 +16,48 @@ var PostHTTPRequest=function(options, callback){
 //constructor for defualtOption of VGHserver
 var defaulOption = function(){
     this.url="https://web9.vghtpe.gov.tw/";
-    // this.url="https://www.google.com.tw/";
     this.rejectUnauthorized= false;
+    this.headers={
+        "Connection": "keep-alive",
+        "Cache-Control": "max-age=0",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4"
+    }
+
 };
 
-//server為放置所有與伺服器互動之namespace
+//server 用來放置與伺服器互動之物件/功能
 var server={};
-server.account="DOC3924B";
-server.password="888888";
 
 server.cookie={};
 server.cookie.string="";
 server.cookie.setString=function(str){
-    server.cookie.string=str;
+     //先轉換成K-V pair
+    var inputObj=Parser.getKeyValuePairsFromCookieString(str);
+    var originObj =Parser.getKeyValuePairsFromCookieString(server.cookie.string);
+    //將input的K-V pair更新到originObj
+
+    var keysInInputObj = Object.keys(inputObj);
+    var keysInOriginObj = Object.keys(originObj);
+    
+    keysInInputObj.forEach(x=>{originObj[x]=inputObj[x]});
+
+    //轉換成string
+    combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
+    console.log("combinedString: "+combinedString);
+    server.cookie.string = combinedString;
+    dev.cookie.str=server.cookie.string;
+    dev.cookie.dateTime=Parser.getDateTime();
 };
 
-server.signIn=function(){
-
+server.signIn=function(account, password){
+    server.account=account||server.account;
+    server.password=password||server.password;
     if(!server.account||!server.password){
-        console.log("account or password not set.");
+        console.error("account or password not set.");
         return;
     }
 
@@ -42,30 +65,36 @@ server.signIn=function(){
     option.url="https://web9.vghtpe.gov.tw/Signon/lockaccount";
     option.method='POST';
     option.form={j_username:server.account,j_password:server.password}
-
     PostHTTPRequest(option, function(data,status,xhr){
         resObj= JSON.parse(data);
-        dev.content=resObj.body;
-        console.log("RECIEVED COOKIE: "+ resObj.cookieString) ; // for dev
-        console.log("RECIEVED STATUS: " + status);
         server.cookie.setString(resObj.cookieString);
-        dev.cookie=server.cookie.string;
     });
 };
 
-server.get=function(url){
+server.get=function(url,callback){
     var option = new defaulOption();
     option.url=url;
     option.headers={
         'Cookie': server.cookie.string
     }
-
     PostHTTPRequest(option, function(data,status,xhr){
         resObj= JSON.parse(data);
-        dev.content=resObj.body;
-        console.log("COOKIE: "+resObj.cookieString) ;
-        console.log("STATUS: "+status);
         server.cookie.setString(resObj.cookieString);
-        dev.cookie=server.cookie.string;
+        callback&&callback(resObj.body, Parser.getDateTime());
+    });
+}
+
+server.post=function(url,form,callback){
+    var option = new defaulOption();
+    option.url=url;
+    option.headers={
+        'Cookie': server.cookie.string
+    }
+    option.method='POST';
+    option.form=form;
+    PostHTTPRequest(option, function(data,status,xhr){
+        resObj= JSON.parse(data);
+        server.cookie.setString(resObj.cookieString);
+        callback&&callback(resObj.body, Parser.getDateTime());
     });
 }

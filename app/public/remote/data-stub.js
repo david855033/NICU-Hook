@@ -1,5 +1,6 @@
 'use strict';
 //取得某病房的住院病人
+var dataStub={};
 var getAdmissionList = function(ward){
     return [
         {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},

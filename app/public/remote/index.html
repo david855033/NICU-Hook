@@ -14,16 +14,25 @@
     <link rel="stylesheet" type="text/css" href="neo-vue-style.css">
 </head>
 <body>
-    <div id="dev">
-        <div class="test-button" @click="clearCookie">Clear Cookie</div> 
+    <div id="view">
+
+    </div>
+
+    <div id="dev" v-if="showDev">
         <div class="test-button"  @click="signIn">Sign In</div>
-        <div class="test-button"  @click="get">Get URL</div>
-        <div id="cookie">{{cookie}}</div>
-        <div id="content" v-html="content"></div>
+        <div class="test-button"  @click="get">Get Web9</div>
+        <div class="test-button"  @click="getPT">Get PT</div>
+        <div class="test-button"  @click="getNIS">Get NIS</div>
+        <div class="test-button"  @click="getNIS2">Get NIS2</div>
+        <div id="cookie">{{cookie.dateTime}}</div>
+        <div id="cookie">{{cookie.str}}</div>
+        <div id="content">{{data.dateTime}}</div>
+        <div id="content">{{data.content}}</div>
     </div>
 </body>
 <script type="text/javascript" src="http-req-node-server.js"></script>
 <script type="text/javascript" src="parser.js"></script>
-<script type="text/javascript" src="data-stub.js"></script> <!-- for dev -->
+<script type="text/javascript" src="data-stub.js"></script> <!-- for dev: data-stub.js, for prod: data.js-->
+<script type="text/javascript" src="data.js"></script>
 <script type="text/javascript" src="view-model.js"></script>
 </html>
