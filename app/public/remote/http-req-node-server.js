@@ -1,5 +1,5 @@
 ;'use strict';
-//基礎函數：將HTTP request post至node server並用callback等待回傳
+//基礎函數：將HTTP request post至node server 等待callback回傳
 var PostHTTPRequest=function(options, callback){
     $.ajax({
         url: "HTTPRequest",
@@ -7,54 +7,65 @@ var PostHTTPRequest=function(options, callback){
         data: JSON.stringify(options),
         contentType: "application/json; charset=utf-8",
         dataType   : "text",
-        success: function (msg, status, jqXHR) {
-            callback && callback(msg, status, jqXHR);
+        success: function (data,status,xhr) {
+            callback && callback(data,status,xhr);
         }
     })
 };
 
 //constructor for defualtOption of VGHserver
 var defaulOption = function(){
-    this.HTTPprotocol="HTTPS";
-    this.hostname="web9.vghtpe.gov.tw";
-    this.path="/";
-    this.method= 'GET';
+    this.url="https://web9.vghtpe.gov.tw/";
+    // this.url="https://www.google.com.tw/";
     this.rejectUnauthorized= false;
-    this.headers={
-        'Host':'web9.vghtpe.gov.tw',
-        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Encoding':'gzip, deflate, br',
-        'Accept-Language':'zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4',
-        'Connection':'keep-alive',
-        'Upgrade-Insecure-Requests':'1',
-        'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"                    
-    };
 };
 
 //server為放置所有與伺服器互動之namespace
 var server={};
-server.account;
-server.password;
+server.account="DOC3924B";
+server.password="888888";
+
+server.cookie={};
+server.cookie.string="";
+server.cookie.setString=function(str){
+    server.cookie.string=str;
+};
+
 server.signIn=function(){
+
     if(!server.account||!server.password){
         console.log("account or password not set.");
         return;
     }
+
     var option = new defaulOption();
-    option.method="POST";
-    option.path="/Signon/j_security_check";
-    option.postData="data=123";
-    option.headers["Content-Type"]="application/x-www-form-urlencoded";
-    
+    option.url="https://web9.vghtpe.gov.tw/Signon/lockaccount";
+    option.method='POST';
+    option.form={j_username:server.account,j_password:server.password}
+
     PostHTTPRequest(option, function(data,status,xhr){
-        console.log("DATA: \r\n"+data + "\r\nSTATUS: \r\n" + status) ; // for dev
+        resObj= JSON.parse(data);
+        dev.content=resObj.body;
+        console.log("RECIEVED COOKIE: "+ resObj.cookieString) ; // for dev
+        console.log("RECIEVED STATUS: " + status);
+        server.cookie.setString(resObj.cookieString);
+        dev.cookie=server.cookie.string;
     });
 };
 
-server.test=function(){
+server.get=function(url){
     var option = new defaulOption();
-    option.path="/Signon/login.jsp"
+    option.url=url;
+    option.headers={
+        'Cookie': server.cookie.string
+    }
+
     PostHTTPRequest(option, function(data,status,xhr){
-        //console.log("DATA: \r\n"+data + "\r\nSTATUS: \r\n" + status + "\r\nCOOKIES: \r\n" + JSON.stringify(xhr)) ; // for dev
+        resObj= JSON.parse(data);
+        dev.content=resObj.body;
+        console.log("COOKIE: "+resObj.cookieString) ;
+        console.log("STATUS: "+status);
+        server.cookie.setString(resObj.cookieString);
+        dev.cookie=server.cookie.string;
     });
 }

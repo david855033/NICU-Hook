@@ -14,9 +14,16 @@
     <link rel="stylesheet" type="text/css" href="neo-vue-style.css">
 </head>
 <body>
-    
+    <div id="dev">
+        <div class="test-button" @click="clearCookie">Clear Cookie</div> 
+        <div class="test-button"  @click="signIn">Sign In</div>
+        <div class="test-button"  @click="get">Get URL</div>
+        <div id="cookie">{{cookie}}</div>
+        <div id="content" v-html="content"></div>
+    </div>
 </body>
 <script type="text/javascript" src="http-req-node-server.js"></script>
+<script type="text/javascript" src="parser.js"></script>
 <script type="text/javascript" src="data-stub.js"></script> <!-- for dev -->
 <script type="text/javascript" src="view-model.js"></script>
 </html>
