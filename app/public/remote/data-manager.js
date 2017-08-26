@@ -1,6 +1,69 @@
 'use strict';
+var dataManager={};
+dataManager.get=function(query, callback){
+    var targetQueryData = queryDataStorage.find(x=>x.query==query);
+    callback&&callback(targetQueryData);
+    return targetQueryData?true:false;
+};
+dataManager.set=function(query,url,timeStamp,data){
+    var targetQueryData = queryDataStorage.find(x=>x.query==query);
+    if(targetQueryData)
+    {
+        targetQueryData.url=url;
+        targetQueryData.timeStamp=timeStamp;
+        targetQueryData.data=data;
+        return true;
+    }
+    else{
+        queryDataStorage.push(new queryData(query,url,timeStamp,data));
+        return false;
+    }
+};
+
+var queryData = function(query,url,timeStamp,data){
+    this.query=query;
+    this.url=url;
+    this.timeStamp=timeStamp;
+    this.data=data;
+}
+
+var queryDataStorage=[
+    new queryData("admisionList_NICU","","2017-01-01 13:20:10",[
+        {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},
+        {bed:"NICU-2",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
+    )
+];
+
+
+var dataStructor={};
+dataStructor.wardList=[{
+    wardName:"NICU",
+    dateTime:"",
+    PatientList:[
+    {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},
+    {bed:"NICU-2",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
+}]
+dataStructor.patientList=[
+    {
+        ID:"",
+        patientData:{},
+        admissionList:[
+            {
+                caseNo:"",
+                vitalsign:{
+                    BLandBW:[{dateTime:"2017-01-01 12:00",BL:23,BW:0.67}]
+                }
+            }
+        ],
+
+    }
+]
+
 //取得某病房的住院病人
-var dataStub={};
+var getData=function(callback){
+    setTimeout(()=>callback("secondData"), 1000);
+    return "firstData";
+}
 var getAdmissionList = function(ward){
     return [
         {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},

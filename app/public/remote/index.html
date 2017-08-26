@@ -11,11 +11,28 @@
     <script type="text/javascript" src="libraries/jquery-ui-1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="libraries/vue.js"></script>
     <script type="text/javascript" src="libraries/d3.js"></script>
-    <link rel="stylesheet" type="text/css" href="neo-vue-style.css">
+    <script type="text/javascript" src="polyfill.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
     <div id="view">
-
+        <div id="left">        
+            <div class="leftbox">
+                login
+            </div>
+            <div class="leftbox">
+                selectWard
+            </div>
+            <div class="leftbox">
+                selectPatient
+            </div>
+        </div>
+        <div class="main">
+            <div style="padding: 10px; background-color: hsl(200,30%,85%); width: 200px;;" @click="updateData">Update Data</div>
+            <div style="padding: 10px;">Data: {{testData.content}}</div>
+            <div style="padding: 10px;">Time Stamp: {{testData.timeStamp}}</div>
+        </div>
     </div>
 
     <div id="dev" v-if="showDev">
@@ -29,10 +46,13 @@
         <div id="content">{{data.dateTime}}</div>
         <div id="content">{{data.content}}</div>
     </div>
+
 </body>
-<script type="text/javascript" src="http-req-node-server.js"></script>
+<script type="text/javascript" src="server.js"></script>
 <script type="text/javascript" src="parser.js"></script>
-<script type="text/javascript" src="data-stub.js"></script> <!-- for dev: data-stub.js, for prod: data.js-->
-<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="data-manager.js"></script>
+<script type="text/javascript" src="model.js"></script>
 <script type="text/javascript" src="view-model.js"></script>
+<script type="text/javascript" src="view.js"></script>
+<script type="text/javascript" src="dev.js"></script>
 </html>

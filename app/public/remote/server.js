@@ -38,13 +38,10 @@ server.cookie.setString=function(str){
      //先轉換成K-V pair
     var inputObj=Parser.getKeyValuePairsFromCookieString(str);
     var originObj =Parser.getKeyValuePairsFromCookieString(server.cookie.string);
-    //將input的K-V pair更新到originObj
-
+    //將input的K-V pair更新到originObj(用來判斷新增/取代cookies)
     var keysInInputObj = Object.keys(inputObj);
     var keysInOriginObj = Object.keys(originObj);
-    
     keysInInputObj.forEach(x=>{originObj[x]=inputObj[x]});
-
     //轉換成string
     combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
     console.log("combinedString: "+combinedString);
@@ -60,7 +57,6 @@ server.signIn=function(account, password){
         console.error("account or password not set.");
         return;
     }
-
     var option = new defaulOption();
     option.url="https://web9.vghtpe.gov.tw/Signon/lockaccount";
     option.method='POST';
@@ -84,7 +80,7 @@ server.get=function(url,callback){
     });
 }
 
-server.post=function(url,form,callback){
+server.postform=function(url,form,callback){
     var option = new defaulOption();
     option.url=url;
     option.headers={

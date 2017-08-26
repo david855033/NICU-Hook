@@ -25,11 +25,19 @@ var Parser={
     getDateTime:function(dateObj){
         toParse = dateObj || new Date();
         var str = toParse.getFullYear()+"-"
-            +(toParse.getMonth()+1)+"-"
-            +toParse.getDate()+" "
-            +toParse.getHours()+":"
-            +toParse.getMinutes()+":"
-            +toParse.getSeconds();
+            +this.get2DigiNum((toParse.getMonth()+1))+"-"
+            +this.get2DigiNum((toParse.getDate()))+" "
+            +this.get2DigiNum(toParse.getHours())+":"
+            +this.get2DigiNum(toParse.getMinutes())+":"
+            +this.get2DigiNum(toParse.getSeconds());
         return str;
+    },
+    get2DigiNum:function(num){
+        if(typeof num == "number" && num<10)
+        {
+            return "0"+num;
+        }else{
+            return num;
+        }
     }
 }

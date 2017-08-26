@@ -1,10 +1,38 @@
+html{
+    height:100%;
+}
 body{
     background: hsl(0,0%,90%);
     font-family: "Microsoft JhengHei","Helvetica Neue",Helvetica,Arial,sans-serif;
     overflow-y: scroll;
     font-size:16px;
+    height: 100%;
+    overflow: hidden;
+}
+#view{
+    width: 100%;
+    height: 100%;
 }
 
+#left {
+	width: 200px;
+    float: left;
+    background-color: #9DBEA5;
+    height:100%;
+}
+.leftbox{
+    padding:15px 5px 15px 5px;
+    background-color: hsl(20,40%,85%);
+    margin:0 0 5px 0;
+}
+
+.main {
+    margin-left: 200px;
+    height:100%;
+    overflow-y: scroll;
+}
+
+/*dev style*/
 .test-button{
     background-color: steelblue;
     padding: 10px;
