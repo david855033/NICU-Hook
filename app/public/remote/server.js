@@ -87,7 +87,7 @@ server.postform=function(url,form,callback){
         'Cookie': server.cookie.string
     }
     option.method='POST';
-    option.form=form;
+    form && (option.form=form);
     PostHTTPRequest(option, function(data,status,xhr){
         resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);

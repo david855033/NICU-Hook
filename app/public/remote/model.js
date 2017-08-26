@@ -9,9 +9,16 @@ var queryData=function(query, callback){
             callback(queryDataSet.data, queryDataSet.timeStamp);  
         }
     })
-    
-    // from datastructure;)
-    setTimeout(function() {
-        //callback("data sheet from server, query="+query, "time stamp");  
-    }, 2000); // from server
+
+    fakeServer.get(queryToUrl(query), function(data, timeStamp){ 
+        callback(data, timeStamp);  
+    });
+}
+
+var queryToUrl=function(query)
+{
+    if(query == "admisionList_NICU")
+    {
+        return "https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient";
+    }
 }
