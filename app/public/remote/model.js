@@ -1,14 +1,15 @@
 ;'use strict';
-var requestDataSheet=function(query, callback){
+var queryData=function(query, callback){
     
-    dataManager.get(query,function(queryData){
-        if(queryData){
-            callback(queryData.data, queryData.timeStamp);  
+    // from datastructure;
+    var queryDataSet_local={};
+    dataManager.get(query,function(queryDataSet){
+        if(queryDataSet){
+            queryDataSet_local=queryDataSet;
+            callback(queryDataSet.data, queryDataSet.timeStamp);  
         }
     })
-    // from datastructure;
-   
-
+    
     // from datastructure;)
     setTimeout(function() {
         //callback("data sheet from server, query="+query, "time stamp");  
