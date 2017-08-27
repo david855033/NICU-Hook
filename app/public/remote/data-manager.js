@@ -28,10 +28,6 @@ var queryDataSet = function(query,url,timeStamp,data){
 }
 
 var queryDataStorage=[
-    new queryDataSet("admisionList_NICU","","2017-01-01 13:20:10",[
-        {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},
-        {bed:"NICU-2",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
-    )
 ];
 
 

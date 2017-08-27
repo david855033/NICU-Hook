@@ -3,7 +3,7 @@ var fakeServer={};
 
 fakeServer.get=function(url,callback){
     setTimeout(function() {
-        callback&&callback(fakeserverData.find(x=>x.url==url), Parser.getDateTime());
+        callback&&callback(fakeserverData.find(x=>x.url==url).content, Parser.getDateTime());
     }, 2000);
 }
 

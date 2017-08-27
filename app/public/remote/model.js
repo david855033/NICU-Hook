@@ -10,8 +10,14 @@ var queryData=function(query, callback){
         }
     })
 
-    fakeServer.get(queryToUrl(query), function(data, timeStamp){ 
-        callback(data, timeStamp);  
+    //from server
+    var url=queryToUrl(query);
+    fakeServer.get(url, function(serverData, timeStamp){ 
+        callback(serverData, timeStamp);
+        if(!queryDataSet_local.timeStamp || queryDataSet_local.timeStamp <  timeStamp)
+        {
+            dataManager.set(query, url, timeStamp, serverData);
+        }
     });
 }
 
