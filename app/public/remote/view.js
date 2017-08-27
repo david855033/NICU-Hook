@@ -3,13 +3,14 @@ var view= new Vue({
     data:{
         account:"",
         password:"",
-        testData:{content:"Initial Data",timeStamp:Parser.getDateTime()}
+        wardList:["NICU","PICU"],
+        patientList:{content:[], timeStamp:""}
     },
     methods:{
-        updateData:function(){
-            requestView((data,timeStamp)=>{
-                view.testData.content = data;
-                view.testData.timeStamp = timeStamp;
+        updatePatientList:function(ward){
+            requestPatientList(ward,(data,timeStamp)=>{
+                view.patientList.content = data;
+                view.patientList.timeStamp = timeStamp;
             });
         }
     }

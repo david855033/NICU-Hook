@@ -15,7 +15,7 @@ body{
 }
 
 #left {
-	width: 200px;
+	width: 300px;
     float: left;
     background-color: #9DBEA5;
     height:100%;
@@ -25,7 +25,21 @@ body{
     background-color: hsl(20,40%,85%);
     margin:0 0 5px 0;
 }
+table#wardList{
+    width:100%;
+}
+#wardList th,#wardList td{
+    padding:5px;
+    border:1px solid black;
+}
 
+table#patientList{
+    width:100%;
+}
+#patientList th,#patientList td{
+    padding:5px;
+    border:1px solid black;
+}
 .main {
     margin-left: 200px;
     height:100%;

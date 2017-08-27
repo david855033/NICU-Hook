@@ -24,14 +24,24 @@
             <div class="leftbox">
                 selectWard
             </div>
+            <table id="wardList">
+                <tr v-for="row in wardList" @click="updatePatientList(row)">
+                    <td>{{row}}</td>
+                </tr>
+            </table>
             <div class="leftbox">
                 selectPatient
             </div>
+            <table id="patientList">
+                <tr v-for="row in patientList.content">
+                    <td>{{row.bed}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.patientID}}</td>
+                </tr>
+            </table>
         </div>
         <div class="main">
-            <div style="padding: 10px; background-color: hsl(200,30%,85%); width: 200px;;" @click="updateData">Update Data</div>
-            <div style="padding: 10px;">Time Stamp: {{testData.timeStamp}}</div>
-            <div style="padding: 10px;">Data: {{testData.content}}</div>
+            <div style="padding: 10px; background-color: hsl(200,30%,85%); width: 200px;;" @click="updatePatientList('NICU')">Update Data</div>
         </div>
     </div>
 
@@ -49,7 +59,7 @@
 
 </body>
 <script type="text/javascript" src="server.js"></script>
-<script type="text/javascript" src="fake-server.js"></script>
+<script type="text/javascript" src="fake-server.js"></script> <!--dev-->
 <script type="text/javascript" src="parser.js"></script>
 <script type="text/javascript" src="data-manager.js"></script>
 <script type="text/javascript" src="model.js"></script>

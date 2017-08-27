@@ -1,15 +1,21 @@
 ;'use strict';
+
 var fakeServer={};
 
 fakeServer.request=function(serverRequest,callback){
     setTimeout(function() {
-        callback&&callback(fakeserverData.find(x=>x.url==serverRequest.url).content, Parser.getDateTime());
-    }, 2000);
+        var matched = fakeserverData.find(x=>{
+            return x.url==serverRequest.url &&
+            (!x.form || JSON.stringify(x.form)==JSON.stringify(serverRequest.form))
+        });
+        callback&&callback(matched&&matched.content, Parser.getDateTime());
+    }, 500);
 }
 
 var fakeserverData=[
     {
         url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient",
+        form:{wd:"NICU"},
         content:'<html>\
     <head>\
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\
@@ -71,5 +77,11 @@ var fakeserverData=[
     </table>\
     </body>\
     </html>'
+    },
+    {
+        url:"",
+        content:""
     }
 ];
+
+server.request=fakeServer.request;

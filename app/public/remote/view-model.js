@@ -1,6 +1,6 @@
 ;'use strict';
-var requestView=function(callback){
-    queryData("admisionList_NICU",function(data, timeStamp){
+var requestPatientList=function(ward,callback){
+    queryData("admisionList_"+ward,function(data, timeStamp){
         callback&&callback(data, timeStamp);
     });
 }

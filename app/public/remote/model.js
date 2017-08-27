@@ -1,6 +1,5 @@
 ;'use strict';
 var queryData=function(query, callback){
-    
     // from datastructure;
     var queryDataSet_local={};
     dataManager.get(query,function(queryDataSet){
@@ -13,7 +12,7 @@ var queryData=function(query, callback){
     //from server
     serverRequest=queryToServerRequest(query);
 
-    fakeServer.request(serverRequest, function(serverData, timeStamp){ 
+    server.request(serverRequest, function(serverData, timeStamp){ 
         var parsedData = Parser.getAdmissionList(serverData);
         callback(parsedData, timeStamp);
         if(!queryDataSet_local.timeStamp || queryDataSet_local.timeStamp <  timeStamp)
@@ -26,8 +25,18 @@ var queryData=function(query, callback){
 //serverRequest {url; method; form;}
 var queryToServerRequest=function(query)
 {
-    if(query == "admisionList_NICU")
-    {
-        return {url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient"};
+    var queryList = query.split('_');
+    if(queryList[0] == "admisionList"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient",
+            method:"POST",
+            form:{wd:queryList[1]}
+        };
+
+    }else if(queryList[0]  == "preSelectPatient"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findEmr&histno="+queryList[1]
+        };
+
     }
 }
