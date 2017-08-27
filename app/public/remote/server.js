@@ -67,27 +67,15 @@ server.signIn=function(account, password){
     });
 };
 
-server.get=function(url,callback){
+server.request=function(serverRequest,callback){
     var option = new defaulOption();
-    option.url=url;
     option.headers={
         'Cookie': server.cookie.string
     }
-    PostHTTPRequest(option, function(data,status,xhr){
-        resObj= JSON.parse(data);
-        server.cookie.setString(resObj.cookieString);
-        callback&&callback(resObj.body, Parser.getDateTime());
-    });
-}
 
-server.postform=function(url,form,callback){
-    var option = new defaulOption();
-    option.url=url;
-    option.headers={
-        'Cookie': server.cookie.string
-    }
-    option.method='POST';
-    form && (option.form=form);
+    option.url=serverRequest.url;
+    serverRequest.method && (option.method=serverRequest.method);
+    serverRequest.form && (option.form=serverRequest.form);
     PostHTTPRequest(option, function(data,status,xhr){
         resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);

@@ -39,5 +39,28 @@ var Parser={
         }else{
             return num;
         }
+    },
+    //資料格式
+    //admisionList: [{bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
+    getAdmissionList:function(htmlText){
+        var resultArray=[];
+        var doc = Parser.getDOM(htmlText);
+        var tbody = doc.getElementsByTagName("tbody");
+        tbody = tbody&&tbody[0];
+        var trs = tbody.getElementsByTagName("tr");
+        for(var i = 0; i < trs.length; i++){
+            var tr=trs[i];
+            var tds=tr.getElementsByTagName("td");
+            
+            var result = {bed:"",name:"",patientID:"",gender:"",section:"",admissionDate:""};
+            if(tds[1].getAttribute('id')=="tips")
+            {
+                console.log("Y: "+result.bed);
+            }else{
+                console.log("N: "+result.bed);
+            }
+            resultArray.push(result);
+        }
+        return resultArray;
     }
 }

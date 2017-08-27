@@ -11,20 +11,23 @@ var queryData=function(query, callback){
     })
 
     //from server
-    var url=queryToUrl(query);
-    fakeServer.get(url, function(serverData, timeStamp){ 
-        callback(serverData, timeStamp);
+    serverRequest=queryToServerRequest(query);
+
+    fakeServer.request(serverRequest, function(serverData, timeStamp){ 
+        var parsedData = Parser.getAdmissionList(serverData);
+        callback(parsedData, timeStamp);
         if(!queryDataSet_local.timeStamp || queryDataSet_local.timeStamp <  timeStamp)
         {
-            dataManager.set(query, url, timeStamp, serverData);
+            dataManager.set(query, serverRequest.url, timeStamp, parsedData);
         }
     });
 }
 
-var queryToUrl=function(query)
+//serverRequest {url; method; form;}
+var queryToServerRequest=function(query)
 {
     if(query == "admisionList_NICU")
     {
-        return "https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient";
+        return {url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient"};
     }
 }
