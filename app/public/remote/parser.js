@@ -41,6 +41,15 @@ var Parser={
             return dateString;
         } 
     },
+    getTimeFromShortTime:function(timeString){
+        if(typeof timeString =="string" && timeString.length==4)
+        {
+            return timeString.substr(0,2)+":"+timeString.substr(2,2);
+        }
+        else{
+            return timeString;
+        } 
+    },
     get2DigiNum:function(num){
         if(typeof num == "number" && num<10)
         {
@@ -107,7 +116,6 @@ var Parser={
             result.section=tds[4].innerText.trim();
             resultArray.push(result);
         }
-        //return [{admissionDate:htmlText,dischargeDate:"2017-01-02",caseNo:"1234567",section:"NBD"}];
         return resultArray;
     },
     getPatientData:function(htmlText){
@@ -136,6 +144,43 @@ var Parser={
         result.visitingStaff.code=trs[17].innerText.replaceAll('１８．　主治醫師：','').regSelectAll(/\((.*)\)/g,"").regReplaceAll(/(\(|\))/g,"").trim();
         result.resident.name=trs[18].innerText.replaceAll('１９．　住院醫師：','').regReplaceAll(/\(.*\)/g,"").trim();
         result.resident.code=trs[18].innerText.replaceAll('１９．　住院醫師：','').regSelectAll(/\((.*)\)/g,"").regReplaceAll(/(\(|\))/g,"").trim();
+        return result;
+    },
+
+    //轉科轉床(最近一次住院)
+    //changeBed:[{dateTime:"",bed:""}],changeSection:[{dateTime:"",section:""}]
+    getChangeBedSection:function(htmlText){
+        var result={
+            changeBed:[],
+            changeSection:[]
+        };
+        var doc = Parser.getDOM(htmlText);
+        var tbodyBed = doc.getElementById('tbody_2');
+        if(tbodyBed){
+            var trs = tbodyBed.getElementsByTagName("tr");
+            for(var i = 0; i < trs.length; i++){
+                var tr=trs[i];
+                var tds=tr.getElementsByTagName("td");
+                var changeBed={dateTime:"",bed:""};
+                changeBed.dateTime=Parser.getDateFromShortDate(tds[0].innerText.trim())+" "+Parser.getTimeFromShortTime(tds[1].innerText.trim());
+                changeBed.bed=tds[2].innerText;
+                result.changeBed.push(changeBed);
+            }
+        }
+
+        var tbodySection = doc.getElementById('tbody_3');
+        console.log(tbodySection);
+        if(tbodySection){
+            var trs = tbodySection.getElementsByTagName("tr");
+            for(var i = 0; i < trs.length; i++){
+                var tr=trs[i];
+                var tds=tr.getElementsByTagName("td");
+                var changeSection={dateTime:"",bed:""};
+                changeSection.dateTime=Parser.getDateFromShortDate(tds[0].innerText.trim())+" "+Parser.getTimeFromShortTime(tds[1].innerText.trim());
+                changeSection.section=tds[2].innerText;
+                result.changeSection.push(changeSection);
+            }
+        }
         return result;
     }
 }

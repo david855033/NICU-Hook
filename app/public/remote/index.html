@@ -80,16 +80,26 @@
                 </tr>
             </table>
             <div class="rightbox">
-                changeBed(last admission)
+                changeBedSection(last admission)
             </div>
-            <table id="changeBed">
-                <tr v-show="admissionInfo.changeBed.content&&admissionInfo.changeBed.content.length>0">
+            <table id="changebed">
+                <tr v-show="changeBedSection.content.changeBed&&changeBedSection.content.changeBed.length>0">
                     <th>轉床日期</th>
                     <th>床位</th>
                 </tr>
-                <tr v-for="row in admissionInfo.changeBed.content">
+                <tr v-for="row in changeBedSection.content.changeBed">
                     <td>{{row.dateTime}}</td>
                     <td>{{row.bed}}</td>
+                </tr>
+            </table>
+            <table id="changeSection">
+                <tr v-show="changeBedSection.content.changeSection&&changeBedSection.content.changeSection.length>0">
+                    <th>轉科日期</th>
+                    <th>科別</th>
+                </tr>
+                <tr v-for="row in changeBedSection.content.changeSection">
+                    <td>{{row.dateTime}}</td>
+                    <td>{{row.section}}</td>
                 </tr>
             </table>
         </div>

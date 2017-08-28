@@ -23,3 +23,10 @@ var requestPatientData=function(patientID, callback){
          });
     });
 }
+var requestChangeBedSection=function(patientID, callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("changeBedSection_"+patientID,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+         });
+    });
+}

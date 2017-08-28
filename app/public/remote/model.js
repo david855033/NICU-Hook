@@ -51,5 +51,10 @@ var queryToServerRequest=function(query)
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPba&histno="+queryList[1],
             parser:Parser.getPatientData
         };
+    }else if(queryList[0]  == "changeBedSection"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPlocs&histno="+queryList[1],
+            parser:Parser.getChangeBedSection
+        };
     }
 }

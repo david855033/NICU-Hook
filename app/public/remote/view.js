@@ -20,9 +20,9 @@ var view= new Vue({
             },
             timeStamp:""
         },
-        admissionInfo:{
-            changeBed:{content:[],timeStamp:""},
-            changedSection:{content:[],timeStamp:""}
+        changeBedSection:{
+            content:{changeBed:[],changedSection:[]},
+            timeStamp:""
         }
     },
     methods:{
@@ -38,6 +38,7 @@ var view= new Vue({
         updatePatient:function(patientID){
             view.updateAdmissionList(patientID);
             view.updatePatientData(patientID)
+            view.updateChangeBedSection(patientID);
         },
         updateAdmissionList:function(patientID){
             requestAdmissionList(patientID,function(data,timeStamp){
@@ -49,6 +50,12 @@ var view= new Vue({
             requestPatientData(patientID,function(data,timeStamp){
                 view.patientData.content = data;
                 view.patientData.timeStamp = timeStamp;
+            });
+        },
+        updateChangeBedSection:function(patientID){
+            requestChangeBedSection(patientID,function(data,timeStamp){
+                view.changeBedSection.content=data;
+                view.changeBedSection.timeStamp=timeStamp;
             });
         }
     }
