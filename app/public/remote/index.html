@@ -33,7 +33,12 @@
                 selectPatient
             </div>
             <table id="patientList">
-                <tr v-for="row in patientList.content" @click="updateAdmissionList(row.patientID)">
+                <tr v-show="patientList.content&&patientList.content.length>0">
+                    <th>床號</th>
+                    <th>姓名</th>
+                    <th>病歷號</th>
+                </tr>
+                <tr v-for="row in patientList.content" @click="updatePatient(row.patientID)">
                     <td>{{row.bed}}</td>
                     <td>{{row.name}}</td>
                     <td>{{row.patientID}}</td>
@@ -42,34 +47,48 @@
         </div>
         <div class="main">
             <div class="rightbox">
+                patientData
+            </div>
+            <table id="patientData">
+                <tr>
+                    <th>欄位</th><th>內容</th>
+                </tr>
+                <tr><td>現在床號</td><td>{{patientData.content.currentBed}}</td></tr>
+                <tr><td>姓名</td><td>{{patientData.content.patientName}}</td></tr>
+                <tr><td>生日</td><td>{{patientData.content.birthDate}}</td></tr>
+                <tr><td>性別</td><td>{{patientData.content.gender}}</td></tr>
+                <tr><td>血型</td><td>{{patientData.content.bloodType}}</td></tr>
+                <tr><td>科別</td><td>{{patientData.content.currentSection}}</td></tr>
+                <tr><td>主治醫師</td><td>{{patientData.content.visitingStaff.name}}</td></tr>
+                <tr><td>燈號</td><td>{{patientData.content.visitingStaff.code}}</td></tr>
+                <tr><td>住院醫師</td><td>{{patientData.content.resident.name}}</td></tr>
+                <tr><td>燈號</td><td>{{patientData.content.resident.code}}</td></tr>
+
+                
+            </table>
+            <div class="rightbox">
                 admissionList
             </div>
             <table id="admissionList">
+                <tr v-show="admissionList.content&&admissionList.content.length>0">
+                    <th>住院日期</th>
+                    <th>出院日期</th>
+                    <th>住院號</th>
+                    <th>科部</th>
+                </tr>
                 <tr v-for="row in admissionList.content">
                     <td>{{row.admissionDate}}</td>
                     <td>{{row.dischargeDate}}</td>
                     <td>{{row.caseNo}}</td>
+                    <td>{{row.section}}</td>
                 </tr>
             </table>
-            
         </div>
-    </div>
-
-    <div id="dev" v-if="showDev">
-        <div class="test-button"  @click="signIn">Sign In</div>
-        <div class="test-button"  @click="get">Get Web9</div>
-        <div class="test-button"  @click="getPT">Get PT</div>
-        <div class="test-button"  @click="getNIS">Get NIS</div>
-        <div class="test-button"  @click="getNIS2">Get NIS2</div>
-        <div id="cookie">{{cookie.dateTime}}</div>
-        <div id="cookie">{{cookie.str}}</div>
-        <div id="content">{{data.dateTime}}</div>
-        <div id="content">{{data.content}}</div>
     </div>
 
 </body>
 <script type="text/javascript" src="server.js"></script>
-<script type="text/javascript" src="fake-server.js"></script> <!--dev-->
+<script type="text/javascript" src="fake-server.js"></script>   
 <script type="text/javascript" src="parser.js"></script>
 <script type="text/javascript" src="data-manager.js"></script>
 <script type="text/javascript" src="model.js"></script>

@@ -1,16 +1,33 @@
-;'use strict';
+"use strict";
+var queue={};
+queue.lastRequest=new Date().valueOf();
+queue.do=function(job){
+    var currentTime=new Date().valueOf();
+    queue.lastRequest = queue.lastRequest + 50;
+    var timeout = queue.lastRequest-currentTime;
+    if(timeout<0){
+        timeout=0;
+        queue.lastRequest=currentTime;
+    }
+    setTimeout(function() {
+        job();
+    }, timeout);
+}
+
 //基礎函數：將HTTP request post至node server 等待callback回傳
 var PostHTTPRequest=function(options, callback){
-    $.ajax({
-        url: "HTTPRequest",
-        type:"POST",
-        data: JSON.stringify(options),
-        contentType: "application/json; charset=utf-8",
-        dataType   : "text",
-        success: function (data,status,xhr) {
-            callback && callback(data,status,xhr);
-        }
-    })
+    queue.do(function(){
+        $.ajax({
+            url: "HTTPRequest",
+            type:"POST",
+            data: JSON.stringify(options),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "text",
+            success: function (data,status,xhr) {
+                callback && callback(data,status,xhr);
+            }
+        })
+    });
 };
 
 //constructor for defualtOption of VGHserver
@@ -41,12 +58,10 @@ server.cookie.setString=function(str){
     //將input的K-V pair更新到originObj(用來判斷新增/取代cookies)
     var keysInInputObj = Object.keys(inputObj);
     var keysInOriginObj = Object.keys(originObj);
-    keysInInputObj.forEach(x=>{originObj[x]=inputObj[x]});
+    keysInInputObj.forEach(function(x)  {originObj[x]=inputObj[x]});
     //轉換成string
-    combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
+    var combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
     server.cookie.string = combinedString;
-    dev.cookie.str=server.cookie.string;
-    dev.cookie.dateTime=Parser.getDateTime();
 };
 
 server.signIn=function(account, password){
@@ -61,7 +76,7 @@ server.signIn=function(account, password){
     option.method='POST';
     option.form={j_username:server.account,j_password:server.password}
     PostHTTPRequest(option, function(data,status,xhr){
-        resObj= JSON.parse(data);
+        var resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);
     });
 };
@@ -77,7 +92,7 @@ server.request=function(serverRequest,callback){
     serverRequest.form && (option.form=serverRequest.form);
     //console.log("server request options: "+ JSON.stringify(option));
     PostHTTPRequest(option, function(data,status,xhr){
-        resObj= JSON.parse(data);
+        var resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);
         callback&&callback(resObj.body, Parser.getDateTime());
     });

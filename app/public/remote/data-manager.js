@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 var dataManager={};
-dataManager.get=function(query, callback){
-    var targetQueryData = queryDataStorage.find(x=>x.query==query);
-    callback&&callback(targetQueryData);
-    return targetQueryData?true:false;
+dataManager.get=function(query){
+    var targetQueryData = queryDataStorage.find(function(x){return x.query==query;});
+    return targetQueryData;
 };
 dataManager.set=function(query,url,timeStamp,data){
-    var targetQueryData = queryDataStorage.find(x=>x.query==query);
+    var targetQueryData = queryDataStorage.find(function(x){return x.query==query;});
     if(targetQueryData)
     {
         targetQueryData.url=url;
@@ -30,38 +29,6 @@ var queryDataSet = function(query,url,timeStamp,data){
 var queryDataStorage=[
 ];
 
-
-
-//取得某病房的住院病人
-var getAdmissionList = function(ward){
-    return [
-        {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},
-        {bed:"NICU-2",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}
-    ];
-};
-
-//取得某病患的住院清單
-var getAdmissionList = function(patientID){
-    return [
-        {admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567"},
-        {admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"2234567"}
-    ];
-};
-
-//病患資料
-var getPatientData = function(patientID){
-    return {
-        isCurrentAdmitted:"true",
-        currentBed:"",
-        patientName:"",
-        birthDate:"",
-        gender:"",
-        bloodType:"",
-        currentSection:"",
-        visitingStaff:{name:"",code:""},
-        resident:{name:"",code:""}
-    };
-};
 //生命徵象
 var getVitalSign={};
 getVitalSign.BLandBW = function(patientID, caseNo)

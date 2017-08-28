@@ -1,26 +1,27 @@
-;'use strict';
+"use strict";
 var queryData=function(query, callback){
+    var notPreSelect=query.indexOf('preSelect')<0;
+    var serverRequest=queryToServerRequest(query);
+    
     // from datastructure;
     var queryDataSet_local={};
-    
-    if(query.indexOf('preSelect')<0){
-        dataManager.get(query,function(queryDataSet){
-            if(queryDataSet){
-                queryDataSet_local=queryDataSet;
-                callback(queryDataSet.data, queryDataSet.timeStamp);  
-            }
-        })
+    if(notPreSelect){
+        var queryDataSet = dataManager.get(query);
+        if(queryDataSet){
+            queryDataSet_local = queryDataSet;
+            callback(queryDataSet.data, queryDataSet.timeStamp);  
+        }
     }
 
     //from server
-    serverRequest=queryToServerRequest(query);
-
     server.request(serverRequest, function(serverData, timeStamp){ 
-        var parsedData = serverRequest.parser?serverRequest.parser(serverData):serverData;
+        var parsedData = serverRequest.parser?serverRequest.parser(serverData):"";
         callback(parsedData, timeStamp);
         if(!queryDataSet_local.timeStamp || queryDataSet_local.timeStamp <  timeStamp)
         {
-            dataManager.set(query, serverRequest.url, timeStamp, parsedData);
+            if(notPreSelect){
+                dataManager.set(query, serverRequest.url, timeStamp, parsedData);
+            }
         }
     });
 }
@@ -44,6 +45,11 @@ var queryToServerRequest=function(query)
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findNicu&histno="+queryList[1],
             parser:Parser.getAdmissionList
+        };
+    }else if(queryList[0]  == "patientData"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPba&histno="+queryList[1],
+            parser:Parser.getPatientData
         };
     }
 }

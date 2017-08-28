@@ -1,4 +1,4 @@
-;'use strict';
+"use strict";
 var Parser={
     getDOM:function(htmlText){
         var doc = document.implementation.createHTMLDocument("example");
@@ -9,7 +9,7 @@ var Parser={
     getKeyValuePairsFromCookieString:function(cookieString){
         var keyValuePairs={};
         cookieString&&cookieString.split(';')
-            .forEach((x)=>{
+            .forEach(function(x){
                 var parts=x.split('=');
                 var key=parts.shift();
                 var value=parts.join('=');
@@ -19,11 +19,11 @@ var Parser={
     },
     getCookieStringFromKeyValuePairs:function(keyValuePairs){
          var keys= Object.keys(keyValuePairs);
-         return keys.map(x=>x+"="+keyValuePairs[x]).join('; ');
+         return keys.map(function(x){return x+"="+keyValuePairs[x];}).join('; ');
     },
     //時間日期
     getDateTime:function(dateObj){
-        toParse = dateObj || new Date();
+        var toParse = dateObj || new Date();
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))+" "
@@ -89,8 +89,53 @@ var Parser={
     },
 
     //取得某病患的住院清單
-    //[{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567"}]
+    //[{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567",section:""}]
     getAdmissionList:function(htmlText){
-        return [{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567"}];
+        var resultArray=[];
+        var doc = Parser.getDOM(htmlText);
+        var tbody = doc.getElementsByTagName("tbody");
+        tbody = tbody&&tbody[0];
+        if(!tbody){return resultArray;}
+        var trs = tbody.getElementsByTagName("tr");
+        for(var i = 0; i < trs.length; i++){
+            var tr=trs[i];
+            var tds=tr.getElementsByTagName("td");
+            var result = {admissionDate:"",dischargeDate:"",caseNo:"",section:""};
+            result.admissionDate=Parser.getDateFromShortDate(tds[2].innerText.trim());
+            result.dischargeDate=Parser.getDateFromShortDate(tds[3].innerText.trim());
+            result.caseNo=tds[1].innerText.trim();
+            result.section=tds[4].innerText.trim();
+            resultArray.push(result);
+        }
+        //return [{admissionDate:htmlText,dischargeDate:"2017-01-02",caseNo:"1234567",section:"NBD"}];
+        return resultArray;
+    },
+    getPatientData:function(htmlText){
+        var result= { 
+            currentBed:"",
+            patientName:"",
+            birthDate:"",
+            gender:"",
+            bloodType:"",
+            currentSection:"",
+            visitingStaff:{name:"",code:""},
+            resident:{name:"",code:""}
+        };
+        var doc = Parser.getDOM(htmlText);
+        var tbody = doc.getElementsByTagName("tbody");
+        tbody = tbody&&tbody[0];
+        if(!tbody){return result;}
+        var trs = tbody.getElementsByTagName("tr");
+        result.currentBed=trs[1].innerText.replaceAll('０２．　病房床號：','').replaceAll('－',"-").replaceAll(' ','');
+        result.patientName=trs[2].innerText.replaceAll('０３．　姓　名　：','').trim();
+        result.birthDate=Parser.getDateFromShortDate(trs[3].innerText.replaceAll('０４．　生　日　：','').regReplaceAll(/（.*）/g,"").trim());
+        result.gender=trs[4].innerText.replaceAll('０５．　性　別　：','').trim();
+        result.bloodType=trs[5].innerText.replaceAll('０６．　血　型　：','').replaceAll(' ','').trim();
+        result.currentSection=trs[7].innerText.replaceAll('０８．　科　別　：','').trim();
+        result.visitingStaff.name=trs[17].innerText.replaceAll('１８．　主治醫師：','').regReplaceAll(/\(.*\)/g,"").trim();
+        result.visitingStaff.code=trs[17].innerText.replaceAll('１８．　主治醫師：','').regSelectAll(/\((.*)\)/g,"").regReplaceAll(/(\(|\))/g,"").trim();
+        result.resident.name=trs[18].innerText.replaceAll('１９．　住院醫師：','').regReplaceAll(/\(.*\)/g,"").trim();
+        result.resident.code=trs[18].innerText.replaceAll('１９．　住院醫師：','').regSelectAll(/\((.*)\)/g,"").regReplaceAll(/(\(|\))/g,"").trim();
+        return result;
     }
 }

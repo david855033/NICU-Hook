@@ -1,3 +1,4 @@
+"use strict";
 var view= new Vue({
     el:'#view',
     data:{
@@ -5,23 +6,46 @@ var view= new Vue({
         password:"",
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
-        admissionList:{content:[], timeStamp:""}
+        admissionList:{content:[], timeStamp:""},
+        patientData:{
+            content:{
+                currentBed:"",
+                patientName:"",
+                birthDate:"",
+                gender:"",
+                bloodType:"",
+                currentSection:"",
+                visitingStaff:{name:"",code:""},
+                resident:{name:"",code:""}
+            },
+            timeStamp:""
+        }
     },
     methods:{
         signIn:function(){
             server.signIn("DOC3924B","888888");
         },
         updatePatientList:function(ward){
-            requestPatientList(ward,(data,timeStamp)=>{
+            requestPatientList(ward,function(data,timeStamp){
                 view.patientList.content = data;
                 view.patientList.timeStamp = timeStamp;
             });
         },
+        updatePatient:function(patientID){
+            view.updateAdmissionList(patientID);
+            view.updatePatientData(patientID)
+        },
         updateAdmissionList:function(patientID){
-            requestAdmissionList(patientID,(data,timeStamp)=>{
+            requestAdmissionList(patientID,function(data,timeStamp){
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
-            })
+            });
+        },
+        updatePatientData:function(patientID){
+            requestPatientData(patientID,function(data,timeStamp){
+                view.patientData.content = data;
+                view.patientData.timeStamp = timeStamp;
+            });
         }
     }
 })

@@ -23,12 +23,12 @@ body{
 .leftbox{
     padding:10px 5px 10px 5px;
     background-color: hsl(20,40%,85%);
-    margin:0 0 5px 0;
+    margin:5px 0 5px 0;
 }
 .rightbox{
     padding:10px 5px 10px 5px;
     background-color: hsl(200,40%,85%);
-    margin:0 0 5px 0;
+    margin:5px 0 5px 0;
 }
 table#wardList{
     width:100%;
@@ -50,7 +50,20 @@ table#patientList{
     height:100%;
     overflow-y: scroll;
 }
-
+table#admissionList{
+    width:100%;
+}
+#admissionList th,#admissionList td{
+    padding:5px;
+    border:1px solid black;
+}
+table#patientData{
+    width:100%;
+}
+#patientData th,#patientData td{
+    padding:5px;
+    border:1px solid black;
+}
 /*dev style*/
 .test-button{
     background-color: steelblue;

@@ -27,3 +27,17 @@ if(!String.prototype.replaceAll){
     return target.replace(new RegExp(search, 'g'), replacement);
   };
 }
+
+if(!String.prototype.regReplaceAll){
+  String.prototype.regReplaceAll = function(pattern, replacement) {
+    var target = this;
+    return target.replace(pattern, replacement);
+  };
+}
+if(!String.prototype.regSelect){
+  String.prototype.regSelectAll = function(pattern, replacement) {
+    var target = this;
+    var match=target.match(pattern, replacement);
+    return match?match.join(""):"";
+  };
+}
