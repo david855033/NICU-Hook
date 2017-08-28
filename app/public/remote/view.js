@@ -18,7 +18,10 @@ var view= new Vue({
             });
         },
         updateAdmissionList:function(patientID){
-            console.log(patientID);
+            requestAdmissionList(patientID,(data,timeStamp)=>{
+                view.admissionList.content = data;
+                view.admissionList.timeStamp = timeStamp;
+            })
         }
     }
 })

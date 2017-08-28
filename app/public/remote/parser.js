@@ -60,7 +60,7 @@ var Parser={
     //--------轉換HTML--------
     //取得某病房的住院病人
     //[{bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
-    getAdmissionList:function(htmlText){
+    getPatientList:function(htmlText){
         var resultArray=[];
         var doc = Parser.getDOM(htmlText);
         var tbody = doc.getElementsByTagName("tbody");
@@ -85,7 +85,12 @@ var Parser={
                 resultArray.push(result);
             }
         }
-        
         return resultArray;
+    },
+
+    //取得某病患的住院清單
+    //[{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567"}]
+    getAdmissionList:function(htmlText){
+        return [{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567"}];
     }
 }

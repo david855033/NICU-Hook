@@ -10,12 +10,8 @@ router.post('/', function(expReq, expRes, next) {
     option.jar=request.jar();    
     
     request(option, function (error, response, body) {
-      
-      console.log('>>> href: '+ response.request.uri.href);
-
       console.log('>>> recieved statusCode:', response && response.statusCode); // Print the response status code if a response was received
       var cookieString=option.jar.getCookieString(option.url);
-      console.log('>>> recieved cookieString: '+cookieString);
       var body=JSON.stringify(body);
       var response=JSON.stringify(response);
       expRes.send({body:body,cookieString:cookieString,response:response});
