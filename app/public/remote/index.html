@@ -50,9 +50,7 @@
                 patientData
             </div>
             <table id="patientData">
-                <tr>
-                    <th>欄位</th><th>內容</th>
-                </tr>
+                <tr><th>欄位</th><th>內容</th></tr>
                 <tr><td>現在床號</td><td>{{patientData.content.currentBed}}</td></tr>
                 <tr><td>姓名</td><td>{{patientData.content.patientName}}</td></tr>
                 <tr><td>生日</td><td>{{patientData.content.birthDate}}</td></tr>
@@ -63,8 +61,6 @@
                 <tr><td>燈號</td><td>{{patientData.content.visitingStaff.code}}</td></tr>
                 <tr><td>住院醫師</td><td>{{patientData.content.resident.name}}</td></tr>
                 <tr><td>燈號</td><td>{{patientData.content.resident.code}}</td></tr>
-
-                
             </table>
             <div class="rightbox">
                 admissionList
@@ -81,6 +77,19 @@
                     <td>{{row.dischargeDate}}</td>
                     <td>{{row.caseNo}}</td>
                     <td>{{row.section}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                changeBed(last admission)
+            </div>
+            <table id="changeBed">
+                <tr v-show="admissionInfo.changeBed.content&&admissionInfo.changeBed.content.length>0">
+                    <th>轉床日期</th>
+                    <th>床位</th>
+                </tr>
+                <tr v-for="row in admissionInfo.changeBed.content">
+                    <td>{{row.dateTime}}</td>
+                    <td>{{row.bed}}</td>
                 </tr>
             </table>
         </div>

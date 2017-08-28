@@ -1,12 +1,11 @@
 'use strict';
 var dataManager={};
-dataManager.get=function(query, callback){
-    var targetQueryData = queryDataStorage.find(x=>x.query==query);
-    callback&&callback(targetQueryData);
-    return targetQueryData?true:false;
+dataManager.get=function(query){
+    var targetQueryData = queryDataStorage.find(function(x){return x.query==query});
+    return targetQueryData;
 };
 dataManager.set=function(query,url,timeStamp,data){
-    var targetQueryData = queryDataStorage.find(x=>x.query==query);
+    var targetQueryData = queryDataStorage.find(function(x){return x.query==query});
     if(targetQueryData)
     {
         targetQueryData.url=url;
@@ -30,52 +29,7 @@ var queryDataSet = function(query,url,timeStamp,data){
 var queryDataStorage=[
 ];
 
-//生命徵象
-var getVitalSign={};
-getVitalSign.BLandBW = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 12:00",BL:23,BW:0.67},
-        {dateTime:"2017-01-02 12:00",BL:23,BW:0.67}
-    ];
-};
-getVitalSign.BPandHR = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 12:00",SBP:50,DBP:40,HR:120},
-        {dateTime:"2017-01-01 13:00",SBP:55,DBP:23,HR:120},
-        {dateTime:"2017-01-01 14:00",SBP:60,DBP:40,HR:120}
-    ];
-};
-getVitalSign.IO = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",input:120,output:100},
-        {dateTime:"2017-01-02 07:00",input:120,output:100},
-        {dateTime:"2017-01-03 07:00",input:120,output:100}
-    ];
-};
-getVitalSign.BT = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",BT:37},
-        {dateTime:"2017-01-02 07:00",BT:37.5}
-    ];
-};
-getVitalSign.RR = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",RR:25},
-        {dateTime:"2017-01-02 07:00",RR:24}
-    ];
-};
-getVitalSign.saturation = function(patientID, caseNo)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",Sat:90},
-        {dateTime:"2017-01-02 07:00",Sat:84}
-    ];
-};
+
 //住院資訊(最近一次住院資訊，限住院病人)
 var getAdmissionInfo={};
 getAdmissionInfo.changeBed = function(patientID)
@@ -179,6 +133,52 @@ getCummulativeReport.MicroBil = function(patientID)
 {
     return [
         {dateTime:"2017-07-01 12:00",data:{MicroBil:14}}
+    ];
+};
+//生命徵象
+var getVitalSign={};
+getVitalSign.BLandBW = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 12:00",BL:23,BW:0.67},
+        {dateTime:"2017-01-02 12:00",BL:23,BW:0.67}
+    ];
+};
+getVitalSign.BPandHR = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 12:00",SBP:50,DBP:40,HR:120},
+        {dateTime:"2017-01-01 13:00",SBP:55,DBP:23,HR:120},
+        {dateTime:"2017-01-01 14:00",SBP:60,DBP:40,HR:120}
+    ];
+};
+getVitalSign.IO = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 07:00",input:120,output:100},
+        {dateTime:"2017-01-02 07:00",input:120,output:100},
+        {dateTime:"2017-01-03 07:00",input:120,output:100}
+    ];
+};
+getVitalSign.BT = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 07:00",BT:37},
+        {dateTime:"2017-01-02 07:00",BT:37.5}
+    ];
+};
+getVitalSign.RR = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 07:00",RR:25},
+        {dateTime:"2017-01-02 07:00",RR:24}
+    ];
+};
+getVitalSign.saturation = function(patientID, caseNo)
+{
+    return [
+        {dateTime:"2017-01-01 07:00",Sat:90},
+        {dateTime:"2017-01-02 07:00",Sat:84}
     ];
 };
 //治療處置 (自備藥物是否要分開? 且必須要顯示附註)

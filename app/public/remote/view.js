@@ -19,6 +19,10 @@ var view= new Vue({
                 resident:{name:"",code:""}
             },
             timeStamp:""
+        },
+        admissionInfo:{
+            changeBed:{content:[],timeStamp:""},
+            changedSection:{content:[],timeStamp:""}
         }
     },
     methods:{
