@@ -70,9 +70,10 @@ var Parser={
         for(var i = 0; i < trs.length; i++){
             var tr=trs[i];
             var tds=tr.getElementsByTagName("td");
-            
             var result = {bed:"",name:"",patientID:"",gender:"",section:"",admissionDate:""};
-            if(tds[1].getAttribute('id')=="tips")
+            var td1_id = tds[1].getAttribute('id');
+            var td1_idIsTips = td1_id&&td1_id.indexOf("tips")>=0;
+            if(td1_idIsTips)
             {
                 Parser.removeElementsByTagName(tds[1],"span");
                 result.bed=tds[1].innerText.replaceAll(' ','');
@@ -84,6 +85,7 @@ var Parser={
                 resultArray.push(result);
             }
         }
+        
         return resultArray;
     }
 }

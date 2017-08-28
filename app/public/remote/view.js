@@ -8,6 +8,9 @@ var view= new Vue({
         admissionList:{content:[], timeStamp:""}
     },
     methods:{
+        signIn:function(){
+            server.signIn("DOC3924B","888888");
+        },
         updatePatientList:function(ward){
             requestPatientList(ward,(data,timeStamp)=>{
                 view.patientList.content = data;

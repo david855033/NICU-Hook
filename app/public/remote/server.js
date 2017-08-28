@@ -44,7 +44,6 @@ server.cookie.setString=function(str){
     keysInInputObj.forEach(x=>{originObj[x]=inputObj[x]});
     //轉換成string
     combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
-    console.log("combinedString: "+combinedString);
     server.cookie.string = combinedString;
     dev.cookie.str=server.cookie.string;
     dev.cookie.dateTime=Parser.getDateTime();
@@ -76,6 +75,7 @@ server.request=function(serverRequest,callback){
     option.url=serverRequest.url;
     serverRequest.method && (option.method=serverRequest.method);
     serverRequest.form && (option.form=serverRequest.form);
+    //console.log("server request options: "+ JSON.stringify(option));
     PostHTTPRequest(option, function(data,status,xhr){
         resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);
