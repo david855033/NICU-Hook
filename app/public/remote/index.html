@@ -33,7 +33,7 @@
                 selectPatient
             </div>
             <table id="patientList">
-                <tr v-for="row in patientList.content">
+                <tr v-for="row in patientList.content" @click="updateAdmissionList(row.patientID)">
                     <td>{{row.bed}}</td>
                     <td>{{row.name}}</td>
                     <td>{{row.patientID}}</td>
@@ -41,7 +41,17 @@
             </table>
         </div>
         <div class="main">
-            <div style="padding: 10px; background-color: hsl(200,30%,85%); width: 200px;;" @click="updatePatientList('NICU')">Update Data</div>
+            <div class="rightbox">
+                admissionList
+            </div>
+            <table id="admissionList">
+                <tr v-for="row in admissionList.content">
+                    <td>{{row.admissionDate}}</td>
+                    <td>{{row.dischargeDate}}</td>
+                    <td>{{row.caseNo}}</td>
+                </tr>
+            </table>
+            
         </div>
     </div>
 

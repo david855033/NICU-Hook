@@ -21,8 +21,13 @@ body{
     height:100%;
 }
 .leftbox{
-    padding:15px 5px 15px 5px;
+    padding:10px 5px 10px 5px;
     background-color: hsl(20,40%,85%);
+    margin:0 0 5px 0;
+}
+.rightbox{
+    padding:10px 5px 10px 5px;
+    background-color: hsl(200,40%,85%);
     margin:0 0 5px 0;
 }
 table#wardList{

@@ -5,7 +5,7 @@ var fakeServer={};
 fakeServer.request=function(serverRequest,callback){
     setTimeout(function() {
         var matched = fakeserverData.find(x=>{
-            return x.url==serverRequest.url &&
+            return x&&x.url==serverRequest.url &&
             (!x.form || JSON.stringify(x.form)==JSON.stringify(serverRequest.form))
         });
         callback&&callback(matched&&matched.content, Parser.getDateTime());
@@ -79,8 +79,12 @@ var fakeserverData=[
     </html>'
     },
     {
-        url:"",
-        content:""
+        url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findEmr&histno=43977748",
+        content:"preselected"
+    },
+    {
+        url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findNicu&histno=43977748",
+        content:"admission list"
     }
 ];
 

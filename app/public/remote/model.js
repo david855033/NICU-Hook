@@ -26,7 +26,7 @@ var queryData=function(query, callback){
 var queryToServerRequest=function(query)
 {
     var queryList = query.split('_');
-    if(queryList[0] == "admisionList"){
+    if(queryList[0] == "patientList"){
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient",
             method:"POST",
@@ -37,6 +37,9 @@ var queryToServerRequest=function(query)
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findEmr&histno="+queryList[1]
         };
-
+    }else if(queryList[0]  == "admissionList"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findEmr&histno="+queryList[1]
+        };
     }
 }

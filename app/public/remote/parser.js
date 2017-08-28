@@ -81,7 +81,6 @@ var Parser={
                 result.gender=tds[4].innerText;
                 result.section=tds[5].innerText.trim();
                 result.admissionDate=Parser.getDateFromShortDate(tds[7].innerText.trim());
-                console.log(tr);
                 resultArray.push(result);
             }
         }

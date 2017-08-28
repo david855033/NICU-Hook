@@ -4,7 +4,8 @@ var view= new Vue({
         account:"",
         password:"",
         wardList:["NICU","PICU"],
-        patientList:{content:[], timeStamp:""}
+        patientList:{content:[], timeStamp:""},
+        admissionList:{content:[], timeStamp:""}
     },
     methods:{
         updatePatientList:function(ward){
@@ -12,6 +13,9 @@ var view= new Vue({
                 view.patientList.content = data;
                 view.patientList.timeStamp = timeStamp;
             });
+        },
+        updateAdmissionList:function(patientID){
+            console.log(patientID);
         }
     }
 })

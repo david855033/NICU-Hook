@@ -33,10 +33,6 @@ var queryDataStorage=[
 
 
 //取得某病房的住院病人
-var getData=function(callback){
-    setTimeout(()=>callback("secondData"), 1000);
-    return "firstData";
-}
 var getAdmissionList = function(ward){
     return [
         {bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""},
