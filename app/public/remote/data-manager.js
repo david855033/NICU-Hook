@@ -1,11 +1,12 @@
-"use strict";
+'use strict';
 var dataManager={};
-dataManager.get=function(query){
-    var targetQueryData = queryDataStorage.find(function(x){return x.query==query;});
-    return targetQueryData;
+dataManager.get=function(query, callback){
+    var targetQueryData = queryDataStorage.find(x=>x.query==query);
+    callback&&callback(targetQueryData);
+    return targetQueryData?true:false;
 };
 dataManager.set=function(query,url,timeStamp,data){
-    var targetQueryData = queryDataStorage.find(function(x){return x.query==query;});
+    var targetQueryData = queryDataStorage.find(x=>x.query==query);
     if(targetQueryData)
     {
         targetQueryData.url=url;
