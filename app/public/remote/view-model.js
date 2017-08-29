@@ -78,3 +78,10 @@ var requestCummulative=function(patientID, monthsOrYear, field, callback){
         });
     });
 }
+var requestVitalSign=function(patientID,caseNo, field, callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("vitalSign_"+patientID+"_"+caseNo+"_"+field,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}

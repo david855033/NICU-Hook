@@ -275,8 +275,45 @@ Parser.getReportContent=function(htmlText){
     return result;
 };
 //查詢累積報告
-//return html text
+//return {colNames:[], data:[]};
 Parser.getCummulative=function(htmlText){
+    var result={colNames:[], data:[]};
+    var doc = Parser.getDOM(htmlText);
+    var thead = doc.getElementsByTagName('thead');
+    var tbody = doc.getElementsByTagName('tbody');
+    if(!thead||!tbody||thead.length==0||tbody.length==0){return result;}
+    thead=thead[0];
+    var ths=thead.getElementsByTagName('th');
+    for(var i = 0; i < ths.length;i++)
+    {
+        if(ths[i].innerText.trim()){
+            result.colNames.push(ths[i].innerText.trim());
+        }
+    }
+    tbody=tbody[0];
+    var trs=tbody.getElementsByTagName('tr');
+    for(var i = 0; i < trs.length-1;i++)
+    {
+        var tds =  trs[i].getElementsByTagName('td');
+        if(tds.length < result.colNames.length){continue;}
+        var newDataRow=[];
+        for(var j = 0 ; j <result.colNames.length;j++)
+        {
+            var thisCol=tds[j].innerText.trim();
+            if(thisCol=="-"){thisCol="";}
+            newDataRow.push(thisCol);
+        }
+        if(result.colNames.indexOf('Glucose')<0){
+            newDataRow[0]="20"+newDataRow[0];
+        }
+        newDataRow[0]=newDataRow[0].regReplaceAll(/\./,":");
+        result.data.push(newDataRow);
+    }
+    return result;
+}
+//查詢生命徵象
+//return {colNames:[], data:[]};
+Parser.getVitalSign=function(htmlText){
     var result={colNames:[], data:[]};
     var doc = Parser.getDOM(htmlText);
     var thead = doc.getElementsByTagName('thead');
@@ -290,7 +327,7 @@ Parser.getCummulative=function(htmlText){
     }
     tbody=tbody[0];
     var trs=tbody.getElementsByTagName('tr');
-    for(var i = 0; i < trs.length-1;i++)
+    for(var i = 0; i < trs.length;i++)
     {
         var tds =  trs[i].getElementsByTagName('td');
         if(tds.length != result.colNames.length){continue;}
@@ -298,10 +335,13 @@ Parser.getCummulative=function(htmlText){
         for(var j = 0 ; j <tds.length;j++)
         {
             var thisCol=tds[j].innerText.trim();
-            if(thisCol=="-"){thisCol="";}
             newDataRow.push(thisCol);
         }
-        newDataRow[0]=("20"+newDataRow[0]).regReplaceAll(/\./,":");
+        newDataRow[0]=newDataRow[0].regReplaceAll(/\s\s+/g, ' ');
+        if(result.colNames.indexOf('血氧濃度')>=0){
+            var parts= newDataRow[0].split(' ');
+            newDataRow[0]=Parser.getDateFromShortDate(parts[0])+" "+Parser.getTimeFromShortTime(parts[1])
+        }
         result.data.push(newDataRow);
     }
     return result;

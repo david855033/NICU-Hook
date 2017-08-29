@@ -108,5 +108,10 @@ var queryToServerRequest=function(query)
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findResd&histno="+queryList[1]+"&resdtmonth="+queryList[2]+"&resdtype="+queryList[3],
             parser:Parser.getCummulative
         };
+    }else if(queryList[0] =="vitalSign"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findVts&histno="+queryList[1]+"&caseno="+queryList[2]+"&pbvtype="+queryList[3],
+            parser:Parser.getVitalSign
+        };
     }
 }

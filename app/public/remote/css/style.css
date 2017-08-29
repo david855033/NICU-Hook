@@ -160,6 +160,20 @@ table#cummulative{
     border:1px solid black;
 }
 
-
+.vitalSignButton{
+    float:left;
+    padding:5px;
+    margin:3px;
+    background: hsl(150,40%,85%);
+}
+table#vitalSign{
+    width:100%;
+    margin:3px 0 3px 0;
+    font-size:0.3em;
+}
+#vitalSign th,#vitalSign td{
+    padding:5px;
+    border:1px solid black;
+}
 
 

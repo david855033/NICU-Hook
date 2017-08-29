@@ -8,6 +8,7 @@ var view= new Vue({
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
+        selectedCaseNo:"",
         admissionList:{content:[], timeStamp:""},
         patientData:{
             content:{
@@ -61,11 +62,23 @@ var view= new Vue({
         availableCummulativeList:[
             {queryString:"DCHEM",item:"SMAC"},
             {queryString:"DCBC",item:"CBC"},
-            {queryString:"DURIN",item:"Urine"},
             {queryString:"DGLU1",item:"床邊血糖"},
             {queryString:"DBGAS",item:"BloodGas"}
         ],
-        selectedCummulativeList:"DCHEM"
+        selectedCummulativeList:"DCHEM",
+        vitalSign:{
+            content:{colNames:[], data:[]},
+            timeStamp:""
+        },
+        availableVitalSignList:[
+            {queryString:"HWS",item:"身高體重"},
+            {queryString:"BPP",item:"血壓脈搏"},
+            {queryString:"IO",item:"輸入輸出"},
+            {queryString:"TMP",item:"體溫"},
+            {queryString:"RSP",item:"呼吸"},
+            {queryString:"OXY",item:"血氧濃度"}
+        ],
+        selectedVitalSignList:"HWS"
     },
     methods:{
         signIn:function(){
@@ -78,21 +91,28 @@ var view= new Vue({
             });
         },
         updatePatient:function(patientID){
+            view.updateAdmissionList(patientID);
             view.selectedPatientID=patientID;
-            // view.updatePatientData(patientID)
-            // view.updateAdmissionList(patientID);
-            // view.updateChangeBedSection(patientID);
-            // view.updateConsultation(patientID);
-            // view.updateConsultationPending(patientID);
-            // view.updateSurgery(patientID);
-            // view.updateOrder(patientID,7);
-            // view.updateReport(patientID, 1);
+            view.updatePatientData(patientID)
+            view.updateChangeBedSection(patientID);
+            view.updateConsultation(patientID);
+            view.updateConsultationPending(patientID);
+            view.updateSurgery(patientID);
+            view.updateOrder(patientID,7);
+            view.updateReport(patientID, 1);
             view.updateCummulative(patientID,3,view.selectedCummulativeList);
+        },
+        updateCase:function(patientID, caseNo){
+            patientID=patientID||view.selectedPatientID;
+            view.selectedCaseNo=caseNo;
+            view.updateVitalSign(patientID, caseNo, view.selectedVitalSignList)
         },
         updateAdmissionList:function(patientID){
             requestAdmissionList(patientID,function(data,timeStamp){
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
+                view.selectedCaseNo=view.admissionList.content&&view.admissionList.content[0].caseNo;
+                view.updateCase(patientID, view.selectedCaseNo);
             });
         },
         updatePatientData:function(patientID){
@@ -153,6 +173,12 @@ var view= new Vue({
             requestCummulative(patientID,monthsOrYear,field,function(data,timeStamp){
                 view.cummulative.content=data;
                 view.cummulative.timeStamp=timeStamp;
+            });
+        },
+        updateVitalSign:function(patientID,caseNo, field){
+            requestVitalSign(patientID,caseNo, field,function(data,timeStamp){
+                view.vitalSign.content=data;
+                view.vitalSign.timeStamp=timeStamp;
             });
         }
     }

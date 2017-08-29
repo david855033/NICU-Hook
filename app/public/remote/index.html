@@ -72,7 +72,7 @@
                     <th>住院號</th>
                     <th>科部</th>
                 </tr>
-                <tr v-for="row in admissionList.content">
+                <tr v-for="row in admissionList.content" @click="updateCase('',row.caseNo)">
                     <td>{{row.admissionDate}}</td>
                     <td>{{row.dischargeDate}}</td>
                     <td>{{row.caseNo}}</td>
@@ -246,6 +246,20 @@
                     <th v-for="col in cummulative.content.colNames">{{col}}</th>
                 </tr>
                 <tr v-for="row in cummulative.content.data">
+                    <td v-for="col in row">{{col}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                生命徵象 {{vitalSign.timeStamp}}
+            </div>
+             <div v-show="selectedPatientID&&selectedCaseNo">
+                <div class="vitalSignButton" v-for="button in availableVitalSignList" @click="selectedVitalSignList=button.queryString; updateVitalSign(selectedPatientID,selectedCaseNo,selectedVitalSignList);">{{button.item}}</div>
+            </div>
+            <table id="vitalSign" v-show="vitalSign.content.colNames">
+                <tr>
+                    <th v-for="col in vitalSign.content.colNames">{{col}}</th>
+                </tr>
+                <tr v-for="row in vitalSign.content.data">
                     <td v-for="col in row">{{col}}</td>
                 </tr>
             </table>
