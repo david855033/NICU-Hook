@@ -89,3 +89,77 @@ table#changeSection{
     border:1px solid black;
 }
 
+table#consultation{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#consultation th,#consultation td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#consultationReply{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#consultationReply th,#consultationReply td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#consultationPending{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#consultationPending th,#consultationPending td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#surgery{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#surgery th,#surgery td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#order{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#order th,#order td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#report{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#report th,#report td{
+    padding:5px;
+    border:1px solid black;
+}
+
+.cummulativeButton{
+    float:left;
+    padding:5px;
+    margin:3px;
+    background: hsl(300,40%,85%);
+}
+
+table#cummulative{
+    width:100%;
+    margin:3px 0 3px 0;
+    font-size:0.3em;
+}
+#cummulative th,#cummulative td{
+    padding:5px;
+    border:1px solid black;
+}
+
+
+
+

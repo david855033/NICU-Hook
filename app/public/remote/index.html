@@ -30,7 +30,7 @@
                 </tr>
             </table>
             <div class="leftbox">
-                selectPatient
+                selectPatient {{patientList.timeStamp}}
             </div>
             <table id="patientList">
                 <tr v-show="patientList.content&&patientList.content.length>0">
@@ -47,23 +47,23 @@
         </div>
         <div class="main">
             <div class="rightbox">
-                patientData
+                patientData {{patientData.timeStamp}}
             </div>
             <table id="patientData">
                 <tr><th>欄位</th><th>內容</th></tr>
-                <tr><td>現在床號</td><td>{{patientData.content.currentBed}}</td></tr>
-                <tr><td>姓名</td><td>{{patientData.content.patientName}}</td></tr>
-                <tr><td>生日</td><td>{{patientData.content.birthDate}}</td></tr>
-                <tr><td>性別</td><td>{{patientData.content.gender}}</td></tr>
-                <tr><td>血型</td><td>{{patientData.content.bloodType}}</td></tr>
-                <tr><td>科別</td><td>{{patientData.content.currentSection}}</td></tr>
-                <tr><td>主治醫師</td><td>{{patientData.content.visitingStaff.name}}</td></tr>
-                <tr><td>燈號</td><td>{{patientData.content.visitingStaff.code}}</td></tr>
-                <tr><td>住院醫師</td><td>{{patientData.content.resident.name}}</td></tr>
-                <tr><td>燈號</td><td>{{patientData.content.resident.code}}</td></tr>
+                <tr v-show="patientData.content.currentBed"><td>現在床號</td><td>{{patientData.content.currentBed}}</td></tr>
+                <tr v-show="patientData.content.patientName"><td>姓名</td><td>{{patientData.content.patientName}}</td></tr>
+                <tr v-show="patientData.content.birthDate"><td>生日</td><td>{{patientData.content.birthDate}}</td></tr>
+                <tr v-show="patientData.content.gender"><td>性別</td><td>{{patientData.content.gender}}</td></tr>
+                <tr v-show="patientData.content.bloodType"><td>血型</td><td>{{patientData.content.bloodType}}</td></tr>
+                <tr v-show="patientData.content.currentSection"><td>科別</td><td>{{patientData.content.currentSection}}</td></tr>
+                <tr v-show="patientData.content.visitingStaff.name"><td>主治醫師</td><td>{{patientData.content.visitingStaff.name}}</td></tr>
+                <tr v-show="patientData.content.visitingStaff.code"><td>燈號</td><td>{{patientData.content.visitingStaff.code}}</td></tr>
+                <tr v-show="patientData.content.resident.name"><td>住院醫師</td><td>{{patientData.content.resident.name}}</td></tr>
+                <tr v-show="patientData.content.resident.code"><td>燈號</td><td>{{patientData.content.resident.code}}</td></tr>
             </table>
             <div class="rightbox">
-                admissionList
+                admissionList {{admissionList.timeStamp}}
             </div>
             <table id="admissionList">
                 <tr v-show="admissionList.content&&admissionList.content.length>0">
@@ -80,7 +80,7 @@
                 </tr>
             </table>
             <div class="rightbox">
-                changeBedSection(last admission)
+                changeBedSection(last admission) {{changeBedSection.timeStamp}}
             </div>
             <table id="changebed">
                 <tr v-show="changeBedSection.content.changeBed&&changeBedSection.content.changeBed.length>0">
@@ -102,13 +102,161 @@
                     <td>{{row.section}}</td>
                 </tr>
             </table>
+            <div class="rightbox">
+                consultation {{consultation.timeStamp}}
+            </div>
+             <table id="consultation">
+                <tr v-show="consultation.content&&consultation.content.length>0">
+                    <th>住院號</th>
+                    <th>序號</th>
+                    <th>床位</th>
+                    <th>會診科別</th>
+                    <th>會診時間</th>
+                    <th>完成時間</th>
+                    <th>狀態</th>
+                    <th>會診醫師</th>
+                </tr>
+                <tr v-for="row in consultation.content"  @click="updateConsultationReply(selectedPatientID,row.caseNo,row.oseq)">
+                    <td>{{row.caseNo}}</td>
+                    <td>{{row.oseq}}</td>
+                    <td>{{row.bed}}</td>
+                    <td>{{row.consultSection}}</td>
+                    <td>{{row.consultDateTime}}</td>
+                    <td>{{row.completeDateTime}}</td>
+                    <td>{{row.status}}</td>
+                    <td>{{row.doctors}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                consultation Reply {{consultationReply.timeStamp}}
+            </div>
+             <table id="consultationReply" v-show="consultationReply.content">
+                <tr>
+                    <th>回覆內容</th>
+                </tr>
+                <tr>
+                    <td v-html="consultationReply.content"></td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                consultation pending {{consultationPending.timeStamp}}
+            </div>
+             <table id="consultationPending">
+                <tr v-show="consultationPending.content&&consultationPending.content.length>0">
+                    <th>床位</th>
+                    <th>會診科別</th>
+                    <th>會診時間</th>
+                    <th>狀態</th>
+                    <th>會診醫師</th>
+                </tr>
+                <tr v-for="row in consultationPending.content">
+                    <td>{{row.bed}}</td>
+                    <td>{{row.consultSection}}</td>
+                    <td>{{row.consultDateTime}}</td>
+                    <td>{{row.status}}</td>
+                    <td>{{row.doctors}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                surgery {{surgery.timeStamp}}
+            </div>
+            <table id="surgery">
+                <tr v-show="surgery.content&&surgery.content.length>0">
+                    <th>手術日期</th>
+                    <th>手術名稱</th>
+                    <th>醫師名稱</th>
+                    <th>醫師燈號</th>
+                </tr>
+                <tr v-for="row in surgery.content">
+                    <td>{{row.date}}</td>
+                    <td v-html="row.surgeryName"></td>
+                    <td>{{row.doctor.name}}</td>
+                    <td>{{row.doctor.code}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                7天內order {{order.timeStamp}}
+            </div>
+            <table id="order">
+                <tr v-show="order.content&&order.content.length>0">
+                    <th>序號</th>
+                    <th>項目</th>
+                    <th>檢體</th>
+                    <th>REQ</th>
+                    <th>開立時間</th>
+                    <th>單位</th>
+                    <th>狀態</th>
+                </tr>
+                <tr v-for="row in order.content">
+                    <td>{{row.seq}}</td>
+                    <td>{{row.item}}</td>
+                    <td>{{row.specimen}}</td>
+                    <td>{{row.req}}</td>
+                    <td>{{row.dateTime}}</td>
+                    <td>{{row.unit}}</td>
+                    <td>{{row.status}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                1月內報告 {{report.timeStamp}}
+            </div>
+            <table id="report">
+                <tr v-show="report.content&&report.content.length>0">
+                    <th>partNo</th>
+                    <th>病歷號</th>
+                    <th>住院號</th>
+                    <th>orderSeq</th>
+                    <th>項目</th>
+                    <th>檢體</th>
+                    <th>REQ</th>
+                    <th>簽收日期</th>
+                    <th>報告日期</th>
+                </tr>
+                <tr v-for="row in report.content" @click="updateReportContent(row.patientID,row.partNo,row.caseNo,row.orderSeq)">
+                    <td>{{row.partNo}}</td>
+                    <td>{{row.patientID}}</td>
+                    <td>{{row.caseNo}}</td>
+                    <td>{{row.orderSeq}}</td>
+                    <td>{{row.item}}</td>
+                    <td>{{row.specimen}}</td>
+                    <td>{{row.req}}</td>
+                    <td>{{row.signDate}}</td>
+                    <td>{{row.reportDate}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                report content {{reportContent.timeStamp}}
+            </div>
+            <table id="reportContent" v-show="reportContent.content.htmlText">
+                <tr>
+                    <th>報告內容</th>
+                </tr>
+                <tr>
+                    <td v-html="'<pre>'+reportContent.content.htmlText+'</pre>'"></td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                cummulative {{cummulative.timeStamp}}
+            </div>
+            <div v-show="selectedPatientID">
+                <div class="cummulativeButton" v-for="button in availableCummulativeList" @click="selectedCummulativeList=button.queryString; updateCummulative(selectedPatientID,3,selectedCummulativeList);">{{button.item}}</div>
+            </div>
+            <table id="cummulative" v-show="cummulative.content.colNames">
+                <tr>
+                    <th v-for="col in cummulative.content.colNames">{{col}}</th>
+                </tr>
+                <tr v-for="row in cummulative.content.data">
+                    <td v-for="col in row">{{col}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 
 </body>
 <script type="text/javascript" src="server.js"></script>
-<script type="text/javascript" src="fake-server.js"></script>   
+<!-- <script type="text/javascript" src="fake-server.js"></script>    -->
 <script type="text/javascript" src="parser.js"></script>
+<script type="text/javascript" src="parser-html.js"></script>
 <script type="text/javascript" src="data-manager.js"></script>
 <script type="text/javascript" src="model.js"></script>
 <script type="text/javascript" src="view-model.js"></script>

@@ -29,53 +29,6 @@ var queryDataSet = function(query,url,timeStamp,data){
 var queryDataStorage=[
 ];
 
-
-//住院資訊(最近一次住院資訊，限住院病人)
-var getAdmissionInfo={};
-getAdmissionInfo.changeBed = function(patientID)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",bed:"NICU-1"},
-        {dateTime:"2017-01-03 07:00",bed:"NBR-2"}
-    ];
-};
-getAdmissionInfo.changeSection = function(patientID)
-{
-    return [
-        {dateTime:"2017-01-01 07:00",section:"NICU"},
-        {dateTime:"2017-01-03 07:00",section:"NBR"}
-    ];
-};
-//會診紀錄
-var getConsult = function(patientID)
-{
-    return [
-        {date:"2017-01-01",consultSection:"PCV-PEDD",consultDocotr1:"李星原",consultDocotr2:"",consultDocotr3:"",content:"...會診內容...."}
-    ];
-}
-//手術紀錄
-var getSurgery = function(patientID)
-{
-    return [
-        {date:"2017-01-01",surgery:"1....2.....",surgeon:"梁慕理DOC3370D"}
-    ];
-};
-//醫囑查詢 (最多查詢90天內，限住院中病人))
-var getOrder = function(patientID)
-{
-    return [
-        {dateTime:"2017-08-13 09:24:15",item:"NA,K,P",specimen:"BLOOD",REQNO:"2012349",unit:"CEL",status:"待送檢"},
-        {dateTime:"2017-08-14 09:24:15",item:"CEL",specimen:"PLASMA_GN3",REQNO:"2012349",unit:"CEL",status:"已簽收"}
-    ];
-};
-//一般報告 (是否有查詢時間限制?)
-var getReport = function(patientID)
-{
-    return [
-        {dateTimeRecieve:"2017-08-13 09:24:15",dateTimeReport:"2017-08-16 09:40:30",item:"Ca++, free",specimen:"BLOOD",REQNO:"2345678",content:"...報告內容..."},
-        {dateTimeRecieve:"2017-08-13 09:24:15",dateTimeReport:"2017-08-16 09:40:30",item:"CRP",specimen:"BLOOD",REQNO:"2345679",content:"...報告內容..."}
-    ];
-};
 //累積報告 (是否有查詢時間限制?)
 var getCummulativeReport = {};
 getCummulativeReport.SMAC = function(patientID)

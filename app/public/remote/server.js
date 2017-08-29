@@ -62,6 +62,7 @@ server.cookie.setString=function(str){
     //轉換成string
     var combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
     server.cookie.string = combinedString;
+    view.cookie = combinedString;
 };
 
 server.signIn=function(account, password){
