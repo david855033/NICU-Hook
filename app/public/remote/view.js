@@ -2,8 +2,8 @@
 var view= new Vue({
     el:'#view',
     data:{
-        account:"",
-        password:"",
+        account:"DOC3924B",
+        password:"888888",
         cookie:"",
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
@@ -81,8 +81,8 @@ var view= new Vue({
         selectedVitalSignList:"HWS"
     },
     methods:{
-        signIn:function(){
-            server.signIn("DOC3924B","888888");
+        signIn:function(callback){
+            server.signIn(view.account,view.password,callback);
         },
         updatePatientList:function(ward){
             requestPatientList(ward,function(data,timeStamp){

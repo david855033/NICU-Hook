@@ -65,7 +65,7 @@ server.cookie.setString=function(str){
     view.cookie = combinedString;
 };
 
-server.signIn=function(account, password){
+server.signIn=function(account, password,callback){
     server.account=account||server.account;
     server.password=password||server.password;
     if(!server.account||!server.password){
@@ -79,6 +79,7 @@ server.signIn=function(account, password){
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);
+        callback&&callback();
     });
 };
 

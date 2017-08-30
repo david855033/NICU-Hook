@@ -19,10 +19,20 @@ var queryData=function(query, callback){
     }else{
         secDiff=100;
     }
-    if(secDiff>10){   //限制對同一資源的存取間隔
+    if(secDiff>10||(!queryDataSet_local&&secDiff>1)){   //限制對同一資源的存取間隔
         server.request(serverRequest, function(serverData, timeStamp){ 
             if(serverData=='""'){
-                console.log('not logged')
+                console.log('not logged, trying log again');
+                //重新登入後 再執行一次serverRequest
+                view.signIn(function(){
+                    server.request(serverRequest, function(serverData, timeStamp){
+                        var parsedData = serverRequest.parser?serverRequest.parser(serverData):"";
+                        callback(parsedData, timeStamp);
+                        if(notPreSelect){
+                            dataManager.set(query, serverRequest.url, timeStamp, parsedData);
+                        }
+                    });
+                });
                 return;
             };
             var parsedData = serverRequest.parser?serverRequest.parser(serverData):"";
