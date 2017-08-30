@@ -9,6 +9,9 @@ body{
     height: 100%;
     overflow: hidden;
 }
+.clear{
+    clear: both;
+}
 #view{
     width: 100%;
     height: 100%;
@@ -25,6 +28,18 @@ body{
     background-color: hsl(20,40%,85%);
     margin:5px 0 5px 0;
 }
+#left .view{
+    padding:10px 5px 10px 5px;
+    margin:5px 0 5px 0;
+}
+.viewButton
+{
+    float:left;
+    padding:5px;
+    margin: 5px;
+    background-color: hsl(250,40%,85%);
+}
+
 .rightbox{
     padding:10px 5px 10px 5px;
     background-color: hsl(200,40%,85%);
@@ -47,7 +62,7 @@ table#patientList{
     border:1px solid black;
 }
 
-.main {
+.main#dev {
     margin-left: 200px;
     height:100%;
     overflow-y: scroll;

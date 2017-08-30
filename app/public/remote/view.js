@@ -5,6 +5,7 @@ var view= new Vue({
         account:"DOC3924B",
         password:"888888",
         cookie:"",
+        selectedView:"flow-sheet",
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",

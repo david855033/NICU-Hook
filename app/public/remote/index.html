@@ -14,12 +14,21 @@
     <script type="text/javascript" src="polyfill.js"></script>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style-flow-sheet.css">
 </head>
 <body>
     <div id="view">
         <div id="left">        
             <div class="leftbox" @click="signIn">
                 login
+            </div>
+            <div class="leftbox">
+                select view
+            </div>
+            <div class="view">
+                <div class=viewButton @click="selectedView='dev'">dev</div>
+                <div class=viewButton @click="selectedView='flow-sheet'">flow-sheet</div>
+                <div class="clear"></div>
             </div>
             <div class="leftbox">
                 selectWard
@@ -45,7 +54,7 @@
                 </tr>
             </table>
         </div>
-        <div class="main">
+        <div class="main" id="dev" v-show="selectedView=='dev'">
             <div class="rightbox">
                 patientData {{patientData.timeStamp}}
             </div>
@@ -264,6 +273,129 @@
                 </tr>
             </table>
         </div>
+        <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
+            <div class="header shadow">
+                <div class="header-card">header card 1</div>
+                <div class="header-card">header card 2</div>
+                <div class="header-card">header card 3</div>
+            </div>
+            <div class="content">
+                <div class="tpr shadow">
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                </div>
+            </div>
+            <div class="footBar">
+            </div>
+        </div>
     </div>
 
 </body>
@@ -276,4 +408,5 @@
 <script type="text/javascript" src="view-model.js"></script>
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="dev.js"></script>
+<script type="text/javascript" src="layout.js"></script>
 </html>

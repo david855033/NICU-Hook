@@ -75,11 +75,11 @@ server.signIn=function(account, password,callback){
     var option = new defaulOption();
     option.url="https://web9.vghtpe.gov.tw/Signon/lockaccount";
     option.method='POST';
-    option.form={j_username:server.account,j_password:server.password}
+    option.form={j_username:server.account,j_password:server.password};
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);
-        callback&&callback();
+        isFunction(callback)&&callback();
     });
 };
 

@@ -1,3 +1,4 @@
+"use strict";
 if (!Array.prototype.find) {
     Array.prototype.find = function(predicate) {
       if (this === null) {
@@ -40,4 +41,9 @@ if(!String.prototype.regSelect){
     var match=target.match(pattern, replacement);
     return match?match.join(""):"";
   };
+}
+
+var isFunction=function(functionToCheck) {
+  var getType = {};
+  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
