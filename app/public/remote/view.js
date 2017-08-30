@@ -111,94 +111,91 @@ var view= new Vue({
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
                 view.selectedCaseNo=view.admissionList.content&&view.admissionList.content[0].caseNo;
-                view.devMethod.updateCase(patientID, view.selectedCaseNo);    //for dev show
+                view.updateCase(patientID, view.selectedCaseNo);    //for dev show
             });
         },
-        devMethod:{
-            updatePatient:function(patientID){
-                view.updateAdmissionList(patientID);
-                view.selectedPatientID=patientID;
-                view.devMethod.updatePatientData(patientID)
-                view.devMethod.updateChangeBedSection(patientID);
-                view.devMethod.updateConsultation(patientID);
-                view.devMethod.updateConsultationPending(patientID);
-                view.devMethod.updateSurgery(patientID);
-                view.devMethod.updateOrder(patientID,7);
-                view.devMethod.updateReport(patientID, 1);
-                view.devMethod.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
-            },
-            updateCase:function(patientID, caseNo){
-                patientID=patientID||view.selectedPatientID;
-                view.selectedCaseNo=caseNo;
-                view.devMethod.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
-            },
-        
-            updatePatientData:function(patientID){
-                requestPatientData(patientID,function(data,timeStamp){
-                    view.dev.patientData.content = data;
-                    view.dev.patientData.timeStamp = timeStamp;
-                });
-            },
-            updateChangeBedSection:function(patientID){
-                requestChangeBedSection(patientID,function(data,timeStamp){
-                    view.dev.changeBedSection.content=data;
-                    view.dev.changeBedSection.timeStamp=timeStamp;
-                });
-            },
-            updateConsultation:function(patientID){
-                requestConsultation(patientID,function(data,timeStamp){
-                    view.dev.consultation.content=data;
-                    view.dev.consultation.timeStamp=timeStamp;
-                });
-            },
-            updateConsultationReply:function(patientID,caseNo, oseq){
-                requestConsultationReply(patientID,caseNo, oseq, function(data,timeStamp){
-                    view.dev.consultationReply.content=data;
-                    view.dev.consultationReply.timeStamp=timeStamp;
-                });
-            },
-            updateConsultationPending:function(patientID){
-                requestConsultationPending(patientID,function(data,timeStamp){
-                    view.dev.consultationPending.content=data;
-                    view.dev.consultationPending.timeStamp=timeStamp;
-                });
-            },
-            updateSurgery:function(patientID){
-                requestSurgery(patientID,function(data,timeStamp){
-                    view.dev.surgery.content=data;
-                    view.dev.surgery.timeStamp=timeStamp;
-                });
-            },
-            updateOrder:function(patientID, days){
-                requestOrder(patientID,days,function(data,timeStamp){
-                    view.dev.order.content=data;
-                    view.dev.order.timeStamp=timeStamp;
-                });
-            },
-            updateReport:function(patientID, monthsOrYear){
-                requestReport(patientID,monthsOrYear,function(data,timeStamp){
-                    view.dev.report.content=data;
-                    view.dev.report.timeStamp=timeStamp;
-                });
-            },
-            updateReportContent:function(patientID,partNo,caseNo, orderSeq){
-                requestReportContent(patientID,partNo,caseNo, orderSeq,function(data,timeStamp){
-                    view.dev.reportContent.content=data;
-                    view.dev.reportContent.timeStamp=timeStamp;
-                });
-            },
-            updateCummulative:function(patientID,monthsOrYear, field){
-                requestCummulative(patientID,monthsOrYear,field,function(data,timeStamp){
-                    view.dev.cummulative.content=data;
-                    view.dev.cummulative.timeStamp=timeStamp;
-                });
-            },
-            updateVitalSign:function(patientID,caseNo, field){
-                requestVitalSign(patientID,caseNo, field,function(data,timeStamp){
-                    view.dev.vitalSign.content=data;
-                    view.dev.vitalSign.timeStamp=timeStamp;
-                });
-            }            
-        }
+        updatePatient:function(patientID){
+            view.updateAdmissionList(patientID);
+            view.selectedPatientID=patientID;
+            view.updatePatientData(patientID)
+            view.updateChangeBedSection(patientID);
+            view.updateConsultation(patientID);
+            view.updateConsultationPending(patientID);
+            view.updateSurgery(patientID);
+            view.updateOrder(patientID,7);
+            view.updateReport(patientID, 1);
+            view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
+        },
+        updateCase:function(patientID, caseNo){
+            patientID=patientID||view.selectedPatientID;
+            view.selectedCaseNo=caseNo;
+            view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
+        },
+        updatePatientData:function(patientID){
+            requestPatientData(patientID,function(data,timeStamp){
+                view.dev.patientData.content = data;
+                view.dev.patientData.timeStamp = timeStamp;
+            });
+        },
+        updateChangeBedSection:function(patientID){
+            requestChangeBedSection(patientID,function(data,timeStamp){
+                view.dev.changeBedSection.content=data;
+                view.dev.changeBedSection.timeStamp=timeStamp;
+            });
+        },
+        updateConsultation:function(patientID){
+            requestConsultation(patientID,function(data,timeStamp){
+                view.dev.consultation.content=data;
+                view.dev.consultation.timeStamp=timeStamp;
+            });
+        },
+        updateConsultationReply:function(patientID,caseNo, oseq){
+            requestConsultationReply(patientID,caseNo, oseq, function(data,timeStamp){
+                view.dev.consultationReply.content=data;
+                view.dev.consultationReply.timeStamp=timeStamp;
+            });
+        },
+        updateConsultationPending:function(patientID){
+            requestConsultationPending(patientID,function(data,timeStamp){
+                view.dev.consultationPending.content=data;
+                view.dev.consultationPending.timeStamp=timeStamp;
+            });
+        },
+        updateSurgery:function(patientID){
+            requestSurgery(patientID,function(data,timeStamp){
+                view.dev.surgery.content=data;
+                view.dev.surgery.timeStamp=timeStamp;
+            });
+        },
+        updateOrder:function(patientID, days){
+            requestOrder(patientID,days,function(data,timeStamp){
+                view.dev.order.content=data;
+                view.dev.order.timeStamp=timeStamp;
+            });
+        },
+        updateReport:function(patientID, monthsOrYear){
+            requestReport(patientID,monthsOrYear,function(data,timeStamp){
+                view.dev.report.content=data;
+                view.dev.report.timeStamp=timeStamp;
+            });
+        },
+        updateReportContent:function(patientID,partNo,caseNo, orderSeq){
+            requestReportContent(patientID,partNo,caseNo, orderSeq,function(data,timeStamp){
+                view.dev.reportContent.content=data;
+                view.dev.reportContent.timeStamp=timeStamp;
+            });
+        },
+        updateCummulative:function(patientID,monthsOrYear, field){
+            requestCummulative(patientID,monthsOrYear,field,function(data,timeStamp){
+                view.dev.cummulative.content=data;
+                view.dev.cummulative.timeStamp=timeStamp;
+            });
+        },
+        updateVitalSign:function(patientID,caseNo, field){
+            requestVitalSign(patientID,caseNo, field,function(data,timeStamp){
+                view.dev.vitalSign.content=data;
+                view.dev.vitalSign.timeStamp=timeStamp;
+            });
+        }               
     }
 })

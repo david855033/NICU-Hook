@@ -46,7 +46,7 @@
                     <th>姓名</th>
                     <th>病歷號</th>
                 </tr>
-                <tr v-for="row in patientList.content" @click="devMethod.updatePatient(row.patientID)">
+                <tr v-for="row in patientList.content" @click="updatePatient(row.patientID)">
                     <td>{{row.bed}}</td>
                     <td>{{row.name}}</td>
                     <td>{{row.patientID}}</td>
@@ -80,7 +80,7 @@
                     <th>住院號</th>
                     <th>科部</th>
                 </tr>
-                <tr v-for="row in admissionList.content" @click="devMethod.updateCase('',row.caseNo)">
+                <tr v-for="row in admissionList.content" @click="updateCase('',row.caseNo)">
                     <td>{{row.admissionDate}}</td>
                     <td>{{row.dischargeDate}}</td>
                     <td>{{row.caseNo}}</td>
@@ -124,7 +124,7 @@
                     <th>狀態</th>
                     <th>會診醫師</th>
                 </tr>
-                <tr v-for="row in dev.consultation.content"  @click="devMethod.updateConsultationReply(selectedPatientID,row.caseNo,row.oseq)">
+                <tr v-for="row in dev.consultation.content"  @click="updateConsultationReply(selectedPatientID,row.caseNo,row.oseq)">
                     <td>{{row.caseNo}}</td>
                     <td>{{row.oseq}}</td>
                     <td>{{row.bed}}</td>
@@ -220,7 +220,7 @@
                     <th>簽收日期</th>
                     <th>報告日期</th>
                 </tr>
-                <tr v-for="row in dev.report.content" @click="devMethod.updateReportContent(row.patientID,row.partNo,row.caseNo,row.orderSeq)">
+                <tr v-for="row in dev.report.content" @click="updateReportContent(row.patientID,row.partNo,row.caseNo,row.orderSeq)">
                     <td>{{row.partNo}}</td>
                     <td>{{row.patientID}}</td>
                     <td>{{row.caseNo}}</td>
@@ -247,7 +247,7 @@
                 cummulative {{dev.cummulative.timeStamp}}
             </div>
             <div v-show="selectedPatientID">
-                <div class="cummulativeButton" v-for="button in dev.availableCummulativeList" @click="dev.selectedCummulativeList=button.queryString; devMethod.updateCummulative(selectedPatientID,3,dev.selectedCummulativeList);">{{button.item}}</div>
+                <div class="cummulativeButton" v-for="button in dev.availableCummulativeList" @click="dev.selectedCummulativeList=button.queryString; updateCummulative(selectedPatientID,3,dev.selectedCummulativeList);">{{button.item}}</div>
             </div>
             <table id="cummulative" v-show="dev.cummulative.content.colNames">
                 <tr>
@@ -261,7 +261,7 @@
                 生命徵象 {{dev.vitalSign.timeStamp}}
             </div>
              <div v-show="selectedPatientID&&selectedCaseNo">
-                <div class="vitalSignButton" v-for="button in dev.availableVitalSignList" @click="dev.selectedVitalSignList=button.queryString; devMethod.updateVitalSign(selectedPatientID,selectedCaseNo,dev.selectedVitalSignList);">{{button.item}}</div>
+                <div class="vitalSignButton" v-for="button in dev.availableVitalSignList" @click="dev.selectedVitalSignList=button.queryString; updateVitalSign(selectedPatientID,selectedCaseNo,dev.selectedVitalSignList);">{{button.item}}</div>
             </div>
             <table id="vitalSign" v-show="dev.vitalSign.content.colNames">
                 <tr>
