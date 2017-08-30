@@ -18,7 +18,7 @@
 </head>
 <body>
     <div id="view">
-        <div id="left">        
+        <div id="left" class="shadow">        
             <div class="leftbox" @click="signIn">
                 login
             </div>
@@ -26,8 +26,7 @@
                 select view
             </div>
             <div class="view">
-                <div class=viewButton @click="selectedView='dev'">dev</div>
-                <div class=viewButton @click="selectedView='flow-sheet'">flow-sheet</div>
+                <div class=viewButton v-for="v in viewList" @click="selectedView=v">{{v}}</div>
                 <div class="clear"></div>
             </div>
             <div class="leftbox">
@@ -47,7 +46,7 @@
                     <th>姓名</th>
                     <th>病歷號</th>
                 </tr>
-                <tr v-for="row in patientList.content" @click="updatePatient(row.patientID)">
+                <tr v-for="row in patientList.content" @click="devMethod.updatePatient(row.patientID)">
                     <td>{{row.bed}}</td>
                     <td>{{row.name}}</td>
                     <td>{{row.patientID}}</td>
@@ -56,20 +55,20 @@
         </div>
         <div class="main" id="dev" v-show="selectedView=='dev'">
             <div class="rightbox">
-                patientData {{patientData.timeStamp}}
+                patientData {{dev.patientData.timeStamp}}
             </div>
             <table id="patientData">
                 <tr><th>欄位</th><th>內容</th></tr>
-                <tr v-show="patientData.content.currentBed"><td>現在床號</td><td>{{patientData.content.currentBed}}</td></tr>
-                <tr v-show="patientData.content.patientName"><td>姓名</td><td>{{patientData.content.patientName}}</td></tr>
-                <tr v-show="patientData.content.birthDate"><td>生日</td><td>{{patientData.content.birthDate}}</td></tr>
-                <tr v-show="patientData.content.gender"><td>性別</td><td>{{patientData.content.gender}}</td></tr>
-                <tr v-show="patientData.content.bloodType"><td>血型</td><td>{{patientData.content.bloodType}}</td></tr>
-                <tr v-show="patientData.content.currentSection"><td>科別</td><td>{{patientData.content.currentSection}}</td></tr>
-                <tr v-show="patientData.content.visitingStaff.name"><td>主治醫師</td><td>{{patientData.content.visitingStaff.name}}</td></tr>
-                <tr v-show="patientData.content.visitingStaff.code"><td>燈號</td><td>{{patientData.content.visitingStaff.code}}</td></tr>
-                <tr v-show="patientData.content.resident.name"><td>住院醫師</td><td>{{patientData.content.resident.name}}</td></tr>
-                <tr v-show="patientData.content.resident.code"><td>燈號</td><td>{{patientData.content.resident.code}}</td></tr>
+                <tr v-show="dev.patientData.content.currentBed"><td>現在床號</td><td>{{dev.patientData.content.currentBed}}</td></tr>
+                <tr v-show="dev.patientData.content.patientName"><td>姓名</td><td>{{dev.patientData.content.patientName}}</td></tr>
+                <tr v-show="dev.patientData.content.birthDate"><td>生日</td><td>{{dev.patientData.content.birthDate}}</td></tr>
+                <tr v-show="dev.patientData.content.gender"><td>性別</td><td>{{dev.patientData.content.gender}}</td></tr>
+                <tr v-show="dev.patientData.content.bloodType"><td>血型</td><td>{{dev.patientData.content.bloodType}}</td></tr>
+                <tr v-show="dev.patientData.content.currentSection"><td>科別</td><td>{{dev.patientData.content.currentSection}}</td></tr>
+                <tr v-show="dev.patientData.content.visitingStaff.name"><td>主治醫師</td><td>{{dev.patientData.content.visitingStaff.name}}</td></tr>
+                <tr v-show="dev.patientData.content.visitingStaff.code"><td>燈號</td><td>{{dev.patientData.content.visitingStaff.code}}</td></tr>
+                <tr v-show="dev.patientData.content.resident.name"><td>住院醫師</td><td>{{dev.patientData.content.resident.name}}</td></tr>
+                <tr v-show="dev.patientData.content.resident.code"><td>燈號</td><td>{{dev.patientData.content.resident.code}}</td></tr>
             </table>
             <div class="rightbox">
                 admissionList {{admissionList.timeStamp}}
@@ -81,7 +80,7 @@
                     <th>住院號</th>
                     <th>科部</th>
                 </tr>
-                <tr v-for="row in admissionList.content" @click="updateCase('',row.caseNo)">
+                <tr v-for="row in admissionList.content" @click="devMethod.updateCase('',row.caseNo)">
                     <td>{{row.admissionDate}}</td>
                     <td>{{row.dischargeDate}}</td>
                     <td>{{row.caseNo}}</td>
@@ -89,33 +88,33 @@
                 </tr>
             </table>
             <div class="rightbox">
-                changeBedSection(last admission) {{changeBedSection.timeStamp}}
+                    changeBedSection(last admission) {{dev.changeBedSection.timeStamp}}
             </div>
             <table id="changebed">
-                <tr v-show="changeBedSection.content.changeBed&&changeBedSection.content.changeBed.length>0">
+                <tr v-show="dev.changeBedSection.content.changeBed&&dev.changeBedSection.content.changeBed.length>0">
                     <th>轉床日期</th>
                     <th>床位</th>
                 </tr>
-                <tr v-for="row in changeBedSection.content.changeBed">
+                <tr v-for="row in dev.changeBedSection.content.changeBed">
                     <td>{{row.dateTime}}</td>
                     <td>{{row.bed}}</td>
                 </tr>
             </table>
             <table id="changeSection">
-                <tr v-show="changeBedSection.content.changeSection&&changeBedSection.content.changeSection.length>0">
+                <tr v-show="dev.changeBedSection.content.changeSection&&dev.changeBedSection.content.changeSection.length>0">
                     <th>轉科日期</th>
                     <th>科別</th>
                 </tr>
-                <tr v-for="row in changeBedSection.content.changeSection">
+                <tr v-for="row in dev.changeBedSection.content.changeSection">
                     <td>{{row.dateTime}}</td>
                     <td>{{row.section}}</td>
                 </tr>
             </table>
             <div class="rightbox">
-                consultation {{consultation.timeStamp}}
+                consultation {{dev.consultation.timeStamp}}
             </div>
              <table id="consultation">
-                <tr v-show="consultation.content&&consultation.content.length>0">
+                <tr v-show="dev.consultation.content&&dev.consultation.content.length>0">
                     <th>住院號</th>
                     <th>序號</th>
                     <th>床位</th>
@@ -125,7 +124,7 @@
                     <th>狀態</th>
                     <th>會診醫師</th>
                 </tr>
-                <tr v-for="row in consultation.content"  @click="updateConsultationReply(selectedPatientID,row.caseNo,row.oseq)">
+                <tr v-for="row in dev.consultation.content"  @click="devMethod.updateConsultationReply(selectedPatientID,row.caseNo,row.oseq)">
                     <td>{{row.caseNo}}</td>
                     <td>{{row.oseq}}</td>
                     <td>{{row.bed}}</td>
@@ -137,28 +136,28 @@
                 </tr>
             </table>
             <div class="rightbox">
-                consultation Reply {{consultationReply.timeStamp}}
+                consultation Reply {{dev.consultationReply.timeStamp}}
             </div>
-             <table id="consultationReply" v-show="consultationReply.content">
+             <table id="dev.consultationReply" v-show="dev.consultationReply.content">
                 <tr>
                     <th>回覆內容</th>
                 </tr>
                 <tr>
-                    <td v-html="consultationReply.content"></td>
+                    <td v-html="dev.consultationReply.content"></td>
                 </tr>
             </table>
             <div class="rightbox">
-                consultation pending {{consultationPending.timeStamp}}
+                consultation pending {{dev.consultationPending.timeStamp}}
             </div>
-             <table id="consultationPending">
-                <tr v-show="consultationPending.content&&consultationPending.content.length>0">
+             <table id="dev.consultationPending">
+                <tr v-show="dev.consultationPending.content&&dev.consultationPending.content.length>0">
                     <th>床位</th>
                     <th>會診科別</th>
                     <th>會診時間</th>
                     <th>狀態</th>
                     <th>會診醫師</th>
                 </tr>
-                <tr v-for="row in consultationPending.content">
+                <tr v-for="row in dev.consultationPending.content">
                     <td>{{row.bed}}</td>
                     <td>{{row.consultSection}}</td>
                     <td>{{row.consultDateTime}}</td>
@@ -167,16 +166,16 @@
                 </tr>
             </table>
             <div class="rightbox">
-                surgery {{surgery.timeStamp}}
+                surgery {{dev.surgery.timeStamp}}
             </div>
             <table id="surgery">
-                <tr v-show="surgery.content&&surgery.content.length>0">
+                <tr v-show="dev.surgery.content&&dev.surgery.content.length>0">
                     <th>手術日期</th>
                     <th>手術名稱</th>
                     <th>醫師名稱</th>
                     <th>醫師燈號</th>
                 </tr>
-                <tr v-for="row in surgery.content">
+                <tr v-for="row in dev.surgery.content">
                     <td>{{row.date}}</td>
                     <td v-html="row.surgeryName"></td>
                     <td>{{row.doctor.name}}</td>
@@ -184,10 +183,10 @@
                 </tr>
             </table>
             <div class="rightbox">
-                7天內order {{order.timeStamp}}
+                7天內order {{dev.order.timeStamp}}
             </div>
             <table id="order">
-                <tr v-show="order.content&&order.content.length>0">
+                <tr v-show="dev.order.content&&dev.order.content.length>0">
                     <th>序號</th>
                     <th>項目</th>
                     <th>檢體</th>
@@ -196,7 +195,7 @@
                     <th>單位</th>
                     <th>狀態</th>
                 </tr>
-                <tr v-for="row in order.content">
+                <tr v-for="row in dev.order.content">
                     <td>{{row.seq}}</td>
                     <td>{{row.item}}</td>
                     <td>{{row.specimen}}</td>
@@ -207,10 +206,10 @@
                 </tr>
             </table>
             <div class="rightbox">
-                1月內報告 {{report.timeStamp}}
+                1月內報告 {{dev.report.timeStamp}}
             </div>
             <table id="report">
-                <tr v-show="report.content&&report.content.length>0">
+                <tr v-show="dev.report.content&&dev.report.content.length>0">
                     <th>partNo</th>
                     <th>病歷號</th>
                     <th>住院號</th>
@@ -221,7 +220,7 @@
                     <th>簽收日期</th>
                     <th>報告日期</th>
                 </tr>
-                <tr v-for="row in report.content" @click="updateReportContent(row.patientID,row.partNo,row.caseNo,row.orderSeq)">
+                <tr v-for="row in dev.report.content" @click="devMethod.updateReportContent(row.patientID,row.partNo,row.caseNo,row.orderSeq)">
                     <td>{{row.partNo}}</td>
                     <td>{{row.patientID}}</td>
                     <td>{{row.caseNo}}</td>
@@ -234,41 +233,41 @@
                 </tr>
             </table>
             <div class="rightbox">
-                report content {{reportContent.timeStamp}}
+                report content {{dev.reportContent.timeStamp}}
             </div>
-            <table id="reportContent" v-show="reportContent.content.htmlText">
+            <table id="reportContent" v-show="dev.reportContent.content.htmlText">
                 <tr>
                     <th>報告內容</th>
                 </tr>
                 <tr>
-                    <td v-html="'<pre>'+reportContent.content.htmlText+'</pre>'"></td>
+                    <td v-html="'<pre>'+dev.reportContent.content.htmlText+'</pre>'"></td>
                 </tr>
             </table>
             <div class="rightbox">
-                cummulative {{cummulative.timeStamp}}
+                cummulative {{dev.cummulative.timeStamp}}
             </div>
             <div v-show="selectedPatientID">
-                <div class="cummulativeButton" v-for="button in availableCummulativeList" @click="selectedCummulativeList=button.queryString; updateCummulative(selectedPatientID,3,selectedCummulativeList);">{{button.item}}</div>
+                <div class="cummulativeButton" v-for="button in dev.availableCummulativeList" @click="dev.selectedCummulativeList=button.queryString; devMethod.updateCummulative(selectedPatientID,3,dev.selectedCummulativeList);">{{button.item}}</div>
             </div>
-            <table id="cummulative" v-show="cummulative.content.colNames">
+            <table id="cummulative" v-show="dev.cummulative.content.colNames">
                 <tr>
-                    <th v-for="col in cummulative.content.colNames">{{col}}</th>
+                    <th v-for="col in dev.cummulative.content.colNames">{{col}}</th>
                 </tr>
-                <tr v-for="row in cummulative.content.data">
+                <tr v-for="row in dev.cummulative.content.data">
                     <td v-for="col in row">{{col}}</td>
                 </tr>
             </table>
             <div class="rightbox">
-                生命徵象 {{vitalSign.timeStamp}}
+                生命徵象 {{dev.vitalSign.timeStamp}}
             </div>
              <div v-show="selectedPatientID&&selectedCaseNo">
-                <div class="vitalSignButton" v-for="button in availableVitalSignList" @click="selectedVitalSignList=button.queryString; updateVitalSign(selectedPatientID,selectedCaseNo,selectedVitalSignList);">{{button.item}}</div>
+                <div class="vitalSignButton" v-for="button in dev.availableVitalSignList" @click="dev.selectedVitalSignList=button.queryString; devMethod.updateVitalSign(selectedPatientID,selectedCaseNo,dev.selectedVitalSignList);">{{button.item}}</div>
             </div>
-            <table id="vitalSign" v-show="vitalSign.content.colNames">
+            <table id="vitalSign" v-show="dev.vitalSign.content.colNames">
                 <tr>
-                    <th v-for="col in vitalSign.content.colNames">{{col}}</th>
+                    <th v-for="col in dev.vitalSign.content.colNames">{{col}}</th>
                 </tr>
-                <tr v-for="row in vitalSign.content.data">
+                <tr v-for="row in dev.vitalSign.content.data">
                     <td v-for="col in row">{{col}}</td>
                 </tr>
             </table>
@@ -394,7 +393,9 @@
                 </div>
             </div>
             <div class="footBar shadow">
-                <div class="footBarCard"></div>
+                <div class="footBarMenu">
+                    <div class="closeFootBarButtton" @click="flowSheet.showFootBar=!flowSheet.showFootBar"></div>
+                </div>
                 <div class="footBarCard"></div>
                 <div class="footBarCard"></div>
             </div>
@@ -410,6 +411,5 @@
 <script type="text/javascript" src="model.js"></script>
 <script type="text/javascript" src="view-model.js"></script>
 <script type="text/javascript" src="view.js"></script>
-<script type="text/javascript" src="dev.js"></script>
 <script type="text/javascript" src="layout.js"></script>
 </html>
