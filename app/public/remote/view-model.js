@@ -92,3 +92,10 @@ var requestTreatment=function(patientID, caseNo, callback){
         });
     });
 }
+var requestTransfusion=function(patientID, caseNo,admissionDate, callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("transfusion_"+patientID+"_"+caseNo+"_"+admissionDate,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}

@@ -4,7 +4,6 @@ html{
 body{
     background: hsl(0,0%,90%);
     font-family: "Microsoft JhengHei","Helvetica Neue",Helvetica,Arial,sans-serif;
-    overflow-y: scroll;
     font-size:16px;
     height: 100%;
     overflow: hidden;
@@ -202,6 +201,18 @@ table#treatment{
     padding:5px;
     border:1px solid black;
 }
+
+table#transfusion{
+    width:100%;
+    margin:3px 0 3px 0;
+    font-size:0.3em;
+}
+#transfusion th,#transfusion td{
+    padding:5px;
+    border:1px solid black;
+}
+
+
 
 
 

@@ -22,7 +22,7 @@ var queryData=function(query, callback){
     if(secDiff>10||(!queryDataSet_local&&secDiff>1)){   //限制對同一資源的存取間隔
         server.request(serverRequest, function(serverData, timeStamp){ 
             if(serverData=='""'){
-                console.log('not logged, trying log again');
+                //console.log('not logged, trying log again');
                 //重新登入後 再執行一次serverRequest
                 view.signIn(function(){
                     server.request(serverRequest, function(serverData, timeStamp){
@@ -127,6 +127,11 @@ var queryToServerRequest=function(query)
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findTrt&histno="+queryList[1]+"&caseno="+queryList[2],
             parser:Parser.getTreatment
+        };
+    }else if(queryList[0] =="transfusion"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findBcst&histno="+queryList[1]+"&caseno="+queryList[2]+"&admdt="+queryList[3],
+            parser:Parser.getTransfusion
         };
     }
 }

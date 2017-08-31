@@ -11,6 +11,7 @@ var view= new Vue({
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
         selectedCaseNo:"",
+        selectedAdmissionDate:"",
         admissionList:{content:[], timeStamp:""},
         dev:{
             patientData:{
@@ -85,6 +86,10 @@ var view= new Vue({
             ,treatment:{
                 content:[],
                 timeStamp:""
+            },
+            transfusion:{
+                content:[],
+                timeStamp:""
             }
         },
         flowSheet:{
@@ -119,12 +124,14 @@ var view= new Vue({
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
                 view.selectedCaseNo=view.admissionList.content&&view.admissionList.content[0].caseNo;
-                view.updateCase(patientID, view.selectedCaseNo);    //for dev show
+                view.selectedAdmissionDate=view.admissionList.content&&view.admissionList.content[0].admissionDate;
+                view.updateCase(patientID, view.selectedCaseNo,view.selectedAdmissionDate);    //for dev show
             });
         },
         updatePatient:function(patientID){
             view.selectedPatientID=patientID;
             view.updateAdmissionList(patientID);
+
             // view.updatePatientData(patientID)
             // view.updateChangeBedSection(patientID);
             // view.updateConsultation(patientID);
@@ -134,11 +141,14 @@ var view= new Vue({
             // view.updateReport(patientID, 1);
             // view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
         },
-        updateCase:function(patientID, caseNo){
+        updateCase:function(patientID, caseNo, admissionDate){
             patientID=patientID||view.selectedPatientID;
             view.selectedCaseNo=caseNo;
+
             // view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
-            view.updateTreatment(patientID, caseNo);
+            // view.updateTreatment(patientID, caseNo);
+
+            view.updateTransfusion(patientID, caseNo, admissionDate);
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -210,6 +220,12 @@ var view= new Vue({
             requestTreatment(patientID, caseNo,function(data,timeStamp){
                 view.dev.treatment.content=data;
                 view.dev.treatment.timeStamp=timeStamp;
+            });
+        },
+        updateTransfusion:function(patientID, caseNo, admissionDate){
+            requestTransfusion(patientID, caseNo, admissionDate,function(data,timeStamp){
+                view.dev.transfusion.content=data;
+                view.dev.transfusion.timeStamp=timeStamp;
             });
         }
     }

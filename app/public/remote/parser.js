@@ -27,6 +27,9 @@ var Parser={
             +this.get2DigiNum(toParse.getSeconds());
         return str;
     },
+    getShortDate:function(dateString){
+        var inputDate=new Date();
+    },
     getDateFromShortDate:function(dateString){
         if(typeof dateString =="string" && dateString.length==8)
         {
