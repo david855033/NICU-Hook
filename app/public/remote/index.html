@@ -392,12 +392,24 @@
                             </table>
                 </div>
             </div>
-            <div class="footBar shadow">
-                <div class="footBarMenu">
-                    <div class="closeFootBarButtton" @click="flowSheet.showFootBar=!flowSheet.showFootBar"></div>
+            <div class="footbar shadow">
+                <div class="footbarMenu">
+                    <div class="footbar-button" v-for="b in flowSheet.footbarMenuList" @click="flowSheet.selectedfootbarMenu=b.key">
+                        <div class="out"><div class="in">{{b.title}}</div></div>
+                    </div>
+                    <div class="button close" @click="flowSheet.footbarStatus='close'"></div>
+                    <div class="button max" @click="flowSheet.footbarStatus='max'"></div>
+                    <div class="button min" @click="flowSheet.footbarStatus='min'"></div>
                 </div>
-                <div class="footBarCard"></div>
-                <div class="footBarCard"></div>
+                <div id="fn1"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn1'">
+                    fn1
+                </div>
+                <div id="fn2"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn2'">
+                    fn2
+                </div>
+                <div id="fn3"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn3'">
+                    fn3
+                </div>
             </div>
         </div>
     </div>

@@ -37,8 +37,8 @@
     padding-bottom: 5px;
 }
 
-#flow-sheet .content,#flow-sheet .footBar{
-    transition: all 0.4s ease;
+#flow-sheet .content,#flow-sheet .footbar{
+    transition: all 0.3s ease;
 }
 
 #flow-sheet .tpr{
@@ -67,24 +67,60 @@
     height: 20px;
 }
 
-#flow-sheet .footBar{
+#flow-sheet .footbar{
     background-color: hsl(0,0%,85%);
     overflow: hidden;
 }
-#flow-sheet .footBarMenu{
+#flow-sheet .footbarMenu{
     height: 40px;
     width: 100%;
     background-color: hsl(120, 10%,80%)
 }
-#flow-sheet .closeFootBarButtton{
-    background-color: hsl(0,20%,60%);
+
+#flow-sheet .footbar-button{
+    background-color: hsl(200,20%,60%);
+    float: left;
+    padding-left: 40px;
+    padding-right: 40px;
+    height:40px;
+
+}
+#flow-sheet .footbar-button>div.out{
+    height: 100%;
+}
+#flow-sheet .footbar-button>div.out>div.in{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#flow-sheet .button{
     float: right;
     width:40px;
     height:40px;
 }
-#flow-sheet .footBarCard{
-    float:left;
-    background-color:  hsl(120, 10%,80%);
-    border:1px solid black;
+#flow-sheet .button.min{
+    background-color: hsl(100,20%,60%);
+}
+#flow-sheet .button.max{
+    background-color: hsl(200,20%,60%);
+}
+#flow-sheet .button.close{
+    background-color: hsl(0,20%,60%);
+}
+#flow-sheet .footbar-function{
     height: 100%;
+    width: 100%;
+}
+
+#flow-sheet .footbar-function#fn1{
+    background-color:  hsl(50, 30%,80%);
+}
+
+#flow-sheet .footbar-function#fn2{
+    background-color:  hsl(70, 30%,80%);
+}
+
+#flow-sheet .footbar-function#fn3{
+    background-color:  hsl(90, 30%,80%);
 }

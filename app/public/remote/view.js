@@ -84,15 +84,19 @@ var view= new Vue({
             selectedVitalSignList:"HWS"
         },
         flowSheet:{
-            showFootBar:true
+            footbarStatus:"min",
+            footbarMenuList:[{key:'fn1',title:'button1'},{key:'fn2',title:'button2'},{key:'fn3',title:'button3'}],
+            selectedfootbarMenu:"fn1"
         }
     },
     watch:{
-        'flowSheet.showFootBar':function(){
-            if(view.flowSheet.showFootBar){
-                Layout.footBar.open();
+        'flowSheet.footbarStatus':function(){
+            if(view.flowSheet.footbarStatus=="min"){
+                Layout.footbar.min();
+            }else if(view.flowSheet.footbarStatus=="max"){
+                Layout.footbar.max();
             }else{
-                Layout.footBar.close();
+                Layout.footbar.close();
             }
         }
     },
