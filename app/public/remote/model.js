@@ -123,5 +123,10 @@ var queryToServerRequest=function(query)
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findVts&histno="+queryList[1]+"&caseno="+queryList[2]+"&pbvtype="+queryList[3],
             parser:Parser.getVitalSign
         };
+    }else if(queryList[0] =="treatment"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findTrt&histno="+queryList[1]+"&caseno="+queryList[2],
+            parser:Parser.getTreatment
+        };
     }
 }

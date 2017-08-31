@@ -29,14 +29,7 @@ var queryDataSet = function(query,url,timeStamp,data){
 var queryDataStorage=[
 ];
 
-//治療處置 (自備藥物是否要分開? 且必須要顯示附註)
-var getTreatment = function(patientID, caseNo)
-{
-    return [
-        {startDateTime:"2017-01-01 12:00",endDateTime:"2017-01-02 12:00",item:"May Be Discharge",subclass:"TRT",freq:"ST",quantity:"1",status:"進行中",info:"..註記的內容..."},
-        {startDateTime:"2017-01-01 12:00",endDateTime:"2017-01-02 12:00",item:"Albumin",subclass:"DRUG",freq:"ST",quantity:"1",status:"進行中",info:"2.5ml in NS 2.5ml"}
-    ];
-}
+
 //輸血記錄
 var getTransfusion = function(patientID, caseNo)
 {

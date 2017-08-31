@@ -271,6 +271,33 @@
                     <td v-for="col in row">{{col}}</td>
                 </tr>
             </table>
+            <div class="rightbox">
+                治療處置 {{dev.treatment.timeStamp}}
+            </div>
+            <table id="treatment"  v-show="dev.treatment.content&&dev.treatment.content.length>0">
+                <tr>
+                    <th>醫令名稱</th>
+                    <th>註記</th>
+                    <th>子項</th>
+                    <th>頻次</th>
+                    <th>數量</th>
+                    <th>天數</th>
+                    <th>生效日</th>
+                    <th>終止日</th>
+                    <th>狀態</th>
+                </tr>
+                <tr v-for="row in dev.treatment.content">
+                    <td>{{row.item}}</td>
+                    <td>{{row.info}}</td>
+                    <td>{{row.class}}</td>
+                    <td>{{row.freq}}</td>
+                    <td>{{row.qty}}</td>
+                    <td>{{row.duration}}</td>
+                    <td>{{row.startDate}}</td>
+                    <td>{{row.endData}}</td>
+                    <td>{{row.status}}</td>
+                </tr>
+            </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
             <div class="header shadow">

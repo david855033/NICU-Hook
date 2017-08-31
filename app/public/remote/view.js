@@ -6,7 +6,7 @@ var view= new Vue({
         password:"888888",
         cookie:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"flow-sheet",
+        selectedView:"dev",
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -82,6 +82,10 @@ var view= new Vue({
                 {queryString:"OXY",item:"血氧濃度"}
             ],
             selectedVitalSignList:"HWS"
+            ,treatment:{
+                content:[],
+                timeStamp:""
+            }
         },
         flowSheet:{
             footbarStatus:"min",
@@ -119,21 +123,22 @@ var view= new Vue({
             });
         },
         updatePatient:function(patientID){
-            view.updateAdmissionList(patientID);
             view.selectedPatientID=patientID;
-            view.updatePatientData(patientID)
-            view.updateChangeBedSection(patientID);
-            view.updateConsultation(patientID);
-            view.updateConsultationPending(patientID);
-            view.updateSurgery(patientID);
-            view.updateOrder(patientID,7);
-            view.updateReport(patientID, 1);
-            view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
+            view.updateAdmissionList(patientID);
+            // view.updatePatientData(patientID)
+            // view.updateChangeBedSection(patientID);
+            // view.updateConsultation(patientID);
+            // view.updateConsultationPending(patientID);
+            // view.updateSurgery(patientID);
+            // view.updateOrder(patientID,7);
+            // view.updateReport(patientID, 1);
+            // view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
         },
         updateCase:function(patientID, caseNo){
             patientID=patientID||view.selectedPatientID;
             view.selectedCaseNo=caseNo;
-            view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
+            // view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
+            view.updateTreatment(patientID, caseNo);
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -200,6 +205,12 @@ var view= new Vue({
                 view.dev.vitalSign.content=data;
                 view.dev.vitalSign.timeStamp=timeStamp;
             });
-        }               
+        },
+        updateTreatment:function(patientID, caseNo){
+            requestTreatment(patientID, caseNo,function(data,timeStamp){
+                view.dev.treatment.content=data;
+                view.dev.treatment.timeStamp=timeStamp;
+            });
+        }
     }
 })

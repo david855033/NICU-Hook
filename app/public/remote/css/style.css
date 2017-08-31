@@ -8,6 +8,8 @@ body{
     font-size:16px;
     height: 100%;
     overflow: hidden;
+    -ms-overflow-style: none;
+    -ms-scroll-limit: 0 0 0 0;
 }
 .clear{
     clear: both;
@@ -190,5 +192,16 @@ table#vitalSign{
     padding:5px;
     border:1px solid black;
 }
+
+table#treatment{
+    width:100%;
+    margin:3px 0 3px 0;
+    font-size:0.3em;
+}
+#treatment th,#treatment td{
+    padding:5px;
+    border:1px solid black;
+}
+
 
 

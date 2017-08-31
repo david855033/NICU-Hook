@@ -1,10 +1,5 @@
 "use strict";
 var Parser={
-    getDOM:function(htmlText){
-        var doc = document.implementation.createHTMLDocument("example");
-        doc.documentElement.innerHTML = htmlText;
-        return doc;
-    },
     //cookie
     getKeyValuePairsFromCookieString:function(cookieString){
         var keyValuePairs={};
@@ -78,6 +73,11 @@ var Parser={
         return diff?diff:0;
     },
     //DOM manipulate
+    getDOM:function(htmlText){
+        var doc = document.implementation.createHTMLDocument("example");
+        doc.documentElement.innerHTML = htmlText;
+        return doc;
+    },
     removeElementsByTagName:function(HtmlElement, tagName)
     {
         var element = HtmlElement.getElementsByTagName(tagName), index;

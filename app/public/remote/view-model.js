@@ -85,3 +85,10 @@ var requestVitalSign=function(patientID,caseNo, field, callback){
         });
     });
 }
+var requestTreatment=function(patientID, caseNo, callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("treatment_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}
