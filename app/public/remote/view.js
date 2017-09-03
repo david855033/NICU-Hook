@@ -6,7 +6,7 @@ var view= new Vue({
         password:"888888",
         cookie:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"dev",
+        selectedView:"flow-sheet",
         wardList:["NICU","PICU"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -94,7 +94,10 @@ var view= new Vue({
         },
         flowSheet:{
             footbarStatus:"min",
-            footbarMenuList:[{key:'fn1',title:'button1'},{key:'fn2',title:'button2'},{key:'fn3',title:'button3'}],
+            footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilator',title:'呼吸'},
+            {key:'fnNutrition',title:'營養'},
+            {key:'fnLab',title:'檢驗'},{key:'fnInfection',title:'感染'},{key:'fnMedication',title:'藥物'},{key:'fnConsult',title:'會診'},
+            {key:'fnTransfusion',title:'輸血'},{key:'fnSurgery',title:'手術'},{key:'fnNurse',title:'護理交班'}],
             selectedfootbarMenu:"fn1"
         }
     },

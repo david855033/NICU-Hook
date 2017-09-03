@@ -443,14 +443,40 @@
                     <div class="button max" @click="flowSheet.footbarStatus='max'"></div>
                     <div class="button min" @click="flowSheet.footbarStatus='min'"></div>
                 </div>
-                <div id="fn1"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn1'">
-                    fn1
+                <div id="fnOverview" class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
+                    <div id="sub1" class="footbar-sub"><div class="in">sub1</div></div><!--
+                    --><div id="sub2" class="footbar-sub">sub2</div><!--
+                    --><div id="sub3" class="footbar-sub">sub3</div>
                 </div>
-                <div id="fn2"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn2'">
-                    fn2
+                <div id="fnIO"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnIO'">
+                    fnIO
                 </div>
-                <div id="fn3"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fn3'">
-                    fn3
+                <div id="fnVentilator"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnVentilator'">
+                    fnVentilator
+                </div>
+                <div id="fnNutrition"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnNutrition'">
+                    fnNutrition
+                </div>
+                <div id="fnLab"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnLab'">
+                    fnLab
+                </div>
+                <div id="fnInfection"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnInfection'">
+                    fnInfection
+                </div>
+                <div id="fnMedication"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnMedication'">
+                    fnMedication
+                </div>
+                <div id="fnConsult"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnConsult'">
+                    fnConsult
+                </div>
+                <div id="fnTransfusion"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnTransfusion'">
+                    fnTransfusion
+                </div>
+                <div id="fnSurgery"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnSurgery'">
+                    fnSurgery
+                </div>
+                <div id="fnNurse"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnNurse'">
+                    fnNurse
                 </div>
             </div>
         </div>

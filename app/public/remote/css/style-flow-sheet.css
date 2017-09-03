@@ -80,8 +80,8 @@
 #flow-sheet .footbar-button{
     background-color: hsl(200,20%,60%);
     float: left;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
     height:40px;
 
 }
@@ -111,10 +111,37 @@
 #flow-sheet .footbar-function{
     height: 100%;
     width: 100%;
+    white-space: nowrap;
 }
 
 #flow-sheet .footbar-function#fn1{
     background-color:  hsl(50, 30%,80%);
+}
+.footbar-sub{
+    display: inline-block;
+    height: 100%;
+    background: grey;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top:5px;
+}
+#flow-sheet #fn1 #sub1
+{
+    width:30%;
+    background: red;
+}
+#flow-sheet #fn1 #sub1>.in
+{
+    background: green;
+}
+#flow-sheet #fn1 #sub2
+{
+    width:30%;
+}
+
+#flow-sheet #fn1 #sub3
+{
+    width:40%;
 }
 
 #flow-sheet .footbar-function#fn2{
