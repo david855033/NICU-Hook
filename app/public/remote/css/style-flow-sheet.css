@@ -155,7 +155,13 @@
     width:19%;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-row{
-    height:20%;
+    height:16.6%;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-group{
+    float: left;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item{
+    float: left;
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition
