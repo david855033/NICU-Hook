@@ -79,7 +79,7 @@
 
 #flow-sheet .footbar-button{
     background-color: hsl(200,20%,60%);
-    float: left;
+    display: inline-block;
     padding-left: 15px;
     padding-right: 15px;
     height:40px;
@@ -94,8 +94,13 @@
     transform: translateY(-50%);
 }
 
-#flow-sheet .button{
+#flow-sheet .buttons{
     float: right;
+    width:120px;
+    height:40px;
+}
+#flow-sheet .button{
+    float: left;
     width:40px;
     height:40px;
 }
