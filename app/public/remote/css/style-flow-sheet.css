@@ -18,6 +18,7 @@
     padding: 5px;
     white-space: nowrap;
 }
+
 #flow-sheet .header-card{
     display: inline-block;
     height:50px;
@@ -28,6 +29,9 @@
     margin: 0 5px 0 5px;
     padding: 5px;
 }
+#flow-sheet .header-card:first-child{
+    margin: 0 5px 0 10px;
+}
 #flow-sheet .headerSpacer{
     box-shadow:0;
 }
@@ -37,7 +41,7 @@
     padding-bottom: 5px;
 }
 
-#flow-sheet .content,#flow-sheet .footbar{
+#flow-sheet .content, #flow-sheet .footbar, #flow-sheet .footbar-sub{
     transition: all 0.3s ease;
 }
 
@@ -123,30 +127,49 @@
     background-color:  hsl(50, 30%,80%);
 }
 .footbar-sub{
-    display: inline-block;
-    height: 100%;
-    background: grey;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top:5px;
+    float: left;
+    background: hsl(100,30%,80%);
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    padding-top:1%;
+    padding-bottom:1%;
 }
-#flow-sheet #fn1 #sub1
+#flow-sheet #fnOverview .footbar-sub#sub-io
 {
-    width:30%;
-    background: red;
+    width:19%;
 }
-#flow-sheet #fn1 #sub1>.in
-{
-    background: green;
-}
-#flow-sheet #fn1 #sub2
-{
-    width:30%;
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift{
+    height: 25%;
 }
 
-#flow-sheet #fn1 #sub3
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation
 {
-    width:40%;
+    width:19%;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .ventilation-part{
+    height: 50%;
+}
+
+#flow-sheet #fnOverview .footbar-sub#sub-lab
+{
+    width:19%;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-row{
+    height:20%;
+}
+
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition
+{
+    width:19%;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-event
+{
+    width:19%;
+}
+#flow-sheet #fnOverview .in
+{
+    background: hsl(100,30%,90%);
+    height:100%;
 }
 
 #flow-sheet .footbar-function#fn2{

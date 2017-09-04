@@ -436,7 +436,7 @@
             </div>
             <div class="footbar shadow">
                 <div class="footbarMenu">
-                    <div class="footbar-button" v-for="b in flowSheet.footbarMenuList" @click="flowSheet.selectedfootbarMenu=b.key">
+                    <div class="footbar-button" v-for="b in flowSheet.footbarMenuList" @click="selectFlowSheetFn(b.key)">
                         <div class="out"><div class="in">{{b.title}}</div></div>
                     </div>
                     <div class="buttons">
@@ -446,15 +446,48 @@
                     </div>
                 </div>
                 <div id="fnOverview" class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
-                    <div id="sub1" class="footbar-sub"><div class="in">sub1</div></div><!--
-                    --><div id="sub2" class="footbar-sub">sub2</div><!--
-                    --><div id="sub3" class="footbar-sub">sub3</div>
+                    <div id="sub-io" class="footbar-sub">
+                        <div class="in">
+                            <div id="day" class='shift'>白班</div>
+                            <div id="afternoon" class='shift'>小夜</div>
+                            <div id="night" class='shift'>大夜</div>
+                            <div id="all" class='shift'>整天</div>
+                        </div>
+                    </div>
+                    <div id="sub-ventilation" class="footbar-sub">
+                        <div class="in">
+                            <div id="gas" class='ventilation-part'>gas</div>
+                            <div id="ventilator" class='ventilation-part'>呼吸器</div>
+                        </div>
+                    </div>
+                    <div id="sub-lab" class="footbar-sub">
+                        <div class="in">
+                            <div id="glucose-cbc" class='lab-row'>
+                                <div id="glucose" class='lab-group'>glucose</div>
+                                <div id="cbc" class='lab-group'>CBC</div>
+                            </div>
+                            <div id="electrolyte" class='lab-row'>
+                                <div class='lab-group'>Eletrolyte</div>
+                            </div>
+                            <div id="liver-renal" class='lab-row'>
+                                <div id="liver">liver</div>
+                                <div id="renal">renal</div>
+                            </div>
+                            <div id="crp-pct" class='lab-row'>
+                                <div id="crp">crp</div>
+                                <div id="pct">pct</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div id="sub-nutrition" class="footbar-sub"><div class="in">Nutrition</div></div>
+                    <div id="sub-event" class="footbar-sub"><div class="in">Event</div></div>
                 </div>
                 <div id="fnIO"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnIO'">
                     fnIO
                 </div>
-                <div id="fnVentilator"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnVentilator'">
-                    fnVentilator
+                <div id="fnVentilation"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnVentilation'">
+                        ventilation
                 </div>
                 <div id="fnNutrition"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnNutrition'">
                     fnNutrition

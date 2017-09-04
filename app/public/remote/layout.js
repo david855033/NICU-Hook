@@ -6,7 +6,7 @@ var $flowsheetFootBar=$("#flow-sheet .footbar");
 var $flowsheetFootBarCard=$("#flow-sheet .footbarCard");
 var $flowsheetFootbarFnButton=$('#flow-sheet .footbar-button');
 var $flowsheetFootbarButtons=$('#flow-sheet .buttons');
-var $flowsheefFoot
+var $flowsheetFootbarSubs=$('#flow-sheet .footbar-sub');
 var $window=$(window);
 
 var Layout={};
@@ -34,9 +34,9 @@ Layout.footbar.modeSwitched=function(heigh){
     var headerHeight=$flowsheetHeader.height();
     var TPRHeight= $flowsheetContentTPR.height();
     var contentRemaing = windowHeight-headerHeight-20;
-    var remaining = windowHeight-headerHeight-TPRHeight-20;
-    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  d3.max([remaining,contentRemaing*0.6]);
-    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  d3.min([remaining,contentRemaing*0.4]);
+    var remaining = windowHeight-headerHeight-TPRHeight-40;
+    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  d3.max([remaining,contentRemaing*0.7]);
+    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  d3.min([remaining,contentRemaing*0.5]);
 
     if(Layout.footbar.mode=='max')
     {
@@ -52,7 +52,8 @@ Layout.footbar.modeSwitched=function(heigh){
 Layout.footbar.setHeight=function(height){
     Layout.footbar.currentHeight=height;
     $flowsheetFootBar.height(Layout.footbar.currentHeight);
-    $flowsheetContent.height($window.height()-$flowsheetHeader.height()-20-Layout.footbar.currentHeight);
+    $flowsheetFootbarSubs.height(Layout.footbar.currentHeight-58);
+    $flowsheetContent.height($window.height()-$flowsheetHeader.height()-25-Layout.footbar.currentHeight);
 };
 Layout.footbar.calculateCardWidth=function(){
     $flowsheetFootBarCard.width($flowsheetFootBar.width()/2-2);
@@ -63,7 +64,7 @@ Layout.footbar.calculateButtonPadding=function(){
     var totalWidth_FootbarFnButton=0;
     $flowsheetFootbarFnButton.each(function(){totalWidth_FootbarFnButton+=$(this).width();})
     var remaining=buttonContainerWidth-totalWidth_FootbarButton-totalWidth_FootbarFnButton;
-    var modifiedPadding =((remaining-120) / 2 / $flowsheetFootbarFnButton.length);
+    var modifiedPadding =((remaining-40) / 2 / $flowsheetFootbarFnButton.length);
     $flowsheetFootbarFnButton.css('padding-left',modifiedPadding);
     $flowsheetFootbarFnButton.css('padding-right',modifiedPadding);
 }
