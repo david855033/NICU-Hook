@@ -2,6 +2,7 @@
 var $flowsheetContent=$("#flow-sheet .content");
 var $flowsheetContentTPR=$("#flow-sheet .content .tpr");
 var $flowsheetHeader=$("#flow-sheet .header");
+var $flowsheetHeaderCards=$('#flow-sheet .header-card');
 var $flowsheetFootBar=$("#flow-sheet .footbar");
 var $flowsheetFootBarCard=$("#flow-sheet .footbarCard");
 var $flowsheetFootbarFnButton=$('#flow-sheet .footbar-button');
@@ -10,12 +11,24 @@ var $flowsheetFootbarSubs=$('#flow-sheet .footbar-sub');
 var $window=$(window);
 
 var Layout={};
+Layout.header={};
+Layout.header.calculateHeaderCardPadding=function(){
+    var headerWidth=$flowsheetHeader.width();
+    var cardsWidth=0;
+    $flowsheetHeaderCards.each(function(){
+        cardsWidth+=$(this).width();
+    });
+    var padding=(headerWidth-cardsWidth)/$flowsheetHeaderCards.length/2-4;
+    $flowsheetHeaderCards.css('padding-left',padding);
+    $flowsheetHeaderCards.css('padding-right',padding);
+}
+
+
 Layout.footbar={};
 Layout.footbar.mode='min';
 Layout.footbar.FOOT_BAR_MAX_HEIGHT=600;
 Layout.footbar.FOOT_BAR_MIN_HEIGHT=300;
 Layout.footbar.FOOT_BAR_CLOSE_HEIGHT=40;
-
 
 Layout.footbar.max=function(){
     Layout.footbar.mode='max';
@@ -52,7 +65,7 @@ Layout.footbar.modeSwitched=function(heigh){
 Layout.footbar.setHeight=function(height){
     Layout.footbar.currentHeight=height;
     $flowsheetFootBar.height(Layout.footbar.currentHeight);
-    $flowsheetFootbarSubs.height(Layout.footbar.currentHeight-58);
+    $flowsheetFootbarSubs.height(Layout.footbar.currentHeight-50);
     $flowsheetContent.height($window.height()-$flowsheetHeader.height()-25-Layout.footbar.currentHeight);
 };
 Layout.footbar.calculateCardWidth=function(){
@@ -74,10 +87,12 @@ $(function(){
     Layout.footbar.min();
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
+    Layout.header.calculateHeaderCardPadding();
 });
 
 $(window).resize(function(){
     Layout.footbar.modeSwitched();
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
+    Layout.header.calculateHeaderCardPadding();
 });

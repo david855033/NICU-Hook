@@ -14,6 +14,7 @@
     <script type="text/javascript" src="polyfill.js"></script>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style-dev.css">
     <link rel="stylesheet" type="text/css" href="css/style-flow-sheet.css">
 </head>
 <body>
@@ -316,9 +317,36 @@
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
             <div class="header shadow">
-                <div class="header-card">header card 1</div>
-                <div class="header-card">header card 2</div>
-                <div class="header-card">header card 3</div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>資料日期</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>2017-05-13</div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>星期六</div></div>
+                </div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>NICU-１</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>阿呆喵之喵</div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>主治醫師：曹大大</div></div>
+                </div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>病歷號</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>41237362</div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>住院日期：2017-05-12</div></div>
+                </div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>實際年齡</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>5 d/o</div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>生日：2017-05-11</div></div>
+                </div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>矯正週數</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>35+2</div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>出生週數：35+1</div></div>
+                </div>
+                <div class="header-card">
+                    <div class="h1-5"><div class='upper-word v-align'>體重</div></div>
+                    <div class="h3-5"><div class='mid-word v-align'>2400g <span class="small-word">(+20)</span></div></div>
+                    <div class="h1-5"><div class='lower-word v-align'>出生體重：2400g</div></div>
+                </div>
             </div>
             <div class="content">
                 <div class="tpr shadow">
@@ -437,7 +465,7 @@
             <div class="footbar shadow">
                 <div class="footbarMenu">
                     <div class="footbar-button" v-for="b in flowSheet.footbarMenuList" @click="selectFlowSheetFn(b.key)">
-                        <div class="out"><div class="in">{{b.title}}</div></div>
+                        <div class="h1-1"><div class="v-align">{{b.title}}</div></div>
                     </div>
                     <div class="buttons">
                         <div class="button min" @click="flowSheet.footbarStatus='min'"></div>
@@ -448,54 +476,236 @@
                 <div id="fnOverview" class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
                     <div id="sub-io" class="footbar-sub">
                         <div class="in">
-                            <div id="day" class='shift'>白班</div>
-                            <div id="afternoon" class='shift'>小夜</div>
-                            <div id="night" class='shift'>大夜</div>
-                            <div id="all" class='shift'>整天</div>
+                            <div id="morning" class='h1-4 shift'>
+                                <div class="w2-11 h1-1 float-left">
+                                    <div class="v-align h-align shift-name">白班</div>
+                                </div>
+                                <div class="w9-11 h1-1 float-left h-align">
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">20</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">30</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                        </div>
+                                    </div>
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">25</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div id="afternoon" class='h1-4 shift'>
+                                <div class="w2-11 h1-1 float-left">
+                                    <div class="v-align h-align shift-name">小夜</div>
+                                </div>
+                                <div class="w9-11 h1-1 float-left h-align">
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">20</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">30</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                        </div>
+                                    </div>
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">25</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div id="night" class='h1-4 shift'>
+                                    <div class="w2-11 h1-1 float-left">
+                                        <div class="v-align h-align shift-name">大夜</div>
+                                    </div>
+                                    <div class="w9-11 h1-1 float-left h-align">
+                                        <div class="h1-2 w1-1">
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
+                                                <div class="h2-3 w1-1 mid-word"><div class="v-align">20</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
+                                                <div class="h2-3 w1-1 mid-word"><div class="v-align">30</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            </div>
+                                        </div>
+                                        <div class="h1-2 w1-1">
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
+                                                <div class="h2-3 w1-1 mid-word"><div class="v-align">25</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div id="day" class='h1-4 shift'>
+                                <div class="w2-11 h1-1 float-left">
+                                    <div class="v-align h-align shift-name">整天</div>
+                                </div>
+                                <div class="w9-11 h1-1 float-left h-align">
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">20</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">30</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                        </div>
+                                    </div>
+                                    <div class="h1-2 w1-1">
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
+                                            <div class="h2-3 w1-1 mid-word"><div class="v-align">25</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                        </div>
+                                        <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
                         </div>
                     </div>
                     <div id="sub-ventilation" class="footbar-sub">
                         <div class="in">
-                            <div id="gas" class='ventilation-part'>gas</div>
-                            <div id="ventilator" class='ventilation-part'>呼吸器</div>
+                            <div id="gas" class='h1-2'>gas</div>
+                            <div id="ventilator" class='h1-2'>呼吸器</div>
                         </div>
                     </div>
                     <div id="sub-lab" class="footbar-sub">
                         <div class="in">
-                            <div id="glucose-cbc" class='lab-row'>
-                                <div class='lab-group'>
-                                    <div id="glu" class='lab-item'>GLU</div>
+                            <div id="glucose-cbc" class='lab-row h1-6'>
+                                <div class='lab-group w1-5'>
+                                    <div id="glu" class='lab-item w1-1'>GLU</div>
                                 </div>
-                                <div class='lab-group'>
-                                    <div id='wbc' class='lab-item'>WBC</div>
-                                    <div id='dc' class='lab-item'>dc</div>
-                                    <div id='Hb' class='lab-item'>Hb</div>
-                                    <div id='plt' class='lab-item'>plt</div>
+                                <div class='lab-group w4-5'>
+                                    <div id='wbc' class='lab-item w1-4'>WBC</div>
+                                    <div id='dc' class='lab-item w1-4'>dc</div>
+                                    <div id='Hb' class='lab-item w1-4'>Hb</div>
+                                    <div id='plt' class='lab-item w1-4'>plt</div>
                                 </div>
                             </div>
-                            <div id="electrolyte" class='lab-row'>
-                                <div class='lab-group'>Eletrolyte</div>
+                            <div id="electrolyte" class='lab-row h1-6'>
+                                <div class='lab-group w1-1'>
+                                    <div id='na' class='lab-item w1-5'>Na</div>
+                                    <div id='k' class='lab-item w1-5'>K</div>
+                                    <div id='ca' class='lab-item w1-5'>Ca</div>
+                                    <div id='p' class='lab-item w1-5'>P</div>
+                                    <div id='mg' class='lab-item w1-5'>Mg</div>
+                                </div>
                             </div>
-                            <div id="liver-renal" class='lab-row'>
-                                <div id="liver" class='lab-group'>liver</div>
-                                <div id="renal" class='lab-group'>renal</div>
+                            <div id="liver-renal" class='lab-row h1-6'>
+                                <div class='lab-group w2-5'>
+                                    <div id='bun' class='lab-item w1-2'>BUN</div>
+                                    <div id='cr' class='lab-item w1-2'>Cr</div>
+                                </div>
+                                <div class='lab-group w3-5'> 
+                                    <div id='alt' class='lab-item w1-3'>ALT</div>
+                                    <div id='ast' class='lab-item w1-3'>AST</div>
+                                    <div id='ggt' class='lab-item w1-3'>GGT</div>
+                                </div>
                             </div>
-                            <div id="crp-pct-bil" class='lab-row'>
-                                <div id="crp" class='lab-group'>crp</div>
-                                <div id="pct" class='lab-group'>pct</div>
-                                <div id="bil" class='lab-group'>bil</div>
+                            <div id="crp-pct-bil" class='lab-row h1-6'>
+                                <div class='lab-group w1-5'>
+                                    <div id='crp' class='lab-item w1-3'>CRP</div>
+                                </div>
+                                <div class='lab-group w1-5'>
+                                    <div id='pct' class='lab-item w1-3'>PCT</div>
+                                </div>
+                                <div class='lab-group w3-5'>
+                                    <div id='tcb-mb' class='lab-item w1-3'>mB</div>
+                                    <div id='Tbil' class='lab-item w1-3'>TBil</div>
+                                    <div id='Dbil' class='lab-item w1-3'>DBil</div>
+                                </div>
                             </div>
-                            <div id="iron-bone" class='lab-row'>
-                                <div id="iron" class='lab-group'>iron</div>
-                                <div id="bone" class='lab-group'>bone</div>
+                            <div id="heart-alb" class='lab-row h1-6'>
+                                <div class='lab-group w1-5'>
+                                     <div id='alb' class='lab-item w1-4'>Alb</div>
+                                </div>
+                                <div class='lab-group w4-5'>
+                                    <div id='ck' class='lab-item w1-4'>CK</div>
+                                    <div id='ckmb' class='lab-item w1-4'>CKMB</div>
+                                    <div id='tropi' class='lab-item w1-4'>TrpI</div>
+                                    <div id='bnp' class='lab-item w1-4'>BNP</div>
+                                </div>
                             </div>
-                            <div id="heart" class='lab-row'>
-                                <div id="heart" class='lab-group'>heart</div>
+                            <div id="iron-bone" class='lab-row h1-6'>
+                                <div class='lab-group w4-6'>
+                                    <div id='iron' class='lab-item w1-4'>Iron</div>
+                                    <div id='tibc' class='lab-item w1-4'>TIBC</div>
+                                    <div id='isat' class='lab-item w1-4'>I.Sat</div>
+                                    <div id='ferritin' class='lab-item w1-4'>Frtn</div>
+                                </div>
+                                <div class='lab-group w2-6'>
+                                    <div id='ca' class='lab-item w1-2'>Ca</div>
+                                    <div id='alkp' class='lab-item w1-2'>Alkp</div>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
-                    <div id="sub-nutrition" class="footbar-sub"><div class="in">Nutrition</div></div>
-                    <div id="sub-event" class="footbar-sub"><div class="in">Event</div></div>
+                    <div id="sub-nutrition-event" class="footbar-sub">
+                        <div class="in">
+                            <div class="h1-2">nutrition</div>
+                            <div class="h1-2">event</div>
+                        </div>
+                    </div>
                 </div>
                 <div id="fnIO"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnIO'">
                     fnIO

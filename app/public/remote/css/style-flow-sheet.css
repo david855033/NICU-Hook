@@ -1,10 +1,6 @@
 #flow-sheet{
     background: hsl(0,0%,80%);
 }
-/*apply shadow*/
-.shadow{   
-    box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.05), 1px 1px 1px 1px rgba(0,0,0,0.16);
-}
 
 .main#flow-sheet {
     margin-left: 200px;
@@ -13,28 +9,50 @@
 
 #flow-sheet .header{
     background: hsl(0,0%,85%);
-    height:60px;
+    height:80px;
     width: 100%;
     padding: 5px;
     white-space: nowrap;
 }
 
 #flow-sheet .header-card{
-    display: inline-block;
-    height:50px;
-    background-color: hsl(0,0%,95%);
+    float: left;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-    margin: 0 5px 0 5px;
+    
+    height:70px;
+    background-color: hsl(0,0%,95%);
+    margin: 0 3px 0 3px;
     padding: 5px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 #flow-sheet .header-card:first-child{
-    margin: 0 5px 0 10px;
+    margin: 0 3px 0 3px;
 }
-#flow-sheet .headerSpacer{
-    box-shadow:0;
+#flow-sheet .header-card .upper-word{
+    font-size: 12px;
+    color: hsl(0,0%,40%);
+    text-align: center;
 }
+#flow-sheet .header-card .mid-word{
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+}
+#flow-sheet .header-card .lower-word{
+    font-size: 12px;
+    color: hsl(0,0%,40%);
+    text-align: center;
+}
+#flow-sheet .header-card .small-word{
+    font-size: 12px;
+    color: hsl(0,0%,20%);
+    text-align: center;
+}
+
+
 #flow-sheet .content{
     overflow-y: scroll;
     padding-top: 10px;
@@ -87,15 +105,6 @@
     padding-left: 15px;
     padding-right: 15px;
     height:40px;
-
-}
-#flow-sheet .footbar-button>div.out{
-    height: 100%;
-}
-#flow-sheet .footbar-button>div.out>div.in{
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 #flow-sheet .buttons{
@@ -123,65 +132,83 @@
     white-space: nowrap;
 }
 
-#flow-sheet .footbar-function#fn1{
-    background-color:  hsl(50, 30%,80%);
-}
+
 .footbar-sub{
     float: left;
     background: hsl(100,30%,80%);
     padding-left: 0.5%;
     padding-right: 0.5%;
-    padding-top:1%;
-    padding-bottom:1%;
+    padding-top:0.5%;
+    padding-bottom:0.5%;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io
 {
-    width:19%;
+    width: 24%;
+    font-size: 12px;
 }
-#flow-sheet #fnOverview .footbar-sub#sub-io .shift{
-    height: 25%;
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift
+{
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
-
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift .shift-name
+{
+    font-size: 14px;
+    font-weight: 600;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift .small-word
+{
+    font-size: 10px;
+    color:hsl(0,0%,40%);
+    font-weight: 400;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift .mid-word
+{
+    font-size: 16px;
+    font-weight: 400;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-io .shift .large-word
+{
+    font-size: 16px;
+    font-weight: 900;
+}
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation
 {
-    width:19%;
-}
-#flow-sheet #fnOverview .footbar-sub#sub-ventilation .ventilation-part{
-    height: 50%;
+    width:24%;
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-lab
 {
-    width:19%;
+    width:29%;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-row{
-    height:16.6%;
+    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
+    -moz-box-shadow:inset 0px 0px 0px 1px grey;
+    box-shadow:inset 0px 0px 0px 1px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-group{
     float: left;
+    height: 100%;
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item{
     float: left;
+    height: 100%;
+    font-size:12px;
 }
 
-#flow-sheet #fnOverview .footbar-sub#sub-nutrition
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event
 {
     width:19%;
 }
-#flow-sheet #fnOverview .footbar-sub#sub-event
-{
-    width:19%;
-}
+
+
 #flow-sheet #fnOverview .in
 {
     background: hsl(100,30%,90%);
     height:100%;
 }
 
-#flow-sheet .footbar-function#fn2{
-    background-color:  hsl(70, 30%,80%);
-}
-
-#flow-sheet .footbar-function#fn3{
-    background-color:  hsl(90, 30%,80%);
-}
