@@ -183,20 +183,32 @@
     color:hsl(0,0%,40%);
     font-weight: 400;
 }
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .mid-word
+{
+    font-size: 12px;
+    color:hsl(0,0%,20%);
+    font-weight: 700;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .large-word
+{
+    font-size: 16px;
+    color:hsl(0,0%,0%);
+    font-weight: 900;
+}
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
-    height: 60px;
+    height: 40px;
     -webkit-box-shadow:inset 0px 0px 0px 1px grey;
     -moz-box-shadow:inset 0px 0px 0px 1px grey;
     box-shadow:inset 0px 0px 0px 1px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gasfull-card{
-    height: 60px;
+    height: 80px;
     -webkit-box-shadow:inset 0px 0px 0px 1px grey;
     -moz-box-shadow:inset 0px 0px 0px 1px grey;
     box-shadow:inset 0px 0px 0px 1px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
-    height: 30px;
+    height: 40px;
     -webkit-box-shadow:inset 0px 0px 0px 1px grey;
     -moz-box-shadow:inset 0px 0px 0px 1px grey;
     box-shadow:inset 0px 0px 0px 1px grey;
