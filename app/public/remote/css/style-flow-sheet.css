@@ -166,7 +166,7 @@
 #flow-sheet #fnOverview .footbar-sub#sub-io .shift .mid-word
 {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 900;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io .shift .large-word
 {
@@ -177,6 +177,31 @@
 {
     width:24%;
 }
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .small-word
+{
+    font-size: 10px;
+    color:hsl(0,0%,40%);
+    font-weight: 400;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
+    height: 60px;
+    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
+    -moz-box-shadow:inset 0px 0px 0px 1px grey;
+    box-shadow:inset 0px 0px 0px 1px grey;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .gasfull-card{
+    height: 60px;
+    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
+    -moz-box-shadow:inset 0px 0px 0px 1px grey;
+    box-shadow:inset 0px 0px 0px 1px grey;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
+    height: 30px;
+    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
+    -moz-box-shadow:inset 0px 0px 0px 1px grey;
+    box-shadow:inset 0px 0px 0px 1px grey;
+}
+
 
 #flow-sheet #fnOverview .footbar-sub#sub-lab
 {
