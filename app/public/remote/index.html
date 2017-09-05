@@ -316,39 +316,33 @@
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
-            <div class="header shadow">
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>資料日期</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>2017-05-13</div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>星期六</div></div>
-                </div>
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>NICU-１</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>阿呆喵之喵</div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>主治醫師：曹大大</div></div>
-                </div>
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>病歷號</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>41237362</div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>住院日期：2017-05-12</div></div>
-                </div>
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>實際年齡</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>5 d/o</div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>生日：2017-05-11</div></div>
-                </div>
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>矯正週數</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>35+2</div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>出生週數：35+1</div></div>
-                </div>
-                <div class="header-card">
-                    <div class="h1-5"><div class='upper-word v-align'>體重</div></div>
-                    <div class="h3-5"><div class='mid-word v-align'>2400g <span class="small-word">(+20)</span></div></div>
-                    <div class="h1-5"><div class='lower-word v-align'>出生體重：2400g</div></div>
+            <div id="header" class="w1-1 shadow nowrap h-center"><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2017-05-13</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六</div></div>
+                </div><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>NICU-１</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>阿呆喵之喵</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>主治醫師：曹大大</div></div>
+                </div><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>病歷號</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>41237362</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>住院日期：2017-05-12</div></div>
+                </div><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>實際年齡</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>5 d/o</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>生日：2017-05-11</div></div>
+                </div><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>矯正週數</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>35+2</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>出生週數：35+1</div></div>
+                </div><div class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>體重</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2400g <span class="small-word">(+20)</span></div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>出生體重：2400g</div></div>
                 </div>
             </div>
-            <div class="content">
+            <div id="content">
                 <div class="tpr shadow">
                             <table>
                                 <tr>
@@ -462,51 +456,50 @@
                             </table>
                 </div>
             </div>
-            <div class="footbar shadow">
-                <div class="footbarMenu">
-                    <div class="footbar-button" v-for="b in flowSheet.footbarMenuList" @click="selectFlowSheetFn(b.key)">
-                        <div class="h1-1"><div class="v-align">{{b.title}}</div></div>
-                    </div>
-                    <div class="buttons">
-                        <div class="button min" @click="flowSheet.footbarStatus='min'"></div>
-                        <div class="button max" @click="flowSheet.footbarStatus='max'"></div>
-                        <div class="button close" @click="flowSheet.footbarStatus='close'"></div>
+            <div id="footbar" class="shadow">
+                <div id="footbarMenu" class="nowrap">
+                    <div class="footbar-fn-button h1-1 inline-block" v-for="b in flowSheet.footbarMenuList" @click="selectFlowSheetFn(b.key)">
+                        <div class="h1-1"><div class="v-center">{{b.title}}</div></div>
+                    </div><div id="footbar-toggle-buttons" class="h1-1 inline-block">
+                        <div id="min" class='h1-1 w1-3 inline-block' @click="flowSheet.footbarStatus='min'">
+                        </div><div id="max" class='h1-1 w1-3 inline-block' @click="flowSheet.footbarStatus='max'">
+                        </div><div id="close" class='h1-1 w1-3 inline-block' @click="flowSheet.footbarStatus='close'"></div>
                     </div>
                 </div>
-                <div id="fnOverview" class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
+                <div id="fnOverview" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
                     <div id="sub-io" class="footbar-sub">
                         <div class="in">
                             <div id="morning" class='h1-4 shift'>
                                 <div class="w2-11 h1-1 float-left">
-                                    <div class="v-align h-align shift-name">白班</div>
+                                    <div class="v-center h-center shift-name">白班</div>
                                 </div>
-                                <div class="w9-11 h1-1 float-left h-align">
+                                <div class="w9-11 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">20</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IV</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">20</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">30</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">Feed</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">30</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                     </div>
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">UO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">3</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">+21</div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -514,35 +507,35 @@
                             </div>
                             <div id="afternoon" class='h1-4 shift'>
                                 <div class="w2-11 h1-1 float-left">
-                                    <div class="v-align h-align shift-name">小夜</div>
+                                    <div class="v-center h-center shift-name">小夜</div>
                                 </div>
-                                <div class="w9-11 h1-1 float-left h-align">
+                                <div class="w9-11 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">20</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IV</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">20</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">30</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">Feed</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">30</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                     </div>
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">UO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">3</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">+21</div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -550,35 +543,35 @@
                             </div>
                             <div id="night" class='h1-4 shift'>
                                     <div class="w2-11 h1-1 float-left">
-                                        <div class="v-align h-align shift-name">大夜</div>
+                                        <div class="v-center h-center shift-name">大夜</div>
                                     </div>
-                                    <div class="w9-11 h1-1 float-left h-align">
+                                    <div class="w9-11 h1-1 float-left h-center">
                                         <div class="h1-2 w1-1">
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">20</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">IV</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">20</div></div>
                                             </div>
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">30</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">Feed</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">30</div></div>
                                             </div>
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                             </div>
                                         </div>
                                         <div class="h1-2 w1-1">
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">UO</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                             </div>
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg/h</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">3</div></div>
                                             </div>
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
-                                                <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                                <div class="h1-3 w1-1 small-word"><div class="v-center">IO</div></div>
+                                                <div class="h2-3 w1-1 large-word"><div class="v-center">+21</div></div>
                                             </div>
                                         </div>
                                     </div>
@@ -586,35 +579,35 @@
                             </div>
                             <div id="day" class='h1-4 shift'>
                                 <div class="w2-11 h1-1 float-left">
-                                    <div class="v-align h-align shift-name">整天</div>
+                                    <div class="v-center h-center shift-name">整天</div>
                                 </div>
-                                <div class="w9-11 h1-1 float-left h-align">
+                                <div class="w9-11 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IV</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">20</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IV</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">20</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">Feed</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">30</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">Feed</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">30</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                     </div>
                                     <div class="h1-2 w1-1">
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">UO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">25</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">UO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">25</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">3</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">ml/kg/h</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">3</div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 small-word"><div class="v-align">IO</div></div>
-                                            <div class="h2-3 w1-1 large-word"><div class="v-align">+21</div></div>
+                                            <div class="h1-3 w1-1 small-word"><div class="v-center">IO</div></div>
+                                            <div class="h2-3 w1-1 large-word"><div class="v-center">+21</div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -626,7 +619,7 @@
                         <div class="in">
                             <div class='h1-1 w1-1'>
                                 <div class='gas-card w1-1'>
-                                    <div class="w1-6 v-align h-align mid-word float-left">10:30</div>
+                                    <div class="w1-6 v-center h-center mid-word float-left">10:30</div>
                                     <div class="w5-6">
                                         
                                     </div>

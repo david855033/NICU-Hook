@@ -7,60 +7,30 @@
     height:100%;
 }
 
-#flow-sheet .header{
+#flow-sheet #content, #flow-sheet #footbar, #flow-sheet .footbar-sub{
+    transition: all 0.3s ease;
+}
+
+
+#flow-sheet #header{
     background: hsl(0,0%,85%);
     height:80px;
-    width: 100%;
-    padding: 5px;
-    white-space: nowrap;
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 #flow-sheet .header-card{
-    float: left;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    
     height:70px;
     background-color: hsl(0,0%,95%);
     margin: 0 3px 0 3px;
-    padding: 5px;
-    padding-left: 12px;
-    padding-right: 12px;
-}
-#flow-sheet .header-card:first-child{
-    margin: 0 3px 0 3px;
-}
-#flow-sheet .header-card .upper-word{
-    font-size: 12px;
-    color: hsl(0,0%,40%);
-    text-align: center;
-}
-#flow-sheet .header-card .mid-word{
-    font-size: 24px;
-    font-weight: 900;
-    text-align: center;
-}
-#flow-sheet .header-card .lower-word{
-    font-size: 12px;
-    color: hsl(0,0%,40%);
-    text-align: center;
-}
-#flow-sheet .header-card .small-word{
-    font-size: 12px;
-    color: hsl(0,0%,20%);
-    text-align: center;
-}
-
-
-#flow-sheet .content{
-    overflow-y: scroll;
-    padding-top: 10px;
+    padding-top: 5px;
     padding-bottom: 5px;
 }
 
-#flow-sheet .content, #flow-sheet .footbar, #flow-sheet .footbar-sub{
-    transition: all 0.3s ease;
+#flow-sheet #content{
+    overflow-y: scroll;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 #flow-sheet .tpr{
@@ -89,49 +59,39 @@
     height: 20px;
 }
 
-#flow-sheet .footbar{
+#flow-sheet #footbar{
     background-color: hsl(0,0%,85%);
-    overflow: hidden;
 }
-#flow-sheet .footbarMenu{
+#flow-sheet #footbarMenu{
     height: 40px;
-    width: 100%;
     background-color: hsl(120, 10%,80%)
 }
 
-#flow-sheet .footbar-button{
+#flow-sheet .footbar-fn-button{
     background-color: hsl(200,20%,60%);
-    display: inline-block;
-    padding-left: 15px;
-    padding-right: 15px;
-    height:40px;
+    transition: 0.3s background-color;
+}
+#flow-sheet .footbar-fn-button:hover{
+    background-color: hsl(200,20%,80%);
 }
 
-#flow-sheet .buttons{
-    float: right;
-    width:120px;
-    height:40px;
+#flow-sheet #footbar-toggle-buttons{
+    width: 120px;
 }
-#flow-sheet .button{
-    float: left;
-    width:40px;
-    height:40px;
-}
-#flow-sheet .button.min{
+#flow-sheet #footbar-toggle-buttons #min{
     background-color: hsl(100,20%,60%);
 }
-#flow-sheet .button.max{
+#flow-sheet #footbar-toggle-buttons #max{
     background-color: hsl(200,20%,60%);
 }
-#flow-sheet .button.close{
+#flow-sheet #footbar-toggle-buttons #close{
     background-color: hsl(0,20%,60%);
 }
-#flow-sheet .footbar-function{
-    height: 100%;
-    width: 100%;
-    white-space: nowrap;
-}
 
+#flow-sheet .footbar-function-page{
+    padding-top:3px;
+    padding-bottom: 3px;
+}
 
 .footbar-sub{
     float: left;
@@ -143,7 +103,7 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io
 {
-    width: 24%;
+    width: 20%;
     font-size: 12px;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io .shift
@@ -175,7 +135,7 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation
 {
-    width:24%;
+    width:27%;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .small-word
 {
@@ -217,7 +177,7 @@
 
 #flow-sheet #fnOverview .footbar-sub#sub-lab
 {
-    width:29%;
+    width:33%;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-row{
     -webkit-box-shadow:inset 0px 0px 0px 1px grey;
@@ -239,7 +199,7 @@
 
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event
 {
-    width:19%;
+    width:16%;
 }
 
 

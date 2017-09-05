@@ -1,18 +1,18 @@
 "use strict";
-var $flowsheetContent=$("#flow-sheet .content");
-var $flowsheetContentTPR=$("#flow-sheet .content .tpr");
-var $flowsheetHeader=$("#flow-sheet .header");
+var $flowsheetContent=$("#flow-sheet #content");
+var $flowsheetContentTPR=$("#flow-sheet #content .tpr");
+var $flowsheetHeader=$("#flow-sheet #header");
 var $flowsheetHeaderCards=$('#flow-sheet .header-card');
-var $flowsheetFootBar=$("#flow-sheet .footbar");
+var $flowsheetFootBar=$("#flow-sheet #footbar");
 var $flowsheetFootBarCard=$("#flow-sheet .footbarCard");
-var $flowsheetFootbarFnButton=$('#flow-sheet .footbar-button');
-var $flowsheetFootbarButtons=$('#flow-sheet .buttons');
+var $flowsheetFootbarFnButton=$('#flow-sheet .footbar-fn-button');
+var $flowsheetFootbarButtons=$('#flow-sheet #footbar-toggle-buttons');
 var $flowsheetFootbarSubs=$('#flow-sheet .footbar-sub');
 var $window=$(window);
 
 var Layout={};
 Layout.header={};
-Layout.header.calculateHeaderCardPadding=function(){
+Layout.header.calculateCardPadding=function(){
     var headerWidth=$flowsheetHeader.width();
     var cardsWidth=0;
     $flowsheetHeaderCards.each(function(){
@@ -42,14 +42,14 @@ Layout.footbar.close=function(){
     Layout.footbar.mode='close';
     Layout.footbar.modeSwitched()
 };
-Layout.footbar.modeSwitched=function(heigh){
+Layout.footbar.modeSwitched=function(){
     var windowHeight=$window.height();
     var headerHeight=$flowsheetHeader.height();
     var TPRHeight= $flowsheetContentTPR.height();
     var contentRemaing = windowHeight-headerHeight-20;
     var remaining = windowHeight-headerHeight-TPRHeight-40;
-    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  d3.max([remaining,contentRemaing*0.7]);
-    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  d3.min([remaining,contentRemaing*0.5]);
+    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  450;//d3.max([remaining,contentRemaing*0.7]);
+    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  300;//d3.min([remaining,contentRemaing*0.5]);
 
     if(Layout.footbar.mode=='max')
     {
@@ -77,7 +77,7 @@ Layout.footbar.calculateButtonPadding=function(){
     var totalWidth_FootbarFnButton=0;
     $flowsheetFootbarFnButton.each(function(){totalWidth_FootbarFnButton+=$(this).width();})
     var remaining=buttonContainerWidth-totalWidth_FootbarButton-totalWidth_FootbarFnButton;
-    var modifiedPadding =((remaining-40) / 2 / $flowsheetFootbarFnButton.length);
+    var modifiedPadding =((remaining) / 2 / $flowsheetFootbarFnButton.length);
     $flowsheetFootbarFnButton.css('padding-left',modifiedPadding);
     $flowsheetFootbarFnButton.css('padding-right',modifiedPadding);
 }
@@ -87,12 +87,12 @@ $(function(){
     Layout.footbar.min();
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
-    Layout.header.calculateHeaderCardPadding();
+    Layout.header.calculateCardPadding();
 });
 
 $(window).resize(function(){
     Layout.footbar.modeSwitched();
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
-    Layout.header.calculateHeaderCardPadding();
+    Layout.header.calculateCardPadding();
 });
