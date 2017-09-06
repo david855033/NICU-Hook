@@ -88,6 +88,8 @@ $(function(){
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
     Layout.header.calculateCardPadding();
+    $('.scrollbar-inner').scrollbar();
+    $('.scrollbar-outer').scrollbar();
 });
 
 $(window).resize(function(){
@@ -96,3 +98,6 @@ $(window).resize(function(){
     Layout.footbar.calculateButtonPadding();
     Layout.header.calculateCardPadding();
 });
+
+
+    

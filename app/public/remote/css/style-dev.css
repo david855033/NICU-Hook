@@ -17,8 +17,7 @@ table#patientList{
     border:1px solid black;
 }
 
-.main#dev {
-    margin-left: 200px;
+#dev {
     height:100%;
     overflow-y: scroll;
 }

@@ -50,6 +50,9 @@ body{
 .m-word{
     font-size: 16px;
 }
+.ms-word{
+    font-size: 14px;
+}
 .s-word{
     font-size: 12px;
 }
@@ -61,7 +64,7 @@ body{
     font-weight: 900;
 }
 .mid-weight{
-    font-weight: 600;
+    font-weight: 500;
 }
 
 /* word color */
@@ -74,6 +77,12 @@ body{
 .grey-60-font{
     color: hsl(0,0%,60%);
 }
+/* scroll */
+.y-scroll{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 
 /* grids */
 .h1-1{height:100%;}
@@ -122,8 +131,6 @@ body{
 .h7-10{height:70%;}
 .h8-10{height:80%;}
 .h9-10{height:90%;}
-
-
 
 .w1-1{width:100%;}
 .w1-2{width:50%;}
@@ -181,6 +188,29 @@ body{
 .w8-11{width:72.73%;}
 .w9-11{width:81.82%;}
 .w10-11{width:90.91%;}
+.w1-12{width:8.33%;}
+.w2-12{width:16.67%;}
+.w3-12{width:25%;}
+.w4-12{width:33.33%;}
+.w5-12{width:41.67%;}
+.w6-12{width:50%;}
+.w7-12{width:58.33%;}
+.w8-12{width:66.67%;}
+.w9-12{width:75%;}
+.w10-12{width:83.33%;}
+.w11-12{width:91.67%;}
+.w1-13{width:7.69%;}
+.w2-13{width:15.38%;}
+.w3-13{width:23.08%;}
+.w4-13{width:30.77%;}
+.w5-13{width:38.46%;}
+.w6-13{width:46.15%;}
+.w7-13{width:53.85%;}
+.w8-13{width:61.54%;}
+.w9-13{width:69.23%;}
+.w10-13{width:76.92%;}
+.w11-13{width:84.62%;}
+.w12-13{width:92.31%;}
 
 /* main */
 #view{
@@ -189,10 +219,13 @@ body{
 }
 
 #left {
-	width: 200px;
+	width: 160px;
     float: left;
     background-color: #9DBEA5;
     height:100%;
+}
+.main{
+    margin-left:160px;
 }
 .leftbox{
     padding:10px 5px 10px 5px;
