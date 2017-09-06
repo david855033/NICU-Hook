@@ -27,9 +27,6 @@ var Parser={
             +this.get2DigiNum(toParse.getSeconds());
         return str;
     },
-    getShortDate:function(dateString){
-        var inputDate=new Date();
-    },
     getDateFromShortDate:function(dateString){
         if(typeof dateString =="string" && dateString.length==8)
         {
@@ -58,6 +55,10 @@ var Parser={
             return parts[0]+' '+parts[1];
         }
         return dateTimeString;
+    },
+    getDateTimeFromMedicationTable:function(inputString)
+    {
+        return inputString.regSelectAll(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)+" "+inputString.regSelectAll(/[0-9]{2}\.[0-9]{2}/).regReplaceAll('\.',":");
     },
     get2DigiNum:function(num){
         if(typeof num == "number" && num<10)

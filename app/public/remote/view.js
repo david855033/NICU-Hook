@@ -11,7 +11,6 @@ var view= new Vue({
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
         selectedCaseNo:"",
-        selectedAdmissionDate:"",
         admissionList:{content:[], timeStamp:""},
         dev:{
             patientData:{
@@ -90,7 +89,19 @@ var view= new Vue({
             transfusion:{
                 content:[],
                 timeStamp:""
-            }
+            },
+            medication:{
+                content:[],
+                timeStamp:""
+            },
+            medicationInfo:{
+                content:{caseNo:"",seq:"",content:""},
+                timeStamp:""
+            },
+            birthSheet:{
+                content:{},
+                timeStamp:""
+            },
         },
         flowSheet:{
             footbarStatus:"min",
@@ -127,8 +138,7 @@ var view= new Vue({
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
                 view.selectedCaseNo=view.admissionList.content&&view.admissionList.content[0].caseNo;
-                view.selectedAdmissionDate=view.admissionList.content&&view.admissionList.content[0].admissionDate;
-                view.updateCase(patientID, view.selectedCaseNo,view.selectedAdmissionDate);    //for dev show
+                view.updateCase(patientID, view.selectedCaseNo);    //for dev show
             });
         },
         updatePatient:function(patientID){
@@ -144,14 +154,15 @@ var view= new Vue({
             // view.updateReport(patientID, 1);
             // view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
         },
-        updateCase:function(patientID, caseNo, admissionDate){
+        updateCase:function(patientID, caseNo){
             patientID=patientID||view.selectedPatientID;
             view.selectedCaseNo=caseNo;
 
-            // view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList)
+            // view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList);
             // view.updateTreatment(patientID, caseNo);
-
-            view.updateTransfusion(patientID, caseNo, admissionDate);
+            // view.updateTransfusion(patientID, caseNo);
+            // view.updateMedication(patientID, caseNo);
+            view.updateBirthSheet(patientID, caseNo);
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -225,12 +236,33 @@ var view= new Vue({
                 view.dev.treatment.timeStamp=timeStamp;
             });
         },
-        updateTransfusion:function(patientID, caseNo, admissionDate){
-            requestTransfusion(patientID, caseNo, admissionDate,function(data,timeStamp){
+        updateTransfusion:function(patientID, caseNo){
+            requestTransfusion(patientID, caseNo,function(data,timeStamp){
                 view.dev.transfusion.content=data;
                 view.dev.transfusion.timeStamp=timeStamp;
             });
-        },        
+        },
+        updateMedication:function(patientID,caseNo){
+            requestMedication(patientID,caseNo,function(data,timeStamp){
+                view.dev.medication.content=data;
+                view.dev.medication.timeStamp=timeStamp;
+            });
+        },
+        updateMedicationInfo:function(patientID,caseNo,seq){
+            updateMedicationInfo(patientID,caseNo,seq,function(data,timeStamp){
+                view.dev.medicationInfo.content.content=data;
+                view.dev.medicationInfo.content.caseNo=caseNo;
+                view.dev.medicationInfo.content.seq=seq;
+                view.dev.medicationInfo.timeStamp=timeStamp;
+            });
+        },
+        updateBirthSheet:function(patientID,caseNo)
+        {
+            updateBirthSheet(patientID,caseNo,function(data,timeStamp){
+                view.dev.birthSheet.content=data;
+                view.dev.birthSheet.timeStamp=timeStamp;
+            });
+        },
         selectFlowSheetFn:function(fn){
             view.flowSheet.selectedfootbarMenu=fn;
             if(view.flowSheet.footbarStatus=='close'){

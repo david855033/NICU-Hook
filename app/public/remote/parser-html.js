@@ -20,6 +20,7 @@ Parser.getPatientList=function(htmlText){
         {
             Parser.removeElementsByTagName(tds[1],"span");
             result.bed=tds[1].innerText.replaceAll(' ','');
+            Parser.removeElementsByTagName(tds[2],"font");
             result.name=tds[2].innerText.trim().replaceAll('@','');
             result.patientID=tds[3].innerText.trim();
             result.gender=tds[4].innerText;
@@ -400,4 +401,69 @@ Parser.getTransfusion=function(htmlText){
         resultArray.push(result);
     }
     return resultArray;
+}
+//藥物清單
+//  {startDateTime:"",endDateTime:"",drugName:"",tradeName:"",dosage:"",unit:"",route:"",freq:"",status:"",info:""}
+Parser.getMedication=function(htmlText){
+    var resultArray=[];
+    var doc = Parser.getDOM(htmlText);
+    var tbodies = doc.getElementsByTagName('tbody');
+    if(!tbodies){return resultArray;}
+    var tbody=tbodies[0];
+    var trs = tbody.getElementsByTagName('tr');
+    for(var i = 0 ; i<trs.length; i++){
+        var tr=trs[i];
+        if(!tr){continue;}
+        var tds=tr.getElementsByTagName('td');
+        if(tds.length<12){continue;}
+        var result ={drugName:"",tradeName:"",dosage:"",unit:"",route:"",freq:"",startDateTime:"",endDateTime:"",status:"",selfPaid:"",seq:"",info:""};
+        result.drugName=tds[0].innerText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\"/g,'').trim();
+        result.tradeName=tds[1].innerText.regReplaceAll(/\\"/g,'').trim();
+        result.dosage=tds[2].innerText.trim();
+        result.unit=tds[3].innerText.trim();
+        result.route=tds[4].innerText.trim();
+        result.freq=tds[5].innerText.trim();
+        result.startDateTime=Parser.getDateTimeFromMedicationTable(tds[6].innerText.trim());
+        result.endDateTime=Parser.getDateTimeFromMedicationTable(tds[7].innerText.trim());
+        result.status=tds[8].innerText.trim();
+        result.selfPaid=tds[10].innerText.trim();
+        result.seq=tds[11].innerHTML.trim().regSelectAll(/ordseq=[0-9]*/).replaceAll('ordseq=','');
+        result.info=tds[11].innerText.trim();
+        resultArray.push(result);
+    }
+    return resultArray;
+}
+//取得藥物註記(字串)
+Parser.getMedicationInfo=function(htmlText){
+    var result="";
+    var doc = Parser.getDOM(htmlText);
+    var div=doc.getElementsByTagName('div');
+    div=div&&div[0];
+    if(!div){return result;}
+    result=div.innerText.trim().replaceAll('用藥說明:','').regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'')
+    return result;
+}
+//取得產單
+Parser.getPreSelectBirthSheet=function(htmlText){
+    var result={caseno:"",histno:"",token:""};
+    result['struts.token.name']="";
+    var doc = Parser.getDOM(htmlText);
+    var inputs = doc.getElementsByTagName('input');
+    if(!inputs||inputs.length<4){return result;}
+    result.caseno=inputs[0].getAttribute('value').regReplaceAll(/\\/g,"").regReplaceAll(/"/g,"");
+    result.histno=inputs[1].getAttribute('value').regReplaceAll(/\\/g,"").regReplaceAll(/"/g,"");
+    result['struts.token.name']=inputs[2].getAttribute('value').regReplaceAll(/\\/g,"").regReplaceAll(/"/g,"");
+    result.token=inputs[3].getAttribute('value').regReplaceAll(/\\/g,"").regReplaceAll(/"/g,"");
+    return result;
+}
+
+Parser.getBirthSheet=function(htmlText){
+    var result={};
+    htmlText=htmlText.regReplaceAll(/\\t/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\r/g,'');
+    var $html = $(Parser.getDOM(htmlText));
+    var name =  $html.find('span');
+    console.log(name);
+    
+    
+    return result;
 }

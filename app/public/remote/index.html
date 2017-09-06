@@ -45,12 +45,10 @@
                 <tr v-show="patientList.content&&patientList.content.length>0">
                     <th>床號</th>
                     <th>姓名</th>
-                    <th>病歷號</th>
                 </tr>
                 <tr v-for="row in patientList.content" @click="updatePatient(row.patientID)">
                     <td>{{row.bed}}</td>
                     <td>{{row.name}}</td>
-                    <td>{{row.patientID}}</td>
                 </tr>
             </table>
         </div>
@@ -314,6 +312,63 @@
                     <td>{{row.date}}</td>
                 </tr>
             </table>
+            <div class="rightbox">
+                用藥紀錄 {{dev.medication.timeStamp}}
+            </div>
+            <table id="medication"  v-show="dev.medication.content&&dev.medication.content.length>0">
+                <tr>
+                    <th>藥名</th>
+                    <th>商品名</th>
+                    <th>開始</th>
+                    <th>結束</th>
+                    <th>劑量</th>
+                    <th>單位</th>
+                    <th>途徑</th>
+                    <th>頻次</th>
+                    <th>狀態</th>
+                    <th>自費</th>
+                    <th>seq</th>
+                    <th>註記</th>
+                </tr>
+                <tr v-for="row in dev.medication.content" @click="updateMedicationInfo(selectedPatientID, selectedCaseNo, row.seq)">
+                    <td>{{row.drugName}}</td>
+                    <td>{{row.tradeName}}</td>
+                    <td>{{row.startDateTime}}</td>
+                    <td>{{row.endDateTime}}</td>
+                    <td>{{row.dosage}}</td>
+                    <td>{{row.unit}}</td>
+                    <td>{{row.route}}</td>
+                    <td>{{row.freq}}</td>
+                    <td>{{row.status}}</td>
+                    <td>{{row.selfPaid}}</td>
+                    <td>{{row.seq}}</td>
+                    <td>{{row.info}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                用藥註記 {{dev.medicationInfo.timeStamp}}
+            </div>
+            <table id="medicationInfo" v-show="dev.medicationInfo.content.caseNo">
+                <tr>
+                    <th>欄位</th>
+                    <th>內容</th>
+                </tr>
+                <tr>
+                    <td>caseNo</td>
+                    <td>{{dev.medicationInfo.content.caseNo}}</td>
+                </tr>
+                <tr>
+                    <td>seq</td>
+                    <td>{{dev.medicationInfo.content.seq}}</td>
+                </tr>
+                <tr>
+                    <td>content</td>
+                    <td>{{dev.medicationInfo.content.content}}</td>
+                </tr>
+            </table>
+            <div class="rightbox">
+                產單 {{dev.birthSheet.timeStamp}}
+            </div>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
             <div id="header" class="w1-1 shadow nowrap h-center"><div class="header-card inline-block">
@@ -327,7 +382,7 @@
                 </div><div class="header-card inline-block">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>病歷號</div></div>
                     <div class="h3-5"><div class='xl-word heavy-weight v-center'>41237362</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>住院日期：2017-05-12</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>住院日：2017-05-12</div></div>
                 </div><div class="header-card inline-block">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>實際年齡</div></div>
                     <div class="h3-5"><div class='xl-word heavy-weight v-center'>5 d/o</div></div>
@@ -338,7 +393,7 @@
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>出生週數：35+1</div></div>
                 </div><div class="header-card inline-block">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>體重</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2400g <span class="small-word">(+20)</span></div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2400g <span class="s-word">(+20)</span></div></div>
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>出生體重：2400g</div></div>
                 </div>
             </div>

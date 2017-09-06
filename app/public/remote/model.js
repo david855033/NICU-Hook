@@ -12,7 +12,6 @@ var queryData=function(query, callback){
             callback(queryDataSet.data, queryDataSet.timeStamp);  
         }
     }
-
     //from server
     if(queryDataSet_local.timeStamp){
         var secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
@@ -26,7 +25,7 @@ var queryData=function(query, callback){
                 //重新登入後 再執行一次serverRequest
                 view.signIn(function(){
                     server.request(serverRequest, function(serverData, timeStamp){
-                        var parsedData = serverRequest.parser?serverRequest.parser(serverData):"";
+                        var parsedData = serverRequest.parser?serverRequest.parser(serverData):serverData;
                         callback(parsedData, timeStamp);
                         if(notPreSelect){
                             dataManager.set(query, serverRequest.url, timeStamp, parsedData);
@@ -35,7 +34,7 @@ var queryData=function(query, callback){
                 });
                 return;
             };
-            var parsedData = serverRequest.parser?serverRequest.parser(serverData):"";
+            var parsedData = serverRequest.parser?serverRequest.parser(serverData):serverData;
             callback(parsedData, timeStamp);
             if(notPreSelect){
                 dataManager.set(query, serverRequest.url, timeStamp, parsedData);
@@ -130,8 +129,30 @@ var queryToServerRequest=function(query)
         };
     }else if(queryList[0] =="transfusion"){
         return {
-            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findBcst&histno="+queryList[1]+"&caseno="+queryList[2]+"&admdt="+queryList[3],
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findBcst&histno="+queryList[1]+"&caseno="+queryList[2]+"&admdt=00010101",
             parser:Parser.getTransfusion
+        };
+    }else if(queryList[0] =="medication"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findUd&histno="+queryList[1]+"&caseno="+queryList[2]+"&dt=0&type=I&dept=0&dt1=0",
+            parser:Parser.getMedication
+        };
+    }else if(queryList[0] =="medicationInfo"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findUd&caseno="+queryList[1]+"&ordseq="+queryList[2],
+            parser:Parser.getMedicationInfo
+        };
+    }else if(queryList[0] =="preSelectBirthSheet"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/OBSTS/nurlist?caseno="+queryList[2]+"&histno="+queryList[1],
+            parser:Parser.getPreSelectBirthSheet
+        };
+    }else if(queryList[0] =="birthSheet"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/OBSTS/pedlist",
+            method:"POST",
+            form:{caseno:queryList[1],histno:queryList[2],'struts.token.name':queryList[3],token:queryList[4]},
+            parser:Parser.getBirthSheet
         };
     }
 }

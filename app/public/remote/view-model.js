@@ -92,9 +92,36 @@ var requestTreatment=function(patientID, caseNo, callback){
         });
     });
 }
-var requestTransfusion=function(patientID, caseNo,admissionDate, callback){
+var requestTransfusion=function(patientID, caseNo, callback){
     preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
-        queryData("transfusion_"+patientID+"_"+caseNo+"_"+admissionDate,function(data, timeStamp){
+        queryData("transfusion_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}
+var requestMedication=function(patientID,caseNo, callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("medication_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}
+var updateMedicationInfo=function(patientID,caseNo,seq,callback){
+    preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
+        queryData("medicationInfo_"+caseNo+"_"+seq ,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    });
+}
+
+var preSelectBirthSheet=function(patientID,caseNo,callback){
+    queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
+        callback&&callback(data, timeStamp);
+    });
+}
+var updateBirthSheet=function(patientID,caseNo,callback){
+    preSelectBirthSheet(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
+        queryData("birthSheet_"+data_preSelect.caseno+"_"+data_preSelect.histno+"_"+data_preSelect['struts.token.name']+"_"+data_preSelect.token ,function(data, timeStamp){
             callback&&callback(data, timeStamp);
         });
     });

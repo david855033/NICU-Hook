@@ -1,3 +1,6 @@
+#dev{
+    font-size: 12px;
+}
 table#wardList{
     width:100%;
 }
@@ -120,7 +123,6 @@ table#report{
 table#cummulative{
     width:100%;
     margin:3px 0 3px 0;
-    font-size:0.3em;
 }
 #cummulative th,#cummulative td{
     padding:5px;
@@ -136,7 +138,6 @@ table#cummulative{
 table#vitalSign{
     width:100%;
     margin:3px 0 3px 0;
-    font-size:0.3em;
 }
 #vitalSign th,#vitalSign td{
     padding:5px;
@@ -146,7 +147,6 @@ table#vitalSign{
 table#treatment{
     width:100%;
     margin:3px 0 3px 0;
-    font-size:0.3em;
 }
 #treatment th,#treatment td{
     padding:5px;
@@ -156,9 +156,26 @@ table#treatment{
 table#transfusion{
     width:100%;
     margin:3px 0 3px 0;
-    font-size:0.3em;
 }
 #transfusion th,#transfusion td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#medication{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#medication th,#medication td{
+    padding:5px;
+    border:1px solid black;
+}
+
+table#medicationInfo{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#medicationInfo th,#medicationInfo td{
     padding:5px;
     border:1px solid black;
 }

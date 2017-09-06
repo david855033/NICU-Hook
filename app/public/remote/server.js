@@ -92,7 +92,7 @@ server.request=function(serverRequest,callback){
     option.url=serverRequest.url;
     serverRequest.method && (option.method=serverRequest.method);
     serverRequest.form && (option.form=serverRequest.form);
-    //console.log("server request options: "+ JSON.stringify(option));
+    
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
         server.cookie.setString(resObj.cookieString);

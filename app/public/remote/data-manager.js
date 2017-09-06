@@ -30,20 +30,7 @@ var queryDataStorage=[
 ];
 
 
-//輸血記錄
-var getTransfusion = function(patientID, caseNo)
-{
-    return [
-        {date:"2017-01-01", item:"CRYOPRECIPITATE", REQNO:"22983019"}
-    ];
-};
-//用藥紀錄
-var getMedication = function(patientID, caseNo)
-{
-    return [
-        {startDateTime:"2017-01-01 12:00",endDateTime:"2017-01-02 12:00",drugName:"",tradeName:"",dosage:"",unit:"",route:"",freq:"",status:"",info:""}
-    ];
-};
+
 //產單
 var getBirthSheet = {};
 getBirthSheet.hasBirthSheet = function(patientID,caseNo)
