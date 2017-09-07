@@ -371,6 +371,19 @@
             <div class="rightbox">
                 產單 {{dev.birthSheet.timeStamp}}
             </div>
+            <table id="birthSheet" v-show="dev.birthSheet.content.hasBirthSheet">
+                <tr><th>欄位</th><th>內容</th></tr>
+                <tr><td>母親病歷號</td><td>{{dev.birthSheet.content.mother.ID}}</td></tr>
+                <tr><td>母親姓名</td><td>{{dev.birthSheet.content.mother.name}}</td></tr>
+                <tr><td>住院原因</td><td>{{dev.birthSheet.content.mother.admissionReason}}</td></tr>
+                <tr><td>GA week</td><td>{{dev.birthSheet.content.child.GAweek}}</td></tr>
+                <tr><td>GA day</td><td>{{dev.birthSheet.content.child.GAday}}</td></tr>
+                <tr><td>破水時間</td><td>{{dev.birthSheet.content.child.ROMDateTime}}</td></tr>
+                <tr><td>分娩時間</td><td>{{dev.birthSheet.content.child.deliverDateTime}}</td></tr>
+                <tr><td>Apgar Score</td><td>{{dev.birthSheet.content.child.ApgarScore}}</td></tr>
+                <tr><td>生產方式</td><td>{{dev.birthSheet.content.child.deliverMethod}}</td></tr>
+                <tr><td>急救處置</td><td>{{dev.birthSheet.content.child.management}}</td></tr>
+            </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
             <div id="header" class="w1-1 shadow nowrap h-center"><div class="header-card inline-block">

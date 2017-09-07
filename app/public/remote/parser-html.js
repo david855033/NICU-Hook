@@ -460,54 +460,76 @@ Parser.getPreSelectBirthSheet=function(htmlText){
 Parser.getBirthSheet=function(htmlText){
     var result={
         hasBirthSheet:false,
-        mother:{
-            ID:"",
-            name:"",
-            age:"",
-            admissionReason:"",
-            pastHistory:"",
-            recentMedication:""
-        },
-        child:{
-            GAweek:"",
-            GAday:"",
-            sedation:"",
-            ROMMethod:"",
-            ROMDateTime:"",
-            deliverDateTime:"",
-            deliverMethod:"",
-            meconiumStain:"",
-            fetalPosition:"",
-            bloodLoss:"",
-            UA:"",
-            UV:"",
-            umbilicalAroundNeck:"",
-            meconiumPass:"",
-            urinePass:"",
-            meconiumAspiration:"",
-            placentaPassDateTime:"",
-            placentaWeight:"",
-            ApgarScore:[],
-            management:[],
-            transferTo:"",
-            GYNDoctor:[],
-            PedDoctor:""
+        mother:{ID:"",name:"",admissionReason:""},
+        child:{GAweek:"",GAday:"",ROMDateTime:"",deliverDateTime:"",deliverMethod:""
+            ,ApgarScore:[],management:[],transferTo:"",GYNDoctor:[],PedDoctor:""
         }
     };
     htmlText=htmlText.regReplaceAll(/\\t/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\r/g,'').regReplaceAll(/\\"/g,'');
     var doc =Parser.getDOM(htmlText);
     var $doc = $(doc);
-    var $name = $doc.find('font>span');
-    if(!$name){return result;}
+
+    var $motherName = $doc.find('font>span');
+    if(!$motherName){return result;}
     result.hasBirthSheet=true;
-    var nameText =$name.text();
-    result.mother.ID=nameText;
-    result.mother.name=nameText;
-    result.mother.age=nameText;
-    
-    console.log(doc);
-    console.log(result.mother.ID);
-    
+    var nameText =$motherName.text().regSelectAll(/\[母親姓名:.*(?=\]\[)/).regReplaceAll(/\[母親姓名:/,"").replaceNbsps();
+    var parts = nameText.split(" ");
+    if(parts.length<3){return result;}
+    result.mother.ID=parts[1];
+    result.mother.name=parts[0];
+    if(!result.mother.ID){return result;}
+    var span_tab2=$doc.find('#tabs-2 span');
+    result.mother.admissionReason=span_tab2[0]&&span_tab2[0].innerText.trim();
+
+    var span_tab3=$doc.find('#tabs-3 span');
+    result.child.GAweek=span_tab3[0]&&span_tab3[0].innerText.trim();
+    result.child.GAday=span_tab3[1]&&span_tab3[1].innerText.trim();
+    result.child.ROMDateTime=span_tab3[3]&&span_tab3[3].innerText.trim();
+    result.child.deliverDateTime=span_tab3[4]&&span_tab3[4].innerText.trim();
+    var ApgarScore=[
+        span_tab3[14]&&span_tab3[14].innerText.trim(),
+        span_tab3[15]&&span_tab3[15].innerText.trim(),
+        span_tab3[16]&&span_tab3[16].innerText.trim(),
+        span_tab3[17]&&span_tab3[17].innerText.trim(),
+        span_tab3[18]&&span_tab3[18].innerText.trim()
+    ];
+    result.child.ApgarScore=ApgarScore.filter(function(x){return x;})
+
+    if(isDOMChecked($doc,'#fillForm_nisNcInfo_del0')){
+        result.child.deliverMethod="NSD";
+    }
+    if(isDOMChecked($doc,'#fillForm_nisNcInfo_del1')){
+        result.child.deliverMethod="C/S";
+    }
+
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=7]')){
+        result.child.management.push("Dry and stimulate");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=3]')){
+        result.child.management.push("Suction");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=2]')){
+        result.child.management.push("Oxygen");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=0]')){
+        result.child.management.push("PPV");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=1]')){
+        result.child.management.push("Intubation");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=5]')){
+        result.child.management.push("Cardiac Massage");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=6]')){
+        result.child.management.push("Medication");
+    }
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=4]')){
+        result.child.management.push("Other");
+    }
     
     return result;
+}
+var isDOMChecked=function(jqObj,selector){
+    var obj=jqObj.find(selector);
+    return obj[0]&&obj[0].checked;
 }

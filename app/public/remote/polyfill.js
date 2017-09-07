@@ -42,6 +42,14 @@ if(!String.prototype.regSelect){
     return match?match.join(""):"";
   };
 }
+if(!String.prototype.replaceNbsps){
+  String.prototype.replaceNbsps = function (){
+    var str = this;
+    var re = new RegExp(String.fromCharCode(160), "g");
+    return str.replace(re, " ");
+  }
+};
+
 
 // Overwrites native 'children' prototype.
 // Adds Document & DocumentFragment support for IE9 & Safari.

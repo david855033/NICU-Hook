@@ -6,8 +6,8 @@ var view= new Vue({
         password:"888888",
         cookie:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"flow-sheet",
-        wardList:["NICU","PICU"],
+        selectedView:"dev",
+        wardList:["NICU","PICU","NBR","A091"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
         selectedCaseNo:"",
@@ -99,7 +99,13 @@ var view= new Vue({
                 timeStamp:""
             },
             birthSheet:{
-                content:{},
+                content:{
+                    hasBirthSheet:false,
+                    mother:{ID:"",name:"",admissionReason:"",pastHistory:"",recentMedication:""},
+                    child:{GAweek:"",GAday:"",sedation:"",ROMMethod:"",ROMDateTime:"",deliverDateTime:"",deliverMethod:"",meconiumStain:"",
+                        fetalPosition:"",bloodLoss:"",UA:"",UV:"",umbilicalAroundNeck:"",meconiumPass:"",urinePass:"",meconiumAspiration:"",
+                        placentaPassDateTime:"",placentaWeight:"",ApgarScore:[],management:[],transferTo:"",GYNDoctor:[],PedDoctor:""}
+                },
                 timeStamp:""
             },
         },
