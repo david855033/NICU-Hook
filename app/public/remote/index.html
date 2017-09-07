@@ -429,10 +429,10 @@
                         </div><div id="close" class='h1-1 w1-3 inline-block' @click="flowSheet.footbarStatus='close'"></div>
                     </div>
                 </div>
-                <div id="fnOverview" v-show="flowSheet.selectedfootbarMenu=='fnOverview'">
+                <div id="fnOverview" v-show="flowSheet.selectedfootbarMenu=='fnOverview'&&flowSheet.footbarStatus!='close'">
                     <div id="sub-io" class="footbar-sub float-left">
                         <div class="footbar-sub-inner h1-1">
-                            <div id="morning" class='h1-4 shift'>
+                            <div id="morning" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
                                     <div class="v-center h-center ms-word mid-weight">白班</div>
                                 </div>
@@ -467,8 +467,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="afternoon" class='h1-4 shift'>
-                       
+                            <div id="afternoon" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
                                     <div class="v-center h-center ms-word mid-weight">小夜</div>
                                 </div>
@@ -503,7 +502,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="night" class='h1-4 shift'>
+                            <div id="night" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
                                     <div class="v-center h-center ms-word mid-weight">大夜</div>
                                 </div>
@@ -538,9 +537,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="day" class='h1-4 shift'>
+                            <div id="day1" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center ms-word mid-weight">全日</div>
+                                    <div class="h3-5 v-center h-center ms-word mid-weight">
+                                        <div class="h1-2">今日</div>
+                                        <div class="h1-4 xs-word grey-40-font">2400g</div>
+                                        <div class="h1-4 xs-word grey-40-font">(+20)</div>
+                                    </div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -573,67 +576,166 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="day2" class='shift h1-6' v-show="flowSheet.footbarStatus=='max'">
+                                    <div class="w2-13 h1-1 float-left">
+                                        <div class="h3-5 v-center h-center ms-word mid-weight">
+                                            <div class="h1-2">昨日</div>
+                                            <div class="h1-4 xs-word grey-40-font">2380g</div>
+                                            <div class="h1-4 xs-word grey-40-font">(+17)</div>
+                                        </div>
+                                    </div>
+                                    <div class="w11-13 h1-1 float-left h-center">
+                                        <div class="h1-2 w1-1">
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">IV</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">20</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Feed</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">30</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">25</div></div>
+                                            </div>
+                                        </div>
+                                        <div class="h1-2 w1-1">
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">25</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">3</div></div>
+                                            </div>
+                                            <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">IO</div></div>
+                                                <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">+21</div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="day3" class='shift h1-6' v-show="flowSheet.footbarStatus=='max'">
+                                        <div class="w2-13 h1-1 float-left">
+                                            <div class="h3-5 v-center h-center ms-word mid-weight">
+                                                <div class="h1-2">前日</div>
+                                                <div class="h1-4 xs-word grey-40-font">2353g</div>
+                                                <div class="h1-4 xs-word grey-40-font">(+12)</div>
+                                            </div>
+                                        </div>
+                                        <div class="w11-13 h1-1 float-left h-center">
+                                            <div class="h1-2 w1-1">
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">IV</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">20</div></div>
+                                                </div>
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Feed</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">30</div></div>
+                                                </div>
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">25</div></div>
+                                                </div>
+                                            </div>
+                                            <div class="h1-2 w1-1">
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">25</div></div>
+                                                </div>
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">3</div></div>
+                                                </div>
+                                                <div class="h1-1 w1-3 float-left">
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">IO</div></div>
+                                                    <div class="h2-3 w1-1 m-word heavy-weight"><div class="v-center">+21</div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                         </div>
                     </div>
                     <div id="sub-ventilation" class="footbar-sub float-left h-center">
                         <div class="footbar-sub-inner h1-1 scrollbar-outer">
                             <div class='h1-1 w1-1'>
+                                <div class="day-card w1-1 h-center s-word grey-20-font">
+                                        <div class="v-center">5/12</div>
+                                </div>
                                 <div class='gas-card w1-1 nowrap'>
-                                    <div class="w1-7 h1-1 s-word inline-block"><div class="v-center">10:30</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
-                                    </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">7.25</div>
+                                    <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">10:30</div>
+                                    </div><div class="w6-7 h1-1 inline-block">
+                                        <div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">65%</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class='gasfull-card w1-1'>
-                                    <div class="w1-1 h1-2 nowrap">
-                                        <div class="w1-7 h1-1 s-word inline-block"><div class="v-center">10:30</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">70%</div>
+                                    <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">11:30</div>
+                                    </div><div class="w6-7 h1-1 inline-block">
+                                        <div class="w1-1 h1-2 nowrap">
+                                            <div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
+                                            </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
+                                            </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
+                                            </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
+                                            </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
+                                            </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">70%</div>
+                                            </div>
+                                        </div>
+                                        <div class="w1-1 h1-2 nowrap">
+                                            <div class="w1-3 h1-1 inline-block">
+                                                <div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hb</div><div class="lower ms-word heavy-weight">12.1</div>
+                                                </div><div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hct</div><div class="lower ms-word heavy-weight">32%</div>
+                                                </div>
+                                            </div><div class="w2-3 h1-1 inline-block">
+                                                <div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Na<sup>+</sup></div><div class="lower ms-word heavy-weight">140</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">K<sup>+</sup></div><div class="lower ms-word heavy-weight">3.5</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Ca<sup>2+</sup></div><div class="lower ms-word heavy-weight">1.02</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">BUN</div><div class="lower ms-word heavy-weight">21</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Cr</div><div class="lower ms-word heavy-weight">0.89</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="w1-1 h1-2 nowrap">
-                                        <div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hb</div><div class="lower ms-word heavy-weight">12.1</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hct</div><div class="lower ms-word heavy-weight">32%</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Na<sup>+</sup></div><div class="lower ms-word heavy-weight">140</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">K<sup>+</sup></div><div class="lower ms-word heavy-weight">3.5</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Ca<sup>2+</sup></div><div class="lower ms-word heavy-weight">1.02</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">BUN</div><div class="lower ms-word heavy-weight">21</div>
-                                        </div><div class="w1-7 h1-1 inline-block"><div class="upper xs-word grey-40-font">Cr</div><div class="lower ms-word heavy-weight">0.89</div>
+                                </div>
+                                <div class='vent-card w1-1'>
+                                    <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">12:00</div>
+                                    </div><div class="w6-7 h1-1 inline-block nowrap">
+                                        <div class="w1-6 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">PS SIMV</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">FiO<sub>2</sub></div><div class="lower ms-word heavy-weight">21%</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Rate</div><div class="lower ms-word heavy-weight">20</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">PIP</div><div class="lower ms-word heavy-weight">18</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">PEEP</div><div class="lower ms-word heavy-weight">5</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">PS</div><div class="lower ms-word heavy-weight">13</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class='vent-card w1-1'>
-                                    vent
+                                <div class="day-card w1-1 h-center s-word grey-20-font">
+                                    <div class="v-center">5/13</div>
                                 </div>
-                                <div class='vent-card w1-1'>
-                                    vent
-                                </div>
-                                <div class='vent-card w1-1'>
-                                    vent
-                                </div>
-                                <div class='vent-card w1-1'>
-                                    vent
-                                </div>
-                                <div class='vent-card w1-1'>
-                                    vent
-                                </div>
-                                <div class='vent-card w1-1'>
-                                    vent
+                                <div class='gas-card w1-1 nowrap'>
+                                    <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">06:30</div>
+                                    </div><div class="w6-7 h1-1 inline-block">
+                                        <div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
+                                        </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">65%</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div id="sub-lab" class="footbar-sub float-left">
                         <div class="footbar-sub-inner h1-1">
-                            <div id="glucose-cbc" class='lab-row h1-6'>
+                            <div id="glucose-cbc" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-5'>
                                     <div id="glu" class='lab-item w1-1'>GLU</div>
                                 </div>
@@ -644,7 +746,7 @@
                                     <div id='plt' class='lab-item w1-4'>plt</div>
                                 </div>
                             </div>
-                            <div id="electrolyte" class='lab-row h1-6'>
+                            <div id="electrolyte" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-1'>
                                     <div id='na' class='lab-item w1-5'>Na</div>
                                     <div id='k' class='lab-item w1-5'>K</div>
@@ -653,18 +755,18 @@
                                     <div id='mg' class='lab-item w1-5'>Mg</div>
                                 </div>
                             </div>
-                            <div id="liver-renal" class='lab-row h1-6'>
+                            <div id="liver-renal" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w2-5'>
                                     <div id='bun' class='lab-item w1-2'>BUN</div>
                                     <div id='cr' class='lab-item w1-2'>Cr</div>
                                 </div>
-                                <div class='lab-group w3-5'> 
+                                <div class='lab-group w3-5' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']"> 
                                     <div id='alt' class='lab-item w1-3'>ALT</div>
                                     <div id='ast' class='lab-item w1-3'>AST</div>
                                     <div id='ggt' class='lab-item w1-3'>GGT</div>
                                 </div>
                             </div>
-                            <div id="crp-pct-bil" class='lab-row h1-6'>
+                            <div id="crp-pct-bil" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-5'>
                                     <div id='crp' class='lab-item w1-3'>CRP</div>
                                 </div>
@@ -677,7 +779,7 @@
                                     <div id='Dbil' class='lab-item w1-3'>DBil</div>
                                 </div>
                             </div>
-                            <div id="heart-alb" class='lab-row h1-6'>
+                            <div id="heart-alb" class='lab-row h1-6' v-show="flowSheet.footbarStatus=='max'">
                                 <div class='lab-group w1-5'>
                                      <div id='alb' class='lab-item w1-4'>Alb</div>
                                 </div>
@@ -688,7 +790,7 @@
                                     <div id='bnp' class='lab-item w1-4'>BNP</div>
                                 </div>
                             </div>
-                            <div id="iron-bone" class='lab-row h1-6'>
+                            <div id="iron-bone" class='lab-row h1-6' v-show="flowSheet.footbarStatus=='max'">
                                 <div class='lab-group w4-6'>
                                     <div id='iron' class='lab-item w1-4'>Iron</div>
                                     <div id='tibc' class='lab-item w1-4'>TIBC</div>
@@ -700,7 +802,6 @@
                                     <div id='alkp' class='lab-item w1-2'>Alkp</div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                     <div id="sub-nutrition-event" class="footbar-sub float-left">

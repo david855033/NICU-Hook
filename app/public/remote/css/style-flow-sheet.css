@@ -6,7 +6,7 @@
     height:100%;
 }
 
-#flow-sheet #content, #flow-sheet #footbar, #flow-sheet .footbar-sub{
+#flow-sheet #content, #flow-sheet #footbar, #flow-sheet .footbar-sub, .footbar-sub-inner{
     transition: all 0.3s ease;
 }
 
@@ -139,6 +139,13 @@
     -moz-box-shadow:inset 0px 0px 0px 1px grey;
     box-shadow:inset 0px 0px 0px 1px grey;
 }
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card{
+    height: 20px;
+    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
+    -moz-box-shadow:inset 0px 0px 0px 1px grey;
+    box-shadow:inset 0px 0px 0px 1px grey;
+}
+
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .upper
 {
     padding-top:3px;
@@ -154,11 +161,6 @@
 #flow-sheet #fnOverview .footbar-sub#sub-lab
 {
     width:31%;
-}
-#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-row{
-    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
-    -moz-box-shadow:inset 0px 0px 0px 1px grey;
-    box-shadow:inset 0px 0px 0px 1px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-group{
     float: left;
