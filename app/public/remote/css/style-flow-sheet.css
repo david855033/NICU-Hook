@@ -123,27 +123,27 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
     height: 40px;
-    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
-    -moz-box-shadow:inset 0px 0px 0px 1px grey;
-    box-shadow:inset 0px 0px 0px 1px grey;
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gasfull-card{
     height: 80px;
-    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
-    -moz-box-shadow:inset 0px 0px 0px 1px grey;
-    box-shadow:inset 0px 0px 0px 1px grey;
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
     height: 40px;
-    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
-    -moz-box-shadow:inset 0px 0px 0px 1px grey;
-    box-shadow:inset 0px 0px 0px 1px grey;
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card{
     height: 20px;
-    -webkit-box-shadow:inset 0px 0px 0px 1px grey;
-    -moz-box-shadow:inset 0px 0px 0px 1px grey;
-    box-shadow:inset 0px 0px 0px 1px grey;
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .upper

@@ -458,11 +458,55 @@ Parser.getPreSelectBirthSheet=function(htmlText){
 }
 
 Parser.getBirthSheet=function(htmlText){
-    var result={};
-    htmlText=htmlText.regReplaceAll(/\\t/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\r/g,'');
-    var $html = $(Parser.getDOM(htmlText));
-    var name =  $html.find('span');
-    console.log(name);
+    var result={
+        hasBirthSheet:false,
+        mother:{
+            ID:"",
+            name:"",
+            age:"",
+            admissionReason:"",
+            pastHistory:"",
+            recentMedication:""
+        },
+        child:{
+            GAweek:"",
+            GAday:"",
+            sedation:"",
+            ROMMethod:"",
+            ROMDateTime:"",
+            deliverDateTime:"",
+            deliverMethod:"",
+            meconiumStain:"",
+            fetalPosition:"",
+            bloodLoss:"",
+            UA:"",
+            UV:"",
+            umbilicalAroundNeck:"",
+            meconiumPass:"",
+            urinePass:"",
+            meconiumAspiration:"",
+            placentaPassDateTime:"",
+            placentaWeight:"",
+            ApgarScore:[],
+            management:[],
+            transferTo:"",
+            GYNDoctor:[],
+            PedDoctor:""
+        }
+    };
+    htmlText=htmlText.regReplaceAll(/\\t/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\r/g,'').regReplaceAll(/\\"/g,'');
+    var doc =Parser.getDOM(htmlText);
+    var $doc = $(doc);
+    var $name = $doc.find('font>span');
+    if(!$name){return result;}
+    result.hasBirthSheet=true;
+    var nameText =$name.text();
+    result.mother.ID=nameText;
+    result.mother.name=nameText;
+    result.mother.age=nameText;
+    
+    console.log(doc);
+    console.log(result.mother.ID);
     
     
     return result;
