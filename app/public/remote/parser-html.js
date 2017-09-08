@@ -462,7 +462,7 @@ Parser.getBirthSheet=function(htmlText){
         hasBirthSheet:false,
         mother:{ID:"",name:"",admissionReason:""},
         child:{GAweek:"",GAday:"",ROMDateTime:"",deliverDateTime:"",deliverMethod:""
-            ,ApgarScore:[],management:[],transferTo:"",GYNDoctor:[],PedDoctor:""
+            ,ApgarScore:[],management:[]
         }
     };
     htmlText=htmlText.regReplaceAll(/\\t/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\r/g,'').regReplaceAll(/\\"/g,'');
@@ -471,13 +471,13 @@ Parser.getBirthSheet=function(htmlText){
 
     var $motherName = $doc.find('font>span');
     if(!$motherName){return result;}
-    result.hasBirthSheet=true;
     var nameText =$motherName.text().regSelectAll(/\[母親姓名:.*(?=\]\[)/).regReplaceAll(/\[母親姓名:/,"").replaceNbsps();
     var parts = nameText.split(" ");
     if(parts.length<3){return result;}
     result.mother.ID=parts[1];
     result.mother.name=parts[0];
     if(!result.mother.ID){return result;}
+    result.hasBirthSheet=true;
     var span_tab2=$doc.find('#tabs-2 span');
     result.mother.admissionReason=span_tab2[0]&&span_tab2[0].innerText.trim();
 
@@ -502,28 +502,28 @@ Parser.getBirthSheet=function(htmlText){
         result.child.deliverMethod="C/S";
     }
 
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=7]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="7"]')){
         result.child.management.push("Dry and stimulate");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=3]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="3"]')){
         result.child.management.push("Suction");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=2]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="2"]')){
         result.child.management.push("Oxygen");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=0]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="0"]')){
         result.child.management.push("PPV");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=1]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="1"]')){
         result.child.management.push("Intubation");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=5]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="5"]')){
         result.child.management.push("Cardiac Massage");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=6]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="6"]')){
         result.child.management.push("Medication");
     }
-    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value=4]')){
+    if(isDOMChecked($doc,'#ckListNisEmeTre-1[value="4"]')){
         result.child.management.push("Other");
     }
     

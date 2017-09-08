@@ -6,7 +6,7 @@ var view= new Vue({
         password:"888888",
         cookie:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"flow-sheet",
+        selectedView:"dev",
         wardList:["NICU","PICU","NBR","A091"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -101,13 +101,19 @@ var view= new Vue({
             birthSheet:{
                 content:{
                     hasBirthSheet:false,
-                    mother:{ID:"",name:"",admissionReason:"",pastHistory:"",recentMedication:""},
-                    child:{GAweek:"",GAday:"",sedation:"",ROMMethod:"",ROMDateTime:"",deliverDateTime:"",deliverMethod:"",meconiumStain:"",
-                        fetalPosition:"",bloodLoss:"",UA:"",UV:"",umbilicalAroundNeck:"",meconiumPass:"",urinePass:"",meconiumAspiration:"",
-                        placentaPassDateTime:"",placentaWeight:"",ApgarScore:[],management:[],transferTo:"",GYNDoctor:[],PedDoctor:""}
+                    mother:{ID:"",name:"",admissionReason:""},
+                    child:{GAweek:"",GAday:"",ROMDateTime:"",deliverDateTime:"",deliverMethod:""
+                        ,ApgarScore:[],management:[]
+                    }
                 },
                 timeStamp:""
             },
+            NISHandOver:{
+                content:{
+
+                },
+                timeStamp:""
+            }
         },
         flowSheet:{
             footbarStatus:"min",
@@ -168,7 +174,8 @@ var view= new Vue({
             // view.updateTreatment(patientID, caseNo);
             // view.updateTransfusion(patientID, caseNo);
             // view.updateMedication(patientID, caseNo);
-            view.updateBirthSheet(patientID, caseNo);
+            //view.updateBirthSheet(patientID, caseNo);
+            view.updateNISHandOver(patientID, caseNo);
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -267,6 +274,14 @@ var view= new Vue({
             updateBirthSheet(patientID,caseNo,function(data,timeStamp){
                 view.dev.birthSheet.content=data;
                 view.dev.birthSheet.timeStamp=timeStamp;
+            });
+        },
+        updateNISHandOver:function(patientID,caseNo)
+        {
+            updateNISHandOver(patientID,caseNo,function(data,timeStamp)
+            {
+                view.dev.NISHandOver.content=data;
+                view.dev.NISHandOver.timeStamp=timeStamp;
             });
         },
         selectFlowSheetFn:function(fn){

@@ -154,5 +154,9 @@ var queryToServerRequest=function(query)
             form:{caseno:queryList[1],histno:queryList[2],'struts.token.name':queryList[3],token:queryList[4]},
             parser:Parser.getBirthSheet
         };
+    }else if(queryList[0] =="preSelectNIS"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/emr.jsp?hisid="+queryList[1]+"&caseno="+queryList[2]
+        };
     }
 }

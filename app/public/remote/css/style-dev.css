@@ -187,3 +187,12 @@ table#birthSheet{
     padding:5px;
     border:1px solid black;
 }
+
+table#NISHandOver{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#NISHandOver th,#NISHandOver td{
+    padding:5px;
+    border:1px solid black;
+}

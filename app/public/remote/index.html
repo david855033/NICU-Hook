@@ -384,6 +384,12 @@
                 <tr><td>生產方式</td><td>{{dev.birthSheet.content.child.deliverMethod}}</td></tr>
                 <tr><td>急救處置</td><td>{{dev.birthSheet.content.child.management}}</td></tr>
             </table>
+            <div class="rightbox">
+                護理交班 {{dev.NISHandOver.timeStamp}}
+            </div>
+            <table id="NISHandOver">
+                <tr><th>欄位</th><th>內容</th></tr>
+            </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
             <div id="header" class="w1-1 shadow nowrap h-center"><div class="header-card inline-block">
