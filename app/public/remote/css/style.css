@@ -44,6 +44,9 @@ body{
 .h-left{
     text-align: left;
 }
+.h-right{
+    text-align: right;
+}
 
 /* word-size */
 .xl-word{
@@ -51,6 +54,9 @@ body{
 }
 .l-word{
     font-size: 20px;
+}
+.lm-word{
+    font-size: 18px;
 }
 .m-word{
     font-size: 16px;
