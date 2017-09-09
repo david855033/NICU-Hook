@@ -178,4 +178,19 @@
 {
     width:14%;
 }
-
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition,
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #event,
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #order,
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event .title{
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px grey;
+    -moz-box-shadow:inset 0px 0px 0px 0.5px grey;
+    box-shadow:inset 0px 0px 0px 0.5px grey;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .date-card,
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #event .date-card{
+    padding-top:4px;padding-bottom:1px;
+}
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .content-card,
+#flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #event .content-card{
+    padding-bottom:4px;
+}

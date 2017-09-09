@@ -8,6 +8,7 @@ var $flowsheetFootBarCard=$("#flow-sheet .footbarCard");
 var $flowsheetFootbarFnButton=$('#flow-sheet .footbar-fn-button');
 var $flowsheetFootbarButtons=$('#flow-sheet #footbar-toggle-buttons');
 var $flowsheetFootbarSubs=$('#flow-sheet .footbar-sub');
+var $flowsheetFootbarScrolls=$("#flow-sheet #footbar .scrollbar-outer");
 var $window=$(window);
 
 var Layout={};
@@ -32,15 +33,15 @@ Layout.footbar.FOOT_BAR_CLOSE_HEIGHT=40;
 
 Layout.footbar.max=function(){
     Layout.footbar.mode='max';
-    Layout.footbar.modeSwitched()
+    Layout.footbar.modeSwitched();
 };
 Layout.footbar.min=function(){
     Layout.footbar.mode='min';
-    Layout.footbar.modeSwitched()
+    Layout.footbar.modeSwitched();
 };
 Layout.footbar.close=function(){
     Layout.footbar.mode='close';
-    Layout.footbar.modeSwitched()
+    Layout.footbar.modeSwitched();
 };
 Layout.footbar.modeSwitched=function(){
     var windowHeight=$window.height();
@@ -82,22 +83,25 @@ Layout.footbar.calculateButtonPadding=function(){
     $flowsheetFootbarFnButton.css('padding-right',modifiedPadding);
 }
 
+Layout.footbar.scrollDown=function(){
+    $flowsheetFootbarScrolls.animate({ scrollTop: $flowsheetFootbarScrolls.prop("scrollHeight")}, 1000);
+}
+
+Layout.onWidthChange=function(){
+    Layout.header.calculateCardPadding();
+    Layout.footbar.calculateCardWidth();
+    Layout.footbar.calculateButtonPadding();
+    Layout.footbar.scrollDown();
+}
 
 $(function(){
     Layout.footbar.min();
-    Layout.footbar.calculateCardWidth();
-    Layout.footbar.calculateButtonPadding();
-    Layout.header.calculateCardPadding();
+    Layout.onWidthChange();
     $('.scrollbar-inner').scrollbar();
     $('.scrollbar-outer').scrollbar();
 });
 
 $(window).resize(function(){
     Layout.footbar.modeSwitched();
-    Layout.footbar.calculateCardWidth();
-    Layout.footbar.calculateButtonPadding();
-    Layout.header.calculateCardPadding();
+    Layout.onWidthChange();
 });
-
-
-    

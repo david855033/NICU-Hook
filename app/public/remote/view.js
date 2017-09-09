@@ -116,6 +116,9 @@ var view= new Vue({
             }
         },
         flowSheet:{
+            headerCards:[
+                // {top:"1",mid:"2",bottom:"3"}
+            ],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
             {key:'fnNutrition',title:'營養'},
@@ -132,6 +135,13 @@ var view= new Vue({
                 Layout.footbar.max();
             }else{
                 Layout.footbar.close();
+            }
+        },
+        selectedView:function(){
+            if(view.selectedView=="flow-sheet"){
+                setTimeout(function() {
+                    Layout.onWidthChange();
+                }, 0);
             }
         }
     },

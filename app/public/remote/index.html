@@ -392,7 +392,12 @@
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
-            <div id="header" class="w1-1 shadow nowrap h-center"><div class="header-card inline-block">
+            <div id="header" class="w1-1 shadow nowrap h-center">
+                <div v-for="card in flowSheet.headerCards" class="header-card inline-block">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.top}}</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>{{card.mid}}</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.bottom}}</div></div>
+                </div><div class="header-card inline-block">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
                     <div class="h3-5"><div class='xl-word heavy-weight v-center'>2017-05-13</div></div>
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六 / 一天前</div></div>
@@ -949,46 +954,222 @@
                             </div>
                             <div id="crp-pct-bil" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-5'>
-                                    <div id='crp' class='lab-item w1-3'>CRP</div>
+                                    <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                        <div class="v-center">CRP</div>
+                                    </div>
+                                    <div class="lab-data h1-2 lm-word heavy-weight">
+                                        <div class="v-center"><0.03</div>
+                                    </div>
+                                    <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                        <div class="v-center">11/10 12:15</div>
+                                    </div>
                                 </div>
                                 <div class='lab-group w1-5'>
-                                    <div id='pct' class='lab-item w1-3'>PCT</div>
+                                    <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                        <div class="v-center">PCT</div>
+                                    </div>
+                                    <div class="lab-data h1-2 lm-word heavy-weight">
+                                        <div class="v-center">0.45</div>
+                                    </div>
+                                    <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                        <div class="v-center">11/10 12:15</div>
+                                    </div>
                                 </div>
                                 <div class='lab-group w3-5'>
-                                    <div id='tcb-mb' class='lab-item w1-3'>micro</div>
-                                    <div id='Tbil' class='lab-item w1-3'>TBil</div>
-                                    <div id='Dbil' class='lab-item w1-3'>DBil</div>
+                                    <div id='tcb-mb' class='lab-item w1-3'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">micro/TCB</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">12.4</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                    </div>
+                                    <div id='Tbil' class='lab-item w1-3'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">T.Bil</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">13.1</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                    </div>
+                                    <div id='Dbil' class='lab-item w1-3'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">D.Bil</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">0.5</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="heart-alb" class='lab-row h1-6' v-show="flowSheet.footbarStatus=='max'">
                                 <div class='lab-group w1-5'>
-                                     <div id='alb' class='lab-item w1-4'>Alb</div>
+                                     <div id='alb' class='lab-item w1-1'>
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
+                                            <div class="v-center">Alb</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">3.2</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                     </div>
                                 </div>
                                 <div class='lab-group w4-5'>
-                                    <div id='ck' class='lab-item w1-4'>CK</div>
-                                    <div id='ckmb' class='lab-item w1-4'>CKMB</div>
-                                    <div id='tropi' class='lab-item w1-4'>TrpI</div>
-                                    <div id='bnp' class='lab-item w1-4'>BNP</div>
+                                    <div id='ck' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">CK</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">-</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center"></div>
+                                        </div>
+                                    </div>
+                                    <div id='ckmb' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">CKMB</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">-</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center"></div>
+                                        </div>
+                                    </div>
+                                    <div id='tropi' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">Trp-I</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">-</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center"></div>
+                                        </div>
+                                    </div>
+                                    <div id='bnp' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">BNP</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">-</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="iron-bone" class='lab-row h1-6' v-show="flowSheet.footbarStatus=='max'">
                                 <div class='lab-group w4-6'>
-                                    <div id='iron' class='lab-item w1-4'>Iron</div>
-                                    <div id='tibc' class='lab-item w1-4'>TIBC</div>
-                                    <div id='isat' class='lab-item w1-4'>I.Sat</div>
-                                    <div id='ferritin' class='lab-item w1-4'>Frtn</div>
+                                    <div id='iron' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">Iron</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">80</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">12/20 05:33</div>
+                                        </div>
+                                    </div>
+                                    <div id='tibc' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">TIBC</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">200</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">12/20 05:33</div>
+                                        </div>
+                                    </div>
+                                    <div id='isat' class='lab-item w1-4'>
+                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                            <div class="v-center">FeSat</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">40<span class="xs-word">%</span></div>
+                                        </div>
+                                    </div>
+                                    <div id='ferritin' class='lab-item w1-4'>
+                                    <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                        <div class="v-center">Ferritin</div>
+                                    </div>
+                                    <div class="lab-data h1-2 lm-word heavy-weight">
+                                        <div class="v-center">122</div>
+                                    </div>
+                                    <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                        <div class="v-center">12/20 05:33</div>
+                                    </div></div>
                                 </div>
                                 <div class='lab-group w2-6'>
-                                    <div id='ca' class='lab-item w1-2'>Ca</div>
-                                    <div id='alkp' class='lab-item w1-2'>Alkp</div>
+                                    <div id='ca' class='lab-item w1-2'>
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
+                                            <div class="v-center">Total Ca</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">9.3</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                    </div>
+                                    <div id='alkp' class='lab-item w1-2'>
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
+                                            <div class="v-center">Alkp</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center">350</div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10 12:15</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="sub-nutrition-event" class="footbar-sub float-left">
                         <div class="footbar-sub-inner h1-1">
-                            <div class="h1-2">nutrition</div>
-                            <div class="h1-2">event</div>
+                            <div id="nutrition" class="h1-2">
+                                <div class="h1-6 h-center title"><div class="v-center">飲食醫囑</div></div>
+                                <div class="scrollbar-outer h5-6">
+                                    <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
+                                    <div class="w1-1 s-word content-card">SSC24 BMF 20ml q3h</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
+                                    <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
+                                    <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
+                                    <div class="w1-1 s-word content-card">SSC24 BMF 25ml q3h</div>
+                                </div>
+                            </div>
+                            <div id="event" class="h1-2">
+                                <div class="h1-6 h-center title"><div class="v-center">特殊事件</div></div>
+                                <div class="scrollbar-outer h5-6">
+                                    <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
+                                    <div class="w1-1 s-word content-card">特殊事件1</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
+                                    <div class="w1-1 s-word content-card">特殊事件2</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
+                                    <div class="w1-1 s-word content-card">特殊事件3</div>
+                                    <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
+                                    <div class="w1-1 s-word content-card">特殊事件4</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
