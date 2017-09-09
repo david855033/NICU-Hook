@@ -34,10 +34,16 @@ Layout.footbar.FOOT_BAR_CLOSE_HEIGHT=40;
 Layout.footbar.max=function(){
     Layout.footbar.mode='max';
     Layout.footbar.modeSwitched();
+    setTimeout(function() {
+        Layout.footbar.scrollDown();
+    }, 500);
 };
 Layout.footbar.min=function(){
     Layout.footbar.mode='min';
     Layout.footbar.modeSwitched();
+    setTimeout(function() {
+        Layout.footbar.scrollDown();
+    }, 500);
 };
 Layout.footbar.close=function(){
     Layout.footbar.mode='close';
