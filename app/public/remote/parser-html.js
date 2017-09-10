@@ -533,3 +533,15 @@ var isDOMChecked=function(jqObj,selector){
     var obj=jqObj.find(selector);
     return obj[0]&&obj[0].checked;
 }
+
+//護理交班
+Parser.NISHandOverPatientInfo=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+   // var tbodies = doc.getElementsByTagName('tbody');
+
+    console.log(doc);
+
+    return resultArray;
+}

@@ -129,14 +129,15 @@ var updateBirthSheet=function(patientID,caseNo,callback){
 
 var preSelectNIS=function(patientID,caseNo,callback){
     queryData("preSelectNIS_"+patientID+"_"+caseNo,function(data, timeStamp){
-        callback&&callback(data, timeStamp);
+        queryData("preSelectNIS2",function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
     });
 }
-var updateNISHandOver=function(patientID,caseNo,callback){
+var updateNISHandOverPatientInfo=function(patientID,caseNo,callback){
     preSelectNIS(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
-        //TODO
-        // queryData("birthSheet_"+data_preSelect.caseno+"_"+data_preSelect.histno+"_"+data_preSelect['struts.token.name']+"_"+data_preSelect.token ,function(data, timeStamp){
-        //     callback&&callback(data, timeStamp);
-        // });
+        queryData("NISHandOverPatientInfo",function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
     });
 }

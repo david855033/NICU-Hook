@@ -158,5 +158,14 @@ var queryToServerRequest=function(query)
         return {
             url:"https://web9.vghtpe.gov.tw/NIS/emr.jsp?hisid="+queryList[1]+"&caseno="+queryList[2]
         };
+    }else if(queryList[0] =="preSelectNIS2"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/reportForEmr.do"
+        };
+    }else if(queryList[0] =="NISHandOverPatientInfo"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/patinfo.do?reqtype=rpt",
+            parser:Parser.NISHandOverPatientInfo
+        };
     }
 }

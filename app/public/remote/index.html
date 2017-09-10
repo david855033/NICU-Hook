@@ -389,6 +389,7 @@
             </div>
             <table id="NISHandOver">
                 <tr><th>欄位</th><th>內容</th></tr>
+                <tr v-for="row in dev.NISHandOver.content.patientInfo"><td>{{row.key}}</td><td>{{row.value}}</td></tr>
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
