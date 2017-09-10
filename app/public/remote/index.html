@@ -425,21 +425,12 @@
             </div>
             <div id="content">
                 <div class="scrollbar-inner h1-1">
-                    <div class="tpr shadow">
-                            <table>
-                                <tr>
-                                    <th></th>
-                                </tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                                <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
-                            </table>
+                    <div class="chart shadow">
+                        <table v-for="table in flowSheet.chart" :class="table.classes">
+                            <tr v-for="row in table.rows">
+                                <td v-for = "col in row" v-html="col.htmlText" :class="col.classes"></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 "use strict";
 var $flowsheetContent=$("#flow-sheet #content");
-var $flowsheetContentTPR=$("#flow-sheet #content .tpr");
+var $flowsheetContentTPR=$("#flow-sheet #content .chart");
 var $flowsheetHeader=$("#flow-sheet #header");
 var $flowsheetHeaderCards=$('#flow-sheet .header-card');
 var $flowsheetFootBar=$("#flow-sheet #footbar");

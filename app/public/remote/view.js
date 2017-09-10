@@ -1,4 +1,6 @@
 "use strict";
+
+
 var view= new Vue({
     el:'#view',
     data:{
@@ -119,6 +121,7 @@ var view= new Vue({
             headerCards:[
                 // {top:"1",mid:"2",bottom:"3"}
             ],
+            chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
             {key:'fnNutrition',title:'營養'},
@@ -300,5 +303,40 @@ var view= new Vue({
                 view.flowSheet.footbarStatus='min';
             }
         }
-    }
+    },
 })
+
+
+var initializeChart=function(){
+    var chartArray = view.flowSheet.chart;
+    var TPRTable={
+        classes:['tpr'],
+        rows:[chartHeader()]
+    }
+    chartArray.push(TPRTable);
+};
+
+var cell = function(htmlText,classes)
+{
+    this.htmlText=htmlText;
+    this.classes=classes||[];
+};
+var chartHeader = function(){
+    var resultArray=[];
+        resultArray.push(new cell("時間",'header-color'));
+        for(var i = 8; i < 24; i++){
+            resultArray.push(new cell(i,'header-color'));
+        }
+        for(var i = 0; i < 8; i++){
+            resultArray.push(new cell(i,'header-color'));
+        }
+    return resultArray;
+};
+var chartRow = function(){
+    var resultArray=[];
+    return resultArray;
+};
+
+
+
+initializeChart();//
