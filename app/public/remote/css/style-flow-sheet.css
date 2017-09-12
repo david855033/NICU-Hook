@@ -53,7 +53,7 @@
     padding-left: 0.5%;
     font-size: 14px;
 }
-/*sets of table color*/
+/*sets of chart color*/
 #flow-sheet .chart table.tpr{
     background-color: hsl(120,30%,50%);
 }
@@ -63,7 +63,9 @@
 #flow-sheet .chart table.tpr .header-color{
     background-color: hsl(120,40%,70%);
 }
-
+#flow-sheet .chart table.tpr .data-color{
+    background-color: hsl(120,40%,70%);
+}
 
 
 

@@ -332,11 +332,16 @@ var chartHeader = function(){
         }
     return resultArray;
 };
-var chartRow = function(){
+var chartTPRRow = function(title,unit,upperLimit,lowerLimit,data){
     var resultArray=[];
+    data=data||[];
+    result.push(new cell(title,'header-color'))
     return resultArray;
 };
+var span = function(htmlText,classes)
+{
 
+}
 
 
 initializeChart();//
