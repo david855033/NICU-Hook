@@ -534,14 +534,24 @@ var isDOMChecked=function(jqObj,selector){
     return obj[0]&&obj[0].checked;
 }
 
+
 //護理交班
 Parser.NISHandOverPatientInfo=function(htmlText){
     var resultArray=[];
-    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').replaceNbsps().trim();
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
     var doc = Parser.getDOM(htmlText);
-   // var tbodies = doc.getElementsByTagName('tbody');
+    // var tbodies = doc.getElementsByTagName('tbody');
+    var tds = doc.getElementsByTagName('td');
+    if(!(tds&&tds.length>0)){return resultArray;}
+    var datas=[];
+    for(var i = 0 ; i < tds.length;i++)
+    {
+        var data = tds[i].innerText.trim();
+        datas.push(data);
+    }
+    console.log(datas);
 
-    console.log(doc);
-
+    datas[30]&&resultArray.push({key:"聯絡人1",value:datas[30]});
+    
     return resultArray;
 }

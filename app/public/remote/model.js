@@ -12,6 +12,7 @@ var queryData=function(query, callback){
             callback(queryDataSet.data, queryDataSet.timeStamp);  
         }
     }
+
     //from server
     if(queryDataSet_local.timeStamp){
         var secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());

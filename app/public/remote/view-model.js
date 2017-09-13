@@ -136,7 +136,7 @@ var preSelectNIS=function(patientID,caseNo,callback){
 }
 var updateNISHandOverPatientInfo=function(patientID,caseNo,callback){
     preSelectNIS(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
-        queryData("NISHandOverPatientInfo",function(data, timeStamp){
+        queryData("NISHandOverPatientInfo_"+patientID+"_"+caseNo,function(data, timeStamp){
             callback&&callback(data, timeStamp);
         });
     });
