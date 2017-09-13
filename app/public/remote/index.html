@@ -428,8 +428,9 @@
                 <div class="scrollbar-inner h1-1">
                     <div class="chart shadow">
                         <table v-for="table in flowSheet.chart" :class="table.classes">
+                            <tr><td></td><td colspan="8">白班</td><td colspan="8">小夜</td><td colspan="8">大夜</td></tr>
                             <tr v-for="row in table.rows">
-                                <td v-for = "col in row" v-html="col.htmlText" :class="col.classes"></td>
+                                <td v-for = "col in row" v-html="col.htmlText" :class="col.classes" :title="col.tooltip"></td>
                             </tr>
                         </table>
                     </div>

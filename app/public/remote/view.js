@@ -8,7 +8,7 @@ var view= new Vue({
         password:"888888",
         cookie:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"dev",
+        selectedView:"flow-sheet",
         wardList:["NICU","PICU","NBR","A091"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -308,23 +308,32 @@ var view= new Vue({
 
 
 var initializeChart=function(){
-    var chartArray = view.flowSheet.chart;
+    var chartArray =[];
     var TPRTable={
         classes:['tpr'],
-        rows:[chartHeader()]
+        rows:[chartHeader(),
+            chartTPRRow("體溫","(&#8451;)",[36,38],[]),
+            chartTPRRow("心律","(/min)",[100,180],[]),
+            chartTPRRow("呼吸","(/min)",[100,180],[]),
+        ]
     }
     chartArray.push(TPRTable);
+    view.flowSheet.chart=chartArray;
 };
 
-var cell = function(htmlText,classes)
+var cell = function(htmlText,classes,tooltip)
 {
     this.htmlText=htmlText;
     this.classes=classes||[];
+    this.tooltip=tooltip;
 };
 var chartHeader = function(){
     var resultArray=[];
-        resultArray.push(new cell("時間",'header-color'));
-        for(var i = 8; i < 24; i++){
+        resultArray.push(new cell("時間",'title-color'));
+        for(var i = 8; i < 16; i++){
+            resultArray.push(new cell(i,'header-color'));
+        }
+        for(var i = 16; i < 24; i++){
             resultArray.push(new cell(i,'header-color'));
         }
         for(var i = 0; i < 8; i++){
@@ -332,15 +341,36 @@ var chartHeader = function(){
         }
     return resultArray;
 };
-var chartTPRRow = function(title,unit,upperLimit,lowerLimit,data){
+var chartTPRRow = function(title,unit,limit,data){
     var resultArray=[];
     data=data||[];
-    result.push(new cell(title,'header-color'))
+    limit=limit||[];
+    var lowerLimit=limit[0];
+    var upperLimit=limit[1];
+    var limitString="";
+    if(lowerLimit&&upperLimit){
+        limitString=lowerLimit+"-"+upperLimit;
+    }else if (lowerLimit){
+        limitString="&ge;"+lowerLimit;
+    }else if(upperLimit){
+        limitString="&lt;"+upperLimit;
+    }
+    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(limitString,["limit"]);
+    resultArray.push(new cell(titleString,'title-color')); 
+    for(var i = 0; i < 24;i++)
+    {
+        if(data[i]){
+            resultArray.push(new cell(data[i],'data-color'))
+        }else
+        {   
+            resultArray.push(new cell("",'no-data-color'))
+        }
+    }
     return resultArray;
 };
 var span = function(htmlText,classes)
 {
-
+    return "<span class='"+classes.join(" ")+"'>"+htmlText+"</span>";
 }
 
 
