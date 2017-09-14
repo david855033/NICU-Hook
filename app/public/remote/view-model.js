@@ -134,9 +134,35 @@ var preSelectNIS=function(patientID,caseNo,callback){
         });
     });
 }
-var updateNISHandOverPatientInfo=function(patientID,caseNo,callback){
+var updateNISHandOver=function(patientID,caseNo,callback){
     preSelectNIS(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
         queryData("NISHandOverPatientInfo_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp, "patientInfo");
+        });
+        queryData("NISHandOverHistory_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp, "history");
+        });
+        queryData("NISHandOverHealth_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp, "health");
+        });
+        queryData("NISHandOverLine_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp, "line");
+        });
+        queryData("NISHandOverNote_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp, "note");
+        });
+    });
+}
+var preSelectNISIO=function(bed,room,callback){
+    queryData("preSelectNISNUR_"+patientID+"_"+caseNo,function(data, timeStamp){
+        callback&&callback(data, timeStamp);
+    });
+};
+
+var updateNISIO=function(bed,room,patientID,caseNo,date,callback){
+    preSelectNISIO(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
+        date=Parser.getShortDate(date);
+        queryData("NISIO_"+patientID+"_"+caseNo+"_"+date,function(data, timeStamp){
             callback&&callback(data, timeStamp);
         });
     });

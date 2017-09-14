@@ -4,11 +4,11 @@
 var view= new Vue({
     el:'#view',
     data:{
-        account:"DOC3924B",
-        password:"888888",
-        cookie:"",
+        accountDOC:"DOC3924B",
+        passwordDOC:"888888",
+        cookieDOC:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"flow-sheet",
+        selectedView:"dev",
         wardList:["NICU","PICU","NBR","A091"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -112,10 +112,11 @@ var view= new Vue({
             },
             NISHandOver:{
                 content:{
-                    patientInfo:[]
+                    patientInfo:[],history:[],health:[],line:[],note:[]
                 },
                 timeStamp:""
-            }
+            },
+            NISIO:[]
         },
         flowSheet:{
             headerCards:[
@@ -150,7 +151,7 @@ var view= new Vue({
     },
     methods:{
         signIn:function(callback){
-            server.signIn(view.account,view.password,callback);
+            server.signIn(view.accountDOC,view.passwordDOC,callback);
         },
         updatePatientList:function(ward){
             requestPatientList(ward,function(data,timeStamp){
@@ -187,8 +188,9 @@ var view= new Vue({
             // view.updateTreatment(patientID, caseNo);
             // view.updateTransfusion(patientID, caseNo);
             // view.updateMedication(patientID, caseNo);
-            //view.updateBirthSheet(patientID, caseNo);
-            view.updateNISHandOverPatientInfo(patientID, caseNo);
+            // view.updateBirthSheet(patientID, caseNo);
+            // view.updateNISHandOver(patientID, caseNo);
+            view.updateNISIO(patientID, caseNo, Parser.getDateTime());
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -289,12 +291,20 @@ var view= new Vue({
                 view.dev.birthSheet.timeStamp=timeStamp;
             });
         },
-        updateNISHandOverPatientInfo:function(patientID,caseNo)
+        updateNISHandOver:function(patientID,caseNo)
         {
-            updateNISHandOverPatientInfo(patientID,caseNo,function(data,timeStamp)
+            updateNISHandOver(patientID,caseNo,function(data,timeStamp,field)
             {
-                view.dev.NISHandOver.content.patientInfo=data;
+                view.dev.NISHandOver.content[field]=data;
                 view.dev.NISHandOver.timeStamp=timeStamp;
+            });
+        },
+        updateNISIO:function(patientID, caseNo, date){
+            updateNISIO(patientID,caseNo, date,function(data,timeStamp)
+            {
+                view.dev.NISIO[date]={};
+                view.dev.NISIO[date].content=data;
+                view.dev.NISIO[date].timeStamp=timeStamp;
             });
         },
         selectFlowSheetFn:function(fn){
@@ -330,10 +340,7 @@ var cell = function(htmlText,classes,tooltip)
 var chartHeader = function(){
     var resultArray=[];
         resultArray.push(new cell("時間",'title-color'));
-        for(var i = 8; i < 16; i++){
-            resultArray.push(new cell(i,'header-color'));
-        }
-        for(var i = 16; i < 24; i++){
+        for(var i = 8; i < 24; i++){
             resultArray.push(new cell(i,'header-color'));
         }
         for(var i = 0; i < 8; i++){

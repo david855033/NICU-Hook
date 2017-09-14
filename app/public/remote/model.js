@@ -168,5 +168,36 @@ var queryToServerRequest=function(query)
             url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/patinfo.do?reqtype=rpt",
             parser:Parser.NISHandOverPatientInfo
         };
+    }else if(queryList[0] =="NISHandOverHistory"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/history.do?reqtype=rpt",
+            parser:Parser.NISHandOverHistory
+        };
+    }else if(queryList[0] =="NISHandOverHealth"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/helth.do?reqtype=rpt",
+            parser:Parser.NISHandOverHealth
+        };
+    }else if(queryList[0] =="NISHandOverLine"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/canlskin.do?reqtype=rpt",
+            parser:Parser.NISHandOverLine
+        };
+    }else if(queryList[0] =="NISHandOverNote"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/note.do?reqtype=rpt",
+            parser:Parser.NISHandOverNote
+        };
+    }else if(queryList[0] =="preSelectNISIO"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/emr.jsp?hisid="+queryList[1]+"&caseno="+queryList[2],
+            isNUR:true
+        };
+    }else if(queryList[0] =="NISIO"){
+        return {
+            url:"https://web9.vghtpe.gov.tw/NIS/report/IORpt/details.do?gaugeDate1="+queryList[3],
+            parser:Parser.NISIO,
+            isNUR:true
+        };
     }
 }

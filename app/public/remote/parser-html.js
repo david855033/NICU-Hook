@@ -549,9 +549,114 @@ Parser.NISHandOverPatientInfo=function(htmlText){
         var data = tds[i].innerText.trim();
         datas.push(data);
     }
-    console.log(datas);
 
     datas[30]&&resultArray.push({key:"聯絡人1",value:datas[30]});
-    
+    datas[32]&&resultArray.push({key:"聯絡人1電話1",value:datas[32]});
+    datas[34]&&resultArray.push({key:"聯絡人1電話2",value:datas[34]});
+    datas[36]&&resultArray.push({key:"聯絡人1手機",value:datas[36]});
+    datas[38]&&resultArray.push({key:"聯絡人2",value:datas[38]});
+    datas[40]&&resultArray.push({key:"聯絡人2電話1",value:datas[40]});
+    datas[42]&&resultArray.push({key:"聯絡人2電話2",value:datas[42]});
+    datas[44]&&resultArray.push({key:"聯絡人2手機",value:datas[44]});
+    datas[46]&&resultArray.push({key:"聯絡人3",value:datas[46]});
+    datas[48]&&resultArray.push({key:"聯絡人3電話1",value:datas[48]});
+    datas[50]&&resultArray.push({key:"聯絡人3電話2",value:datas[50]});
+    datas[52]&&resultArray.push({key:"聯絡人3手機",value:datas[52]});
+    datas[54]&&resultArray.push({key:"main照顧者",value:datas[54]});
+    datas[56]&&resultArray.push({key:"電話",value:datas[56]});
     return resultArray;
+}
+Parser.NISHandOverHistory=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+    var tds = doc.getElementsByTagName('td');
+    if(!(tds&&tds.length>0)){return resultArray;}
+    var datas=[];
+    for(var i = 0 ; i < tds.length;i++)
+    {
+        var data = tds[i].innerText.trim();
+        datas.push(data);
+    }
+    //console.log(datas);
+    datas[8]&&resultArray.push({key:"重要病史",value:datas[8]});
+    datas[14]&&resultArray.push({key:"入院原因",value:datas[14]});
+    return resultArray;
+}
+Parser.NISHandOverHealth=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+    var tds = doc.getElementsByTagName('td');
+    if(!(tds&&tds.length>0)){return resultArray;}
+    var datas=[];
+    for(var i = 0 ; i < tds.length;i++)
+    {
+        var data = tds[i].innerText.trim();
+        datas.push(data);
+    }
+    var i=datas.indexOf("備註");
+    (i>=0)&&datas[i+1]&&resultArray.push({key:"備註",value:datas[i+1]});
+    return resultArray;
+}
+Parser.NISHandOverLine=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+    var tds = doc.getElementsByTagName('td');
+    if(!(tds&&tds.length>0)){return resultArray;}
+    var datas=[];
+    for(var i = 0 ; i < tds.length;i++)
+    {
+        var data = tds[i].innerText.trim();
+        datas.push(data);
+    }
+    for(var i = 0; i < datas.length;i++){
+        if(datas[i]=="執行內容"){
+            var line={};
+            (i-6>=0)&&datas[i-6]&&(line.name=datas[i-6]);
+            (i-5>=0)&&datas[i-5]&&(line.type=datas[i-5]);
+            (i-4>=0)&&datas[i-4]&&(line.part=datas[i-4]);
+            (i-3>=0)&&datas[i-3]&&(line.applyTime=datas[i-3]);
+            (i-2>=0)&&datas[i-2]&&(line.changeTime=datas[i-2]);
+            (i+1>=0)&&datas[i+1]&&(line.info=datas[i+1]);
+            resultArray.push({key:"管路"+line.name,value:line});
+        }
+    }
+    return resultArray;
+}
+Parser.NISHandOverNote=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+    var tds = doc.getElementsByTagName('td');
+    if(!(tds&&tds.length>0)){return resultArray;}
+    var datas=[];
+    for(var i = 0 ; i < tds.length;i++)
+    {
+        var data = tds[i].innerText.trim();
+        datas.push(data);
+    }
+    var startIndex=datas.indexOf("內容");
+    if(startIndex<0){return resultArray;}
+    for(var i = startIndex+1; i < datas.length;i++){
+        var note={};
+        (i>=0)&&datas[i]&&(note.date=datas[i]);
+        i++;
+        (i>=0)&&datas[i]&&(note.text=datas[i]);
+        if(note.date&&note.text){
+            resultArray.push({key:note.date,value:note.text});
+        }
+    }
+    return resultArray;
+}
+//輸出輸入
+Parser.NISIO=function(htmlText){
+    var resultArray=[];
+    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    var doc = Parser.getDOM(htmlText);
+    console.log(doc);
+
+
+    return resultArray=[];
 }

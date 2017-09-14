@@ -196,3 +196,18 @@ table#NISHandOver{
     padding:5px;
     border:1px solid black;
 }
+#NISHandOver th:first-child{
+    width: 200px;
+}
+
+table#NISIO{
+    width:100%;
+    margin:3px 0 3px 0;
+}
+#NISIO th,#NISIO td{
+    padding:5px;
+    border:1px solid black;
+}
+#NISIO th:first-child{
+    width: 200px;
+}

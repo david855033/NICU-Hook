@@ -76,35 +76,7 @@ getBirthSheet.birthHistory = function(patientID, caseNo)
         PedDoctor:""
     };
 };
-
-//NIS系統
-var getNIS = {};
-//入院評估
-getNIS.admssionAssessment = function(patientID, caseNo){
-    return {
-        admissionReason:"",
-        birthLocation:"",
-        BL:"",
-        BW:"",
-        HC:"",
-        CC:"",
-        contact1:{name:"",relation:"",phone:[]},
-        contact2:{name:"",relation:"",phone:[]},
-        contact3:{name:"",relation:"",phone:[]},
-        siblings:{olderBrother:0,youngerBrother:0,olderSister:0,youngerSister:0},
-        careGiver:""
-    };
-};
-
-//護理病程，是以天為單位查詢?
-getNIS.nursingProgress=function(patientID, caseNo, date)
-{
-    return [
-        {dateTime:"2017-01-01 12:00", content:"護理紀錄內容.....",nurse:"某護理師"}
-    ];
-};
-
-//每日評估
+var getNIS={};
 //特殊事件，以天為單位查詢
 getNIS.specialEvent=function(patientID, caseNo, date)
 {
