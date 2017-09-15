@@ -345,7 +345,9 @@ var initializeChart=function(){
     var InfusionTable={
         classes:['infusion'],
         rows:[
-            
+            chartInfusionRow("IV","NS",[]),
+            chartInfusionRow("Aline","NS",[]),
+            chartInfusionRow("Aline","NS",[]),
         ]
     };
     chartArray.push(TPRTable);
@@ -397,21 +399,10 @@ var chartTPRRow = function(title,unit,limit,data){
     }
     return resultArray;
 };
-var chartInfusionRow = function(title,unit,limit,data){   /////////////////todo
+var chartInfusionRow = function(route,name,data){   /////////////////todo
     var resultArray=[];
     data=data||[];
-    limit=limit||[];
-    var lowerLimit=limit[0];
-    var upperLimit=limit[1];
-    var limitString="";
-    if(lowerLimit&&upperLimit){
-        limitString=lowerLimit+"-"+upperLimit;
-    }else if (lowerLimit){
-        limitString="&ge;"+lowerLimit;
-    }else if(upperLimit){
-        limitString="&lt;"+upperLimit;
-    }
-    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(limitString,["limit"]);
+    var titleString=span(route,["route"])+" "+span("(ml)",["unit"])+" "+span(name,["name"]);
     resultArray.push(new cell(titleString,'title-color')); 
     for(var i = 0; i < 24;i++)
     {
