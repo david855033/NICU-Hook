@@ -650,13 +650,65 @@ Parser.NISHandOverNote=function(htmlText){
     }
     return resultArray;
 }
-//輸出輸入
-Parser.NISIO=function(htmlText){
-    var resultArray=[];
-    htmlText=htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
-    var doc = Parser.getDOM(htmlText);
-    console.log(doc);
+//flowSheet
+Parser.flowSheet=function(htmlText){
+    var getProperty=function(name){
+        var match = htmlText.match(new RegExp(name+"(\\s|\\S)*?<\\/script>"));
+        if(match){
+            match=match[0].regReplaceAll(/<\/script>/g,"").regReplaceAll(new RegExp(name+"="),"").regReplaceAll(/\\/g,"");
+            do{
+                var fix=match.regReplaceAll(/\,\,/g,",\"\",");
+                var fixed= (fix!=match);
+                match=fix;
+            }while(fixed);
+            match=match.regReplaceAll(/\,\]/g,",\"\"]");
+            match=match.regReplaceAll(/\[\,/g,"[\"\",");
+            if(match[match.length-1]==";"){match=match.slice(0,match.length-1)}
+            return JSON.parse(match);
+        }
+        return "";
+    }
 
+    var result={};
+    
+    var event=getProperty("event_Array");
+    event&&(result.event=event);
 
-    return resultArray=[];
+    var peripheral=getProperty("peripheral_Array");
+    peripheral&&(result.peripheral=peripheral);
+    
+    var aline=getProperty("aline_Array");
+    aline&&(result.aline=aline);
+
+    var central=getProperty("central_Array");
+    central&&(result.central=central);
+
+    var transfusion=getProperty("transfusion_Array");
+    transfusion&&(result.transfusion=transfusion);
+
+    var drain=getProperty("drain_Array");
+    drain&&(result.drain=drain);
+
+    var NGDrain=getProperty("NGDrain");
+    NGDrain&&(result.NGDrain=NGDrain);
+
+    var POAmount=getProperty("POAmount");
+    POAmount&&(result.POAmount=POAmount);
+
+    var NGAmount=getProperty("NGAmount");
+    NGAmount&&(result.NGAmount=NGAmount);
+
+    var RVAmount=getProperty("RVAmount");
+    RVAmount&&(result.RVAmount=RVAmount);
+
+    var urine=getProperty(" urine");
+    urine&&(result.urine=urine);
+
+    var stool=getProperty("stool");
+    stool&&(result.stool=stool);
+
+    var enema=getProperty("enema");
+    enema&&(result.enema=enema);
+
+    return result;
 }

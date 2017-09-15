@@ -396,12 +396,18 @@
                 <tr v-for="row in dev.NISHandOver.content.note"><td>{{row.key}}</td><td>{{row.value}}</td></tr>
             </table>
             <div class="rightbox">
-                IO 
+                FLOWSHEET 
             </div>
-            <table id="NISIO">
-                <tr><th>時間</th><th>內容</th></tr>
-                <tr v-for="row in dev.NISIO"><td>{{row.date}}</td><td>{{row.value}}</td></tr>
-               
+            <table id="FLOWSHEET">
+                <tr><th>日期</th><th>內容</th><th>timeStamp</th></tr>
+                <tr v-for="row in dev.flowSheet"><td>{{row.date}}</td>
+                    <td>
+                        <div v-for="(data, propertyName) in row.content">
+                            <div>{{propertyName}}</div>
+                            <span v-for="e in data">{{e}} </span>
+                        </div>
+                    </td>
+                    <td>{{row.timeStamp}}</td></tr>
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
@@ -439,8 +445,8 @@
             <div id="content">
                 <div class="scrollbar-inner h1-1">
                     <div class="chart shadow">
-                        <table v-for="table in flowSheet.chart" :class="table.classes">
-                            <tr><td></td><td colspan="8">白班</td><td colspan="8">小夜</td><td colspan="8">大夜</td></tr>
+                        <table v-for="(table,i) in flowSheet.chart" :class="table.classes">
+                            <tr v-if="i==0"><td></td><td colspan="8" class="shift-name">白班</td><td colspan="8" class="shift-name">小夜</td><td colspan="8" class="shift-name">大夜</td></tr>
                             <tr v-for="row in table.rows">
                                 <td v-for = "col in row" v-html="col.htmlText" :class="col.classes" :title="col.tooltip"></td>
                             </tr>

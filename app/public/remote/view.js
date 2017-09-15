@@ -8,7 +8,7 @@ var view= new Vue({
         passwordDOC:"888888",
         cookieDOC:"",
         viewList:['dev','flow-sheet'],
-        selectedView:"dev",
+        selectedView:"flow-sheet",
         wardList:["NICU","PICU","NBR","A091"],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
@@ -116,7 +116,7 @@ var view= new Vue({
                 },
                 timeStamp:""
             },
-            NISIO:[]
+            flowSheet:[]
         },
         flowSheet:{
             headerCards:[
@@ -190,7 +190,7 @@ var view= new Vue({
             // view.updateMedication(patientID, caseNo);
             // view.updateBirthSheet(patientID, caseNo);
             // view.updateNISHandOver(patientID, caseNo);
-            view.updateNISIO(patientID, caseNo, Parser.getDateTime());
+            view.updateFlowSheet(patientID, caseNo, Parser.getDateTime());
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -299,12 +299,22 @@ var view= new Vue({
                 view.dev.NISHandOver.timeStamp=timeStamp;
             });
         },
-        updateNISIO:function(patientID, caseNo, date){
-            updateNISIO(patientID,caseNo, date,function(data,timeStamp)
+        updateFlowSheet:function(patientID, caseNo, date){
+            date=Parser.getShortDate(date);
+            updateFlowSheet(patientID,caseNo, date,function(data,timeStamp)
             {
-                view.dev.NISIO[date]={};
-                view.dev.NISIO[date].content=data;
-                view.dev.NISIO[date].timeStamp=timeStamp;
+                var obj={};
+                obj.date=date;
+                obj.content=data;
+                obj.timeStamp=timeStamp;
+                var index = view.dev.flowSheet.findIndex(function(x){return x.date==date;});
+                if(index<0)
+                {
+                    view.dev.flowSheet.splice(1,0,obj);    
+                }else
+                {
+                    view.dev.flowSheet.splice(index,1,obj);            
+                }
             });
         },
         selectFlowSheetFn:function(fn){
@@ -325,9 +335,21 @@ var initializeChart=function(){
             chartTPRRow("體溫","(&#8451;)",[36,38],[]),
             chartTPRRow("心律","(/min)",[100,180],[]),
             chartTPRRow("呼吸","(/min)",[100,180],[]),
+            chartTPRRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
+            getSpacerRow(),
+            chartTPRRow("SBP","(mmHg)",[45,],[]),
+            chartTPRRow("DBP","(mmHg)",[20,],[]),
+            chartTPRRow("MBP","(mmHg)",[35,],[]),
         ]
-    }
+    };
+    var InfusionTable={
+        classes:['infusion'],
+        rows:[
+            
+        ]
+    };
     chartArray.push(TPRTable);
+    chartArray.push(InfusionTable);
     view.flowSheet.chart=chartArray;
 };
 
@@ -375,10 +397,40 @@ var chartTPRRow = function(title,unit,limit,data){
     }
     return resultArray;
 };
+var chartInfusionRow = function(title,unit,limit,data){   /////////////////todo
+    var resultArray=[];
+    data=data||[];
+    limit=limit||[];
+    var lowerLimit=limit[0];
+    var upperLimit=limit[1];
+    var limitString="";
+    if(lowerLimit&&upperLimit){
+        limitString=lowerLimit+"-"+upperLimit;
+    }else if (lowerLimit){
+        limitString="&ge;"+lowerLimit;
+    }else if(upperLimit){
+        limitString="&lt;"+upperLimit;
+    }
+    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(limitString,["limit"]);
+    resultArray.push(new cell(titleString,'title-color')); 
+    for(var i = 0; i < 24;i++)
+    {
+        if(data[i]){
+            resultArray.push(new cell(data[i],'data-color'))
+        }else
+        {   
+            resultArray.push(new cell("",'no-data-color'))
+        }
+    }
+    return resultArray;
+};
+var getSpacerRow=function(){
+    return [new cell("","spacer")];
+};
 var span = function(htmlText,classes)
 {
     return "<span class='"+classes.join(" ")+"'>"+htmlText+"</span>";
-}
+};
 
 
 initializeChart();//

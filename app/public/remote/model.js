@@ -188,16 +188,14 @@ var queryToServerRequest=function(query)
             url:"https://web9.vghtpe.gov.tw/NIS/handover/NishRpt/note.do?reqtype=rpt",
             parser:Parser.NISHandOverNote
         };
-    }else if(queryList[0] =="preSelectNISIO"){
+    }else if(queryList[0] =="preSelectFlowSheet"){
         return {
-            url:"https://web9.vghtpe.gov.tw/NIS/emr.jsp?hisid="+queryList[1]+"&caseno="+queryList[2],
-            isNUR:true
+            url:"https://web9.vghtpe.gov.tw/NIS/nicuflowsheet.jsp?hisid="+queryList[1]+"&caseno="+queryList[2]
         };
-    }else if(queryList[0] =="NISIO"){
+    }else if(queryList[0] =="flowSheet"){
         return {
-            url:"https://web9.vghtpe.gov.tw/NIS/report/IORpt/details.do?gaugeDate1="+queryList[3],
-            parser:Parser.NISIO,
-            isNUR:true
+            url:"https://web9.vghtpe.gov.tw/NIS/report/FlowSheet/main.do?gaugeDate1="+queryList[3]+"&r_ser_num="+queryList[2]+"&r_his_id="+queryList[1],
+            parser:Parser.flowSheet
         };
     }
 }

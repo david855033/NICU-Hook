@@ -153,17 +153,16 @@ var updateNISHandOver=function(patientID,caseNo,callback){
         });
     });
 }
-var preSelectNISIO=function(bed,room,callback){
-    queryData("preSelectNISNUR_"+patientID+"_"+caseNo,function(data, timeStamp){
+var preSelectFlowSheet=function(patientID,caseNo,callback){
+    queryData("preSelectFlowSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
         callback&&callback(data, timeStamp);
     });
 };
 
-var updateNISIO=function(bed,room,patientID,caseNo,date,callback){
-    preSelectNISIO(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
-        date=Parser.getShortDate(date);
-        queryData("NISIO_"+patientID+"_"+caseNo+"_"+date,function(data, timeStamp){
-            callback&&callback(data, timeStamp);
+var updateFlowSheet=function(patientID,caseNo,date,callback){
+    preSelectFlowSheet(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
+        queryData("flowSheet_"+patientID+"_"+caseNo+"_"+date,function(data, timeStamp){
+            callback&&callback(data, timeStamp, date);
         });
     });
 }

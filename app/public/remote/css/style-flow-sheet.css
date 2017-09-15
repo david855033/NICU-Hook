@@ -56,21 +56,32 @@
     padding-left: 0.5%;
     font-size: 14px;
     border-top-left-radius: 3px;
-    border-bottom-left-radius:  3px;
+    border-bottom-left-radius: 3px;
 }
+
+#flow-sheet .chart table td.spacer{
+    height: 0px;
+}
+
 /*sets of chart color*/
 #flow-sheet .chart table.tpr{
     background-color: hsl(120,30%,60%);
     border-radius: 5px;
 }
+#flow-sheet .chart table.tpr .shift-name{
+    background-color: hsl(120,30%,75%);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left:2.5px solid hsl(120,30%,60%);
+}
 #flow-sheet .chart table.tpr td:nth-child(8n+2){
     border-left:2.5px solid hsl(120,30%,60%);
 }
 #flow-sheet .chart table.tpr .title-color{
-    background-color: hsl(120,30%,70%);
+    background-color: hsl(120,30%,75%);
 }
 #flow-sheet .chart table.tpr .header-color{
-    background-color: hsl(120,30%,70%);
+    background-color: hsl(120,30%,75%);
 }
 #flow-sheet .chart table.tpr .data-color{
     background-color: hsl(120,30%,85%);
@@ -87,7 +98,7 @@
     color: hsl(0,0%,40%);
 }
 #flow-sheet .chart table.tpr .limit{
-    font-size: 12px;
+    font-size: 10px;
     color: hsl(120,40%,30%)
 }
 
