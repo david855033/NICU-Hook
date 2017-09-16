@@ -329,6 +329,7 @@ var view= new Vue({
 
 var initializeChart=function(){
     var chartArray =[];
+
     var TPRTable={
         classes:['tpr'],
         rows:[chartHeader(),
@@ -342,16 +343,47 @@ var initializeChart=function(){
             chartTPRRow("MBP","(mmHg)",[35,],[]),
         ]
     };
+    chartArray.push(TPRTable);
+
     var InfusionTable={
         classes:['infusion'],
         rows:[
-            chartInfusionRow("IV","NS",[]),
-            chartInfusionRow("Aline","NS",[]),
-            chartInfusionRow("Aline","NS",[]),
+            chartInfusionRow("IV","",[]),
+            chartInfusionRow("CVC","",[1,2,4,5,222,333]),
         ]
     };
-    chartArray.push(TPRTable);
     chartArray.push(InfusionTable);
+
+    var transfusionTable={
+        classes:['transfusion'],
+        rows:[
+            chartTransfusionRow("PRBC",[,,,,,,,,,,,,3.5,3.5,3.5]),
+            chartTransfusionRow("PLT",[,,,,9,9,,,,]),
+        ]
+    };
+    chartArray.push(transfusionTable);
+
+    var feedingTable={
+        classes:['feeding'],
+        rows:[
+            chartFeedingRow("PO","(ml)",[,,10+div("配方"),,10+div("配方"),,10+div("配方")]),
+            chartFeedingRow("NG/OG","(ml)",[,,,,,,,,,,,,,,10]),
+            chartFeedingRow("RV","(ml)",[,,"0",,,,,,,,,,,,]),
+            chartFeedingRow("NG/OG Drain","(ml)",[,,,,,,,,,,,,,,10])
+        ]
+    };
+    chartArray.push(feedingTable);
+
+    var excretionTable={
+        classes:['excretion'],
+        rows:[
+            chartExcretionRow("Urine","(ml)","",[]),
+            chartExcretionRow("Stool","(ml)","",[]),
+            chartExcretionRow("Enema/Sti.","","",[])
+        ]
+    };
+    chartArray.push(excretionTable);
+
     view.flowSheet.chart=chartArray;
 };
 
@@ -399,7 +431,7 @@ var chartTPRRow = function(title,unit,limit,data){
     }
     return resultArray;
 };
-var chartInfusionRow = function(route,name,data){   /////////////////todo
+var chartInfusionRow = function(route,name,data){
     var resultArray=[];
     data=data||[];
     var titleString=span(route,["route"])+" "+span("(ml)",["unit"])+" "+span(name,["name"]);
@@ -415,13 +447,69 @@ var chartInfusionRow = function(route,name,data){   /////////////////todo
     }
     return resultArray;
 };
+var chartTransfusionRow = function(name,data){
+    var resultArray=[];
+    data=data||[];
+    var titleString=span(name,["name"])+" "+span("(ml)",["unit"]);
+    resultArray.push(new cell(titleString,'title-color')); 
+    for(var i = 0; i < 24;i++)
+    {
+        if(data[i]){
+            resultArray.push(new cell(data[i],'data-color'))
+        }else
+        {   
+            resultArray.push(new cell("",'no-data-color'))
+        }
+    }
+    return resultArray;
+};
+var chartFeedingRow = function(name,unit,data){
+    var resultArray=[];
+    data=data||[];
+    var titleString=span(name,["name"])+" "+span(unit,["unit"]);
+    resultArray.push(new cell(titleString,'title-color')); 
+    for(var i = 0; i < 24;i++)
+    {
+        if(data[i]){
+            resultArray.push(new cell(data[i],'data-color'))
+        }else
+        {   
+            resultArray.push(new cell("",'no-data-color'))
+        }
+    }
+    return resultArray;
+};
+var chartExcretionRow = function(name,unit,content,data){
+    var resultArray=[];
+    data=data||[];
+    var titleString=span(name,["name"])+" "+span(unit,["unit"]);
+    resultArray.push(new cell(titleString,'title-color')); 
+    for(var i = 0; i < 24;i++)
+    {
+        if(data[i]){
+            resultArray.push(new cell(data[i],'data-color'))
+        }else
+        {   
+            resultArray.push(new cell("",'no-data-color'))
+        }
+    }
+    return resultArray;
+};
+
 var getSpacerRow=function(){
     return [new cell("","spacer")];
 };
 var span = function(htmlText,classes)
 {
-    return "<span class='"+classes.join(" ")+"'>"+htmlText+"</span>";
+    var classString = "";
+    if(classes){classString=" class='"+classes.join(" ")+"'";}
+    return "<span"+classString+">"+htmlText+"</span>";
 };
-
+var div = function(htmlText,classes)
+{
+    var classString = "";
+    if(classes){classString=" class='"+classes.join(" ")+"'";}
+    return "<div"+classString+">"+htmlText+"</div>";
+};
 
 initializeChart();//
