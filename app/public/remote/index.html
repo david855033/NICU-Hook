@@ -454,7 +454,7 @@
                     </div>
                 </div>
             </div>
-            <div id="footbar" class="shadow">
+            <div id="footbar">
                 <div id="footbarMenu" class="nowrap">
                     <div class="footbar-fn-button h1-1 inline-block" v-for="b in flowSheet.footbarMenuList" @click="selectFlowSheetFn(b.key)" :class="{selected:flowSheet.selectedfootbarMenu==b.key}">
                         <div class="h1-1"><div class="v-center">{{b.title}}</div></div>
@@ -464,12 +464,12 @@
                         </div><div id="close" class='h1-1 w1-3 inline-block' @click="flowSheet.footbarStatus='close'"><div class="h-center v-center">&times;</div></div>
                     </div>
                 </div>
-                <div id="fnOverview" v-show="flowSheet.selectedfootbarMenu=='fnOverview'&&flowSheet.footbarStatus!='close'">
+                <div id="fnOverview" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnOverview'&&flowSheet.footbarStatus!='close'">
                     <div id="sub-io" class="footbar-sub float-left">
                         <div class="footbar-sub-inner h1-1">
                             <div id="morning" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center s-word nowrap">白班</div>
+                                    <div class="v-center h-center ms-word nowrap heavy-weight">白班</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -493,7 +493,7 @@
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center">3</div></div>
+                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center"><span class="red">0.5</span></div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">IO</div></div>
@@ -504,7 +504,7 @@
                             </div>
                             <div id="afternoon" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center s-word nowrap">小夜</div>
+                                    <div class="v-center h-center ms-word nowrap heavy-weight">小夜</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -539,7 +539,7 @@
                             </div>
                             <div id="night" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center s-word nowrap">大夜</div>
+                                    <div class="v-center h-center ms-word nowrap heavy-weight">大夜</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -576,7 +576,7 @@
                                 <div class="w2-13 h1-1 float-left">
                                     <div class="h1-2 v-center h-center">
                                         <div class="h1-10"></div>
-                                        <div class="h4-10 s-word nowrap">今日</div>
+                                        <div class="h4-10 ms-word nowrap heavy-weight">今日</div>
                                         <div class="h2-10"></div>
                                         <div class="h2-10 xs-word grey-40-font">+20g</div>
                                         <div class="h1-10"></div>
@@ -613,11 +613,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="day2" class='shift h1-6' v-show="flowSheet.footbarStatus=='max'">
+                            <div id="day2" class='shift h1-6' v-if="flowSheet.footbarStatus=='max'">
                                     <div class="w2-13 h1-1 float-left">
                                         <div class="h1-2 v-center h-center">
                                             <div class="h1-10"></div>
-                                            <div class="h4-10 s-word nowrap">昨日</div>
+                                            <div class="h4-10 ms-word nowrap heavy-weight">昨日</div>
                                             <div class="h2-10"></div>
                                             <div class="h2-10 xs-word grey-40-font">+20g</div>
                                             <div class="h1-10"></div>
@@ -654,11 +654,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="day3" class='shift h1-6' v-show="flowSheet.footbarStatus=='max'">
+                                <div id="day3" class='shift h1-6' v-if="flowSheet.footbarStatus=='max'">
                                         <div class="w2-13 h1-1 float-left">
                                             <div class="h1-2 v-center h-center">
                                                 <div class="h1-10"></div>
-                                                <div class="h4-10 s-word nowrap">前日</div>
+                                                <div class="h4-10 ms-word nowrap heavy-weight">前日</div>
                                                 <div class="h2-10"></div>
                                                 <div class="h2-10 xs-word grey-40-font">-15g</div>
                                                 <div class="h1-10"></div>
@@ -700,7 +700,7 @@
                     <div id="sub-ventilation" class="footbar-sub float-left h-center">
                         <div class="footbar-sub-inner h1-1 scrollbar-outer">
                             <div class='h1-1 w1-1'>
-                                <div class="day-card w1-1 h-center s-word grey-20-font">
+                                <div class="day-card w1-1 h-center s-word">
                                         <div class="v-center">5/12</div>
                                 </div>
                                 <div class='gas-card w1-1 nowrap'>
@@ -729,15 +729,15 @@
                                         </div>
                                         <div class="w1-1 h1-2 nowrap">
                                             <div class="w1-3 h1-1 inline-block">
-                                                <div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hb</div><div class="lower ms-word heavy-weight">12.1</div>
-                                                </div><div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hct</div><div class="lower ms-word heavy-weight">32<span class="xs-word">%</span></div>
+                                                <div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hb</div><div class="lower s-word heavy-weight">12.1</div>
+                                                </div><div class="w1-2 h1-1 inline-block"><div class="upper xs-word grey-40-font">Hct</div><div class="lower s-word heavy-weight">32<span class="xs-word">%</span></div>
                                                 </div>
                                             </div><div class="w2-3 h1-1 inline-block">
-                                                <div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Na</div><div class="lower ms-word heavy-weight">140</div>
-                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">K</div><div class="lower ms-word heavy-weight">3.5</div>
-                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Ca<sup>2+</sup></div><div class="lower ms-word heavy-weight">1.02</div>
-                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">BUN</div><div class="lower ms-word heavy-weight">21</div>
-                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Cr</div><div class="lower ms-word heavy-weight">0.89</div>
+                                                <div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Na</div><div class="lower s-word heavy-weight">140</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">K</div><div class="lower s-word heavy-weight">3.5</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Ca<sup>2+</sup></div><div class="lower s-word heavy-weight">1.02</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">BUN</div><div class="lower s-word heavy-weight">21</div>
+                                                </div><div class="w1-5 h1-1 inline-block"><div class="upper xs-word grey-40-font">Cr</div><div class="lower s-word heavy-weight">0.89</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -755,18 +755,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="day-card w1-1 h-center s-word grey-20-font">
+                                <div class="day-card w1-1 h-center s-word">
                                     <div class="v-center">5/13</div>
                                 </div>
                                 <div class='gas-card w1-1 nowrap'>
                                     <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">06:30</div>
                                     </div><div class="w6-7 h1-1 inline-block">
-                                        <div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">7.25</div>
+                                        <div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight"><span class="red">6.95</span></div>
                                         </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">54</div>
                                         </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">16</div>
                                         </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">-5.2</div>
                                         </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">44</div>
                                         </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">65<span class="xs-word">%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='vent-card w1-1'>
+                                    <div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">12:00</div>
+                                    </div><div class="w6-7 h1-1 inline-block nowrap">
+                                        <div class="w1-6 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">RA</div>
                                         </div>
                                     </div>
                                 </div>
@@ -786,7 +793,7 @@
                                             <div class="v-center">88</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">8/9 12:00</div>
+                                            <div class="v-center">8/9</div>
                                         </div>
                                     </div>
                                 </div>
@@ -799,7 +806,7 @@
                                             <div class="v-center">14.3<span class="xs-word">k</span></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='dc' class='lab-item w1-4'>
@@ -816,7 +823,7 @@
                                             </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center">0.1<span class="xs-word">%</span></div></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='Hb' class='lab-item w1-4'>
@@ -827,7 +834,7 @@
                                             <div class="v-center">10.5</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='plt' class='lab-item w1-4'>
@@ -838,7 +845,7 @@
                                             <div class="v-center">233<span class="xs-word">k</span></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                 </div>
@@ -853,18 +860,18 @@
                                             <div class="v-center">145</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
-                                    <div id='k' class='lab-item w1-5'>
+                                    <div id='k' class='lab-item w1-5 warn'>
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">K</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">3.5</div>
+                                            <div class="v-center"><span class="red">8.0</span></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='ca' class='lab-item w1-5'>
@@ -875,7 +882,7 @@
                                             <div class="v-center">0.98</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='p' class='lab-item w1-5'>
@@ -886,7 +893,7 @@
                                             <div class="v-center">4.5</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='mg' class='lab-item w1-5'>
@@ -897,7 +904,7 @@
                                             <div class="v-center">1.7</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                 </div>
@@ -912,7 +919,7 @@
                                             <div class="v-center">21</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='cr' class='lab-item w1-2'>
@@ -923,7 +930,7 @@
                                             <div class="v-center">1.2</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                 </div>
@@ -936,7 +943,7 @@
                                             <div class="v-center">24</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='ast' class='lab-item w1-3'>
@@ -947,7 +954,7 @@
                                             <div class="v-center">33</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14 12:00</div>
+                                            <div class="v-center">12/14</div>
                                         </div>
                                     </div>
                                     <div id='ggt' class='lab-item w1-3'>
@@ -965,15 +972,17 @@
                             </div>
                             <div id="crp-pct-bil" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-5'>
-                                    <div class="lab-tittle h1-4 xs-word  grey-40-font">
-                                        <div class="v-center">CRP</div>
-                                    </div>
-                                    <div class="lab-data h1-2 lm-word heavy-weight">
-                                        <div class="v-center"><0.03</div>
-                                    </div>
-                                    <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                        <div class="v-center">11/10 12:15</div>
-                                    </div>
+                                    <div id='crp' class='lab-item w1-1 warn'>
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
+                                            <div class="v-center ">CRP</div>
+                                        </div>
+                                        <div class="lab-data h1-2 lm-word heavy-weight">
+                                            <div class="v-center"><span class="red">6.2</span></div>
+                                        </div>
+                                        <div class="lab-timeStamp h1-4 xs-word grey-60-font">
+                                            <div class="v-center">11/10</div>
+                                        </div>
+                                   </div>
                                 </div>
                                 <div class='lab-group w1-5'>
                                     <div class="lab-tittle h1-4 xs-word  grey-40-font">
@@ -983,7 +992,7 @@
                                         <div class="v-center">0.45</div>
                                     </div>
                                     <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                        <div class="v-center">11/10 12:15</div>
+                                        <div class="v-center">11/10</div>
                                     </div>
                                 </div>
                                 <div class='lab-group w3-5'>
@@ -995,7 +1004,7 @@
                                             <div class="v-center">12.4</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                     </div>
                                     <div id='Tbil' class='lab-item w1-3'>
@@ -1006,7 +1015,7 @@
                                             <div class="v-center">13.1</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                     </div>
                                     <div id='Dbil' class='lab-item w1-3'>
@@ -1017,7 +1026,7 @@
                                             <div class="v-center">0.5</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1032,7 +1041,7 @@
                                             <div class="v-center">3.2</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                      </div>
                                 </div>
@@ -1135,7 +1144,7 @@
                                             <div class="v-center">9.3</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                     </div>
                                     <div id='alkp' class='lab-item w1-2'>
@@ -1146,7 +1155,7 @@
                                             <div class="v-center">350</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">11/10 12:15</div>
+                                            <div class="v-center">11/10</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1155,63 +1164,80 @@
                     </div>
                     <div id="sub-nutrition-event" class="footbar-sub float-left">
                         <div class="footbar-sub-inner h1-1">
-                            <div id="nutrition" class="h1-2">
-                                <div class="h1-6 h-center title"><div class="v-center">飲食醫囑</div></div>
-                                <div class="scrollbar-outer h5-6">
-                                    <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
-                                    <div class="w1-1 s-word content-card">SSC24 BMF 20ml q3h</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
-                                    <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
-                                    <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
-                                    <div class="w1-1 s-word content-card">SSC24 BMF 25ml q3h</div>
+                            <div id="nutrition" :class="[flowSheet.footbarStatus=='max'?'h22-45':'h15-31']">
+                                <div class="h-center ms-word title h1-7"><div class="v-center">飲食醫囑</div></div>
+                                <div class="scrollbar-outer h6-7">
+                                    <div class="w1-1 nutrition-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
+                                        <div class="w1-1 s-word content-card">SSC24 BMF 20ml q3h</div>
+                                    </div>
+                                    <div class="w1-1 nutrition-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
+                                        <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
+                                    </div>
+                                    <div class="w1-1 nutrition-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
+                                        <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
+                                    </div>
+                                    <div class="w1-1 nutrition-group latest">
+                                        <div class="w1-1 s-word grey-20-font date-card">5/15 9:30 (最新)</div>
+                                        <div class="w1-1 s-word content-card heavy-weight">SSC24 BMF 25ml q3h</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="event" class="h1-2">
-                                <div class="h1-6 h-center title"><div class="v-center">特殊事件</div></div>
-                                <div class="scrollbar-outer h5-6">
-                                    <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
-                                    <div class="w1-1 s-word content-card">特殊事件1</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
-                                    <div class="w1-1 s-word content-card">特殊事件2</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
-                                    <div class="w1-1 s-word content-card">特殊事件3</div>
-                                    <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
-                                    <div class="w1-1 s-word content-card">特殊事件4</div>
+                            <div :class="[flowSheet.footbarStatus=='max'?'h1-45':'h1-31']"></div>
+                            <div id="event" :class="[flowSheet.footbarStatus=='max'?'h22-45':'h15-31']">
+                                <div class="h-center ms-word title h1-7"><div class="v-center">特殊事件</div></div>
+                                <div class="scrollbar-outer h6-7">
+                                    <div class="w1-1 event-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
+                                        <div class="w1-1 s-word content-card">特殊事件1</div>
+                                    </div>
+                                    <div class="w1-1 event-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
+                                        <div class="w1-1 s-word content-card">特殊事件2</div>
+                                    </div>
+                                    <div class="w1-1 event-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
+                                        <div class="w1-1 s-word content-card">特殊事件3</div>
+                                    </div>
+                                    <div class="w1-1 event-group">
+                                        <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
+                                        <div class="w1-1 s-word content-card">特殊事件4</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="fnIO"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnIO'">
+                <div id="fnIO" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnIO'">
                     fnIO
                 </div>
-                <div id="fnVentilation"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnVentilation'">
+                <div id="fnVentilation" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnVentilation'">
                         ventilation
                 </div>
-                <div id="fnNutrition"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnNutrition'">
+                <div id="fnNutrition" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnNutrition'">
                     fnNutrition
                 </div>
-                <div id="fnLab"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnLab'">
+                <div id="fnLab" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnLab'">
                     fnLab
                 </div>
-                <div id="fnInfection"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnInfection'">
+                <div id="fnInfection" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnInfection'">
                     fnInfection
                 </div>
-                <div id="fnMedication"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnMedication'">
+                <div id="fnMedication" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnMedication'">
                     fnMedication
                 </div>
-                <div id="fnConsult"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnConsult'">
+                <div id="fnConsult" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnConsult'">
                     fnConsult
                 </div>
-                <div id="fnTransfusion"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnTransfusion'">
+                <div id="fnTransfusion" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnTransfusion'">
                     fnTransfusion
                 </div>
-                <div id="fnSurgery"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnSurgery'">
+                <div id="fnSurgery" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnSurgery'">
                     fnSurgery
                 </div>
-                <div id="fnNurse"  class="footbar-function" v-show="flowSheet.selectedfootbarMenu=='fnNurse'">
+                <div id="fnNurse" class="footbar-fn-page" v-show="flowSheet.selectedfootbarMenu=='fnNurse'">
                     fnNurse
                 </div>
             </div>

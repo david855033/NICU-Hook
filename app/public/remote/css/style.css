@@ -91,6 +91,9 @@ body{
 .grey-60-font{
     color: hsl(0,0%,60%);
 }
+.red{
+    color: hsl(0,90%,50%);
+}
 /* scroll */
 .y-scroll{
     overflow-y: auto;
@@ -145,6 +148,10 @@ body{
 .h7-10{height:70%;}
 .h8-10{height:80%;}
 .h9-10{height:90%;}
+.h15-31{height:48.39%;}
+.h1-31{height:3.23%;}
+.h22-45{height:48.89%;}
+.h1-45{height:2.22%;}
 
 .w1-1{width:100%;}
 .w1-2{width:50%;}

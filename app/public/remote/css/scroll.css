@@ -211,6 +211,22 @@
 .scrollbar-outer > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(100,0%,50%); }
 
 
+#sub-ventilation .scrollbar-outer > .scroll-element .scroll-element_track { background-color: hsl(140,20%,70%); }
+#sub-ventilation .scrollbar-outer > .scroll-element .scroll-bar { background-color: hsl(140,20%,60%); }
+#sub-ventilation .scrollbar-outer > .scroll-element .scroll-bar:hover { background-color: hsl(140,20%,50%); }
+#sub-ventilation .scrollbar-outer > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(140,20%,50%); }
+
+#nutrition .scrollbar-outer > .scroll-element .scroll-element_track { background-color: hsl(40,20%,70%); }
+#nutrition .scrollbar-outer > .scroll-element .scroll-bar { background-color: hsl(40,20%,60%); }
+#nutrition .scrollbar-outer > .scroll-element .scroll-bar:hover { background-color: hsl(40,20%,50%); }
+#nutrition .scrollbar-outer > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(40,20%,50%); }
+
+#event .scrollbar-outer > .scroll-element .scroll-element_track { background-color: hsl(280,20%,70%); }
+#event .scrollbar-outer > .scroll-element .scroll-bar { background-color: hsl(280,20%,60%); }
+#event .scrollbar-outer > .scroll-element .scroll-bar:hover { background-color: hsl(280,20%,50%); }
+#event .scrollbar-outer > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(280,20%,50%); }
+
+
 /* scrollbar height/width & offset from container borders */
 
 .scrollbar-outer > .scroll-content.scroll-scrolly_visible { left: -12px; margin-left: 12px; }

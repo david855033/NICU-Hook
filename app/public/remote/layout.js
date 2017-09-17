@@ -90,7 +90,7 @@ Layout.footbar.calculateButtonPadding=function(){
 }
 
 Layout.footbar.scrollDown=function(){
-    $flowsheetFootbarScrolls.animate({ scrollTop: $flowsheetFootbarScrolls.prop("scrollHeight")}, 200);
+    $flowsheetFootbarScrolls.animate({ scrollTop: $flowsheetFootbarScrolls.prop("scrollHeight")}, 300);
 }
 
 Layout.onWidthChange=function(){

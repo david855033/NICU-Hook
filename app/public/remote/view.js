@@ -366,7 +366,7 @@ var initializeChart=function(){
     var feedingTable={
         classes:['feeding'],
         rows:[
-            chartRow("PO","(ml)","",[,,10+div("配方"),,10+div("配方"),,10+div("配方")]),
+            chartRow("PO","(ml)","",[,,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"])]),
             chartRow("NG/OG","(ml)","",[,,,,,,,,,,,,,,10]),
             chartRow("RV","(ml)","",[,,"0",,,,,,,,,,,,]),
             chartRow("NG/OG Drain","(ml)","",[,,,,,,,,,,,,,,10])
@@ -406,10 +406,10 @@ var cell = function(htmlText,classes,tooltip)
 var chartHeader = function(){
     var resultArray=[];
         resultArray.push(new cell("時間",'title-color'));
-        for(var i = 8; i < 24; i++){
+        for(var i = 7; i < 24; i++){
             resultArray.push(new cell(i,'header-color'));
         }
-        for(var i = 0; i < 8; i++){
+        for(var i = 0; i < 7; i++){
             resultArray.push(new cell(i,'header-color'));
         }
     return resultArray;
