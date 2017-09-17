@@ -335,7 +335,7 @@ var initializeChart=function(){
         rows:[chartHeader(),
             chartTPRRow("體溫","(&#8451;)",[36,38],[]),
             chartTPRRow("心律","(/min)",[100,180],[]),
-            chartTPRRow("呼吸","(/min)",[100,180],[]),
+            chartTPRRow("呼吸","(/min)",[30,60],[]),
             chartTPRRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
             getSpacerRow(),
             chartTPRRow("SBP","(mmHg)",[45,],[]),
@@ -348,8 +348,8 @@ var initializeChart=function(){
     var InfusionTable={
         classes:['infusion'],
         rows:[
-            chartInfusionRow("IV","",[]),
-            chartInfusionRow("CVC","",[1,2,4,5,222,333]),
+            chartRow("IV","(ml)","NS Drug drug drug",[]),
+            chartRow("CVC","(ml)","",[1,2,4,5,222,333]),
         ]
     };
     chartArray.push(InfusionTable);
@@ -357,8 +357,8 @@ var initializeChart=function(){
     var transfusionTable={
         classes:['transfusion'],
         rows:[
-            chartTransfusionRow("PRBC",[,,,,,,,,,,,,3.5,3.5,3.5]),
-            chartTransfusionRow("PLT",[,,,,9,9,,,,]),
+            chartRow("PRBC","(ml)","",[,,,,,,,,,,,,3.5,3.5,3.5]),
+            chartRow("PLT","(ml)","",[,,,,9,9,,,,]),
         ]
     };
     chartArray.push(transfusionTable);
@@ -366,10 +366,10 @@ var initializeChart=function(){
     var feedingTable={
         classes:['feeding'],
         rows:[
-            chartFeedingRow("PO","(ml)",[,,10+div("配方"),,10+div("配方"),,10+div("配方")]),
-            chartFeedingRow("NG/OG","(ml)",[,,,,,,,,,,,,,,10]),
-            chartFeedingRow("RV","(ml)",[,,"0",,,,,,,,,,,,]),
-            chartFeedingRow("NG/OG Drain","(ml)",[,,,,,,,,,,,,,,10])
+            chartRow("PO","(ml)","",[,,10+div("配方"),,10+div("配方"),,10+div("配方")]),
+            chartRow("NG/OG","(ml)","",[,,,,,,,,,,,,,,10]),
+            chartRow("RV","(ml)","",[,,"0",,,,,,,,,,,,]),
+            chartRow("NG/OG Drain","(ml)","",[,,,,,,,,,,,,,,10])
         ]
     };
     chartArray.push(feedingTable);
@@ -377,12 +377,22 @@ var initializeChart=function(){
     var excretionTable={
         classes:['excretion'],
         rows:[
-            chartExcretionRow("Urine","(ml)","",[]),
-            chartExcretionRow("Stool","(ml)","",[]),
-            chartExcretionRow("Enema/Sti.","","",[])
+            chartRow("Urine","(ml)","",[]),
+            chartRow("Stool","(ml)","",[]),
+            chartRow("Enema/Sti.","","",[])
         ]
     };
     chartArray.push(excretionTable);
+
+    var drainTable={
+        classes:['drain'],
+        rows:[
+            chartRow("Drain","(ml)","Colostomy",[]),
+            chartRow("Dialysis","(ml)","",[]),
+        ]
+    };
+    chartArray.push(drainTable);
+
 
     view.flowSheet.chart=chartArray;
 };
@@ -431,58 +441,10 @@ var chartTPRRow = function(title,unit,limit,data){
     }
     return resultArray;
 };
-var chartInfusionRow = function(route,name,data){
+var chartRow = function(title,unit,content,data){
     var resultArray=[];
     data=data||[];
-    var titleString=span(route,["route"])+" "+span("(ml)",["unit"])+" "+span(name,["name"]);
-    resultArray.push(new cell(titleString,'title-color')); 
-    for(var i = 0; i < 24;i++)
-    {
-        if(data[i]){
-            resultArray.push(new cell(data[i],'data-color'))
-        }else
-        {   
-            resultArray.push(new cell("",'no-data-color'))
-        }
-    }
-    return resultArray;
-};
-var chartTransfusionRow = function(name,data){
-    var resultArray=[];
-    data=data||[];
-    var titleString=span(name,["name"])+" "+span("(ml)",["unit"]);
-    resultArray.push(new cell(titleString,'title-color')); 
-    for(var i = 0; i < 24;i++)
-    {
-        if(data[i]){
-            resultArray.push(new cell(data[i],'data-color'))
-        }else
-        {   
-            resultArray.push(new cell("",'no-data-color'))
-        }
-    }
-    return resultArray;
-};
-var chartFeedingRow = function(name,unit,data){
-    var resultArray=[];
-    data=data||[];
-    var titleString=span(name,["name"])+" "+span(unit,["unit"]);
-    resultArray.push(new cell(titleString,'title-color')); 
-    for(var i = 0; i < 24;i++)
-    {
-        if(data[i]){
-            resultArray.push(new cell(data[i],'data-color'))
-        }else
-        {   
-            resultArray.push(new cell("",'no-data-color'))
-        }
-    }
-    return resultArray;
-};
-var chartExcretionRow = function(name,unit,content,data){
-    var resultArray=[];
-    data=data||[];
-    var titleString=span(name,["name"])+" "+span(unit,["unit"]);
+    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(content,["content"]);
     resultArray.push(new cell(titleString,'title-color')); 
     for(var i = 0; i < 24;i++)
     {
