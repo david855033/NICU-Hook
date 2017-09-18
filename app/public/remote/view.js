@@ -122,6 +122,15 @@ var view= new Vue({
             headerCards:[],
             showDatePicker:false,
             currentDate:"",
+            bed:"NICU-1",
+            name:"好早生之女",
+            vs:"曹大大",
+            patientID:"12345678",
+            admissionDate:"",
+            birthday:"",
+            GAweek:"",
+            GAday:"",
+            
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
@@ -322,6 +331,9 @@ var view= new Vue({
             if(view.flowSheet.footbarStatus=='close'){
                 view.flowSheet.footbarStatus='min';
             }
+        },
+        dayChange:function(n){
+            
         }
     },
 })
@@ -350,7 +362,7 @@ var viewRender={};
 viewRender.header={
     initialize:function(){
         var headerCards=[];
-        headerCards.push(new this.headerCard(1,2,3));
+        headerCards.push(new this.headerCard(view.flowSheet.bed,view.flowSheet.name,view.flowSheet.vs));
         view.flowSheet.headerCards=headerCards;
     },
     headerCard:function(top,mid,bottom){
@@ -487,11 +499,20 @@ viewRender.chart = {
     },
 };
 
-viewRender.initialize=function(patientID){
-    var currentDate=Parser.getDate();
+viewRender.initialize=function(patientID, currentDate){
+    $('#datepicker').datepicker({
+        onSelect: function(date) {
+            viewRender.setDate(date);
+            view.flowSheet.showDatePicker=false;
+        },
+    });
+    currentDate=currentDate||Parser.getDate();
     view.flowSheet.currentDate=currentDate;
     viewRender.chart.initialize();
     viewRender.header.initialize();
+}
+viewRender.setDate=function(date){
+    viewRender.initialize("",date)
 }
 
 viewRender.initialize();
