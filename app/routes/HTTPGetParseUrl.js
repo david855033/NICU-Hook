@@ -50,7 +50,7 @@ router.get('/*', function(req, res, next) {
 
   console.log(":::parse get request to: "+options.hostname + options.path+", type: "+contentType);
 
-  res.setHeader('content-type', contentType);
+  res.setHeader('Content-Type', contentType);
   var httpConnection = Protocal.request(options,
     function(httpResponse){
       var output="";
@@ -58,11 +58,7 @@ router.get('/*', function(req, res, next) {
           output+=chunk;
         });
       httpResponse.on('end',function(){
-        if(contentType.indexOf('image')>=0){
-          res.end(output,'binary');
-        }else{
           res.end(output);
-        }
       });
     });
 

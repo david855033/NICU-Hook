@@ -37,6 +37,14 @@
 #flow-sheet #datepicker>.ui-corner-all{
     border-radius: 10px;
 }
+#flow-sheet #datepicker .ui-widget-header{
+    background-color: hsl(40,30%,70%);
+    border-radius: 5px;
+  }
+#flow-sheet #datepicker .ui-widget.ui-widget-content{
+  background-color: hsl(40,30%,85%);
+}
+
 #flow-sheet #previous-day,#flow-sheet #next-day{
     color: hsl(0,0%,80%);
 }

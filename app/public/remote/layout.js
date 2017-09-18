@@ -105,7 +105,16 @@ $(function(){
     Layout.onWidthChange();
     $('.scrollbar-inner').scrollbar();
     $('.scrollbar-outer').scrollbar();
-    $('#datepicker').datepicker();    
+    $('#datepicker').datepicker();
+    $(window).click(function(){
+        view.flowSheet.showDatePicker=false;
+    });
+    $('#date').click(function(){
+        return false;
+    });
+    $('#datepicker').click(function(){
+        return false;
+    });
 });
 
 $(window).resize(function(){

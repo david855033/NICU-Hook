@@ -119,9 +119,8 @@ var view= new Vue({
             flowSheet:[]
         },
         flowSheet:{
-            headerCards:[
-                // {top:"1",mid:"2",bottom:"3"}
-            ],
+            headerCards:[],
+            showDatePicker:false,
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
