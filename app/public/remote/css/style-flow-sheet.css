@@ -17,7 +17,7 @@
     padding-top:5px;
     padding-bottom:5px;
 }
-#flow-sheet #date,#flow-sheet #previous-day,#flow-sheet #next-day{
+#flow-sheet #date,#flow-sheet .day-change{
     cursor: pointer;
 }
 #flow-sheet #date{
@@ -45,12 +45,13 @@
   background-color: hsl(40,30%,85%);
 }
 
-#flow-sheet #previous-day,#flow-sheet #next-day{
+#flow-sheet .day-change{
     color: hsl(0,0%,80%);
 }
-#flow-sheet #previous-day:hover,#flow-sheet #next-day:hover{
-    color: hsl(0,0%,20%)
+#flow-sheet .day-change:hover{
+    color: hsl(0,0%,40%);
 }
+
 #flow-sheet .header-card{
     height:70px;
     background-color: hsl(40,30%,95%);

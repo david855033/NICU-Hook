@@ -416,9 +416,11 @@
                 <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
                     <div class="h3-5">
                         <div class='xl-word heavy-weight v-center'>
-                            <span id="previous-day">&#9204;</span>
+                            <span id="first-day" class="day-change">&#10073;</span>
+                            <span id="previous-day" class="day-change">&#9204;</span>
                             <span id="date" @click="flowSheet.showDatePicker=!flowSheet.showDatePicker">2017-05-15</span>
-                            <span id="next-day">&#9205;</span>
+                            <span id="next-day" class="day-change">&#9205;</span>
+                            <span id="last-day" class="day-change">&#10073;</span>
                         </div>
                     </div>
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六 / 一天前</div></div>
