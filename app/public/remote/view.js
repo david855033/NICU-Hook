@@ -121,6 +121,7 @@ var view= new Vue({
         flowSheet:{
             headerCards:[],
             showDatePicker:false,
+            currentDate:"",
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
@@ -486,5 +487,11 @@ viewRender.chart = {
     },
 };
 
-viewRender.chart.initialize();
-viewRender.header.initialize();
+viewRender.initialize=function(patientID){
+    var currentDate=Parser.getDate();
+    view.flowSheet.currentDate=currentDate;
+    viewRender.chart.initialize();
+    viewRender.header.initialize();
+}
+
+viewRender.initialize();

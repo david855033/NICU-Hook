@@ -27,6 +27,13 @@ var Parser={
             +this.get2DigiNum(toParse.getSeconds());
         return str;
     },
+    getDate:function(dateObj){
+        var toParse = dateObj || new Date();
+        var str = toParse.getFullYear()+"-"
+            +this.get2DigiNum((toParse.getMonth()+1))+"-"
+            +this.get2DigiNum((toParse.getDate()))
+        return str;
+    },
     getDateFromShortDate:function(dateString){
         if(typeof dateString =="string" && dateString.length==8)
         {
