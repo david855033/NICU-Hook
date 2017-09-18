@@ -57,10 +57,14 @@ router.get('/*', function(req, res, next) {
       httpResponse.on('data',function(chunk){
           output+=chunk;
         });
-        httpResponse.on('end',function(){
+      httpResponse.on('end',function(){
+        if(contentType.indexOf('image')>=0){
+          res.end(output,'binary');
+        }else{
           res.end(output);
-        });
+        }
       });
+    });
 
       httpConnection.on('error',function(err){
         res.setHeader('content-type', 'application/x-javascript');

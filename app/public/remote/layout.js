@@ -105,6 +105,7 @@ $(function(){
     Layout.onWidthChange();
     $('.scrollbar-inner').scrollbar();
     $('.scrollbar-outer').scrollbar();
+    $('#datepicker').datepicker();    
 });
 
 $(window).resize(function(){

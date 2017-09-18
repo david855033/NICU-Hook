@@ -327,151 +327,165 @@ var view= new Vue({
 })
 
 
-var initializeChart=function(){
-    var chartArray =[];
-
-    var TPRTable={
-        classes:['tpr'],
-        rows:[chartHeader(),
-            chartTPRRow("體溫","(&#8451;)",[36,38],[]),
-            chartTPRRow("心律","(/min)",[100,180],[]),
-            chartTPRRow("呼吸","(/min)",[30,60],[]),
-            chartTPRRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
-            getSpacerRow(),
-            chartTPRRow("SBP","(mmHg)",[45,],[]),
-            chartTPRRow("DBP","(mmHg)",[20,],[]),
-            chartTPRRow("MBP","(mmHg)",[35,],[]),
-        ]
-    };
-    chartArray.push(TPRTable);
-
-    var InfusionTable={
-        classes:['infusion'],
-        rows:[
-            chartRow("IV","(ml)","NS Drug drug drug",[]),
-            chartRow("CVC","(ml)","",[1,2,4,5,222,333]),
-        ]
-    };
-    chartArray.push(InfusionTable);
-
-    var transfusionTable={
-        classes:['transfusion'],
-        rows:[
-            chartRow("PRBC","(ml)","",[,,,,,,,,,,,,3.5,3.5,3.5]),
-            chartRow("PLT","(ml)","",[,,,,9,9,,,,]),
-        ]
-    };
-    chartArray.push(transfusionTable);
-
-    var feedingTable={
-        classes:['feeding'],
-        rows:[
-            chartRow("PO","(ml)","",[,,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"])]),
-            chartRow("NG/OG","(ml)","",[,,,,,,,,,,,,,,10]),
-            chartRow("RV","(ml)","",[,,"0",,,,,,,,,,,,]),
-            chartRow("NG/OG Drain","(ml)","",[,,,,,,,,,,,,,,10])
-        ]
-    };
-    chartArray.push(feedingTable);
-
-    var excretionTable={
-        classes:['excretion'],
-        rows:[
-            chartRow("Urine","(ml)","",[]),
-            chartRow("Stool","(ml)","",[]),
-            chartRow("Enema/Sti.","","",[])
-        ]
-    };
-    chartArray.push(excretionTable);
-
-    var drainTable={
-        classes:['drain'],
-        rows:[
-            chartRow("Drain","(ml)","Colostomy",[]),
-            chartRow("Dialysis","(ml)","",[]),
-        ]
-    };
-    chartArray.push(drainTable);
-
-
-    view.flowSheet.chart=chartArray;
-};
-
-var cell = function(htmlText,classes,tooltip)
+var cell=function(htmlText,classes,tooltip)
 {
     this.htmlText=htmlText;
     this.classes=classes||[];
     this.tooltip=tooltip;
 };
-var chartHeader = function(){
-    var resultArray=[];
-        resultArray.push(new cell("時間",'title-color'));
-        for(var i = 7; i < 24; i++){
-            resultArray.push(new cell(i,'header-color'));
-        }
-        for(var i = 0; i < 7; i++){
-            resultArray.push(new cell(i,'header-color'));
-        }
-    return resultArray;
-};
-var chartTPRRow = function(title,unit,limit,data){
-    var resultArray=[];
-    data=data||[];
-    limit=limit||[];
-    var lowerLimit=limit[0];
-    var upperLimit=limit[1];
-    var limitString="";
-    if(lowerLimit&&upperLimit){
-        limitString=lowerLimit+"-"+upperLimit;
-    }else if (lowerLimit){
-        limitString="&ge;"+lowerLimit;
-    }else if(upperLimit){
-        limitString="&lt;"+upperLimit;
-    }
-    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(limitString,["limit"]);
-    resultArray.push(new cell(titleString,'title-color')); 
-    for(var i = 0; i < 24;i++)
-    {
-        if(data[i]){
-            resultArray.push(new cell(data[i],'data-color'))
-        }else
-        {   
-            resultArray.push(new cell("",'no-data-color'))
-        }
-    }
-    return resultArray;
-};
-var chartRow = function(title,unit,content,data){
-    var resultArray=[];
-    data=data||[];
-    var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(content,["content"]);
-    resultArray.push(new cell(titleString,'title-color')); 
-    for(var i = 0; i < 24;i++)
-    {
-        if(data[i]){
-            resultArray.push(new cell(data[i],'data-color'))
-        }else
-        {   
-            resultArray.push(new cell("",'no-data-color'))
-        }
-    }
-    return resultArray;
-};
-
-var getSpacerRow=function(){
-    return [new cell("","spacer")];
-};
-var span = function(htmlText,classes)
+var span=function(htmlText,classes)
 {
     var classString = "";
     if(classes){classString=" class='"+classes.join(" ")+"'";}
     return "<span"+classString+">"+htmlText+"</span>";
 };
-var div = function(htmlText,classes)
+var div=function(htmlText,classes)
 {
     var classString = "";
     if(classes){classString=" class='"+classes.join(" ")+"'";}
     return "<div"+classString+">"+htmlText+"</div>";
 };
 
-initializeChart();//
+var viewRender={};
+viewRender.header={
+    initialize:function(){
+        var headerCards=[];
+        headerCards.push(new this.headerCard(1,2,3));
+        view.flowSheet.headerCards=headerCards;
+    },
+    headerCard:function(top,mid,bottom){
+        this.top=top;
+        this.mid=mid;
+        this.bottom=bottom;
+    }
+};
+
+viewRender.chart = {
+    initialize:function(){
+        var chartArray =[];
+        var TPRTable={
+            classes:['tpr'],
+            rows:[this.header(),
+                this.tprRow("體溫","(&#8451;)",[36,38],[]),
+                this.tprRow("心律","(/min)",[100,180],[]),
+                this.tprRow("呼吸","(/min)",[30,60],[]),
+                this.tprRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
+                this.spacerRow(),
+                this.tprRow("SBP","(mmHg)",[45,],[]),
+                this.tprRow("DBP","(mmHg)",[20,],[]),
+                this.tprRow("MBP","(mmHg)",[35,],[]),
+            ]
+        };
+        chartArray.push(TPRTable);
+        var InfusionTable={
+            classes:['infusion'],
+            rows:[
+                this.row("IV","(ml)","NS Drug drug drug",[]),
+                this.row("CVC","(ml)","",[1,2,4,5,222,333]),
+            ]
+        };
+        chartArray.push(InfusionTable);
+        var transfusionTable={
+            classes:['transfusion'],
+            rows:[
+                this.row("PRBC","(ml)","",[,,,,,,,,,,,,3.5,3.5,3.5]),
+                this.row("PLT","(ml)","",[,,,,9,9,,,,]),
+            ]
+        };
+        chartArray.push(transfusionTable);
+    
+        var feedingTable={
+            classes:['feeding'],
+            rows:[
+                this.row("PO","(ml)","",[,,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"])]),
+                this.row("NG/OG","(ml)","",[,,,,,,,,,,,,,,10]),
+                this.row("RV","(ml)","",[,,"0",,,,,,,,,,,,]),
+                this.row("NG/OG Drain","(ml)","",[,,,,,,,,,,,,,,10])
+            ]
+        };
+        chartArray.push(feedingTable);
+    
+        var excretionTable={
+            classes:['excretion'],
+            rows:[
+                this.row("Urine","(ml)","",[]),
+                this.row("Stool","(ml)","",[]),
+                this.row("Enema/Sti.","","",[])
+            ]
+        };
+        chartArray.push(excretionTable);
+    
+        var drainTable={
+            classes:['drain'],
+            rows:[
+                this.row("Drain","(ml)","Colostomy",[]),
+                this.row("Dialysis","(ml)","",[]),
+            ]
+        };
+        chartArray.push(drainTable);
+    
+    
+        view.flowSheet.chart=chartArray;
+    },
+
+    header:function(){
+        var resultArray=[];
+            resultArray.push(new cell("時間",'title-color'));
+            for(var i = 7; i < 24; i++){
+                resultArray.push(new cell(i,'header-color'));
+            }
+            for(var i = 0; i < 7; i++){
+                resultArray.push(new cell(i,'header-color'));
+            }
+        return resultArray;
+    },
+    tprRow:function(title,unit,limit,data){
+        var resultArray=[];
+        data=data||[];
+        limit=limit||[];
+        var lowerLimit=limit[0];
+        var upperLimit=limit[1];
+        var limitString="";
+        if(lowerLimit&&upperLimit){
+            limitString=lowerLimit+"-"+upperLimit;
+        }else if (lowerLimit){
+            limitString="&ge;"+lowerLimit;
+        }else if(upperLimit){
+            limitString="&lt;"+upperLimit;
+        }
+        var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(limitString,["limit"]);
+        resultArray.push(new cell(titleString,'title-color')); 
+        for(var i = 0; i < 24;i++)
+        {
+            if(data[i]){
+                resultArray.push(new cell(data[i],'data-color'))
+            }else
+            {   
+                resultArray.push(new cell("",'no-data-color'))
+            }
+        }
+        return resultArray;
+    },
+    row:function(title,unit,content,data){
+        var resultArray=[];
+        data=data||[];
+        var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(content,["content"]);
+        resultArray.push(new cell(titleString,'title-color')); 
+        for(var i = 0; i < 24;i++)
+        {
+            if(data[i]){
+                resultArray.push(new cell(data[i],'data-color'))
+            }else
+            {   
+                resultArray.push(new cell("",'no-data-color'))
+            }
+        }
+        return resultArray;
+    },
+    spacerRow:function(){
+        return [new cell("","spacer")];
+    },
+};
+
+viewRender.chart.initialize();
+viewRender.header.initialize();

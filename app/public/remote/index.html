@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script type="text/javascript" src="libraries/jquery-3.2.1.js"></script>
 	<link rel="stylesheet" type="text/css" href="libraries/jquery-ui-1.12.1/jquery-ui.min.css">    
-    <script type="text/javascript" src="libraries/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery-ui-1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="libraries/jquery.scrollbar.js"></script>
     <script type="text/javascript" src="libraries/vue.js"></script>
     <script type="text/javascript" src="libraries/d3.js"></script>
@@ -411,15 +411,20 @@
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
-            <div id="header" class="w1-1 nowrap h-center">
-                <div v-for="card in flowSheet.headerCards" class="header-card inline-block shadow">
+            <div id="header" class="w1-1 nowrap h-center"><div class="header-card inline-block shadow">
+                <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
+                    <div class="h3-5">
+                        <div class='xl-word heavy-weight v-center'>
+                            <span id="previous-day">&#9204;</span>
+                            <span id="date">2017-05-15</span>
+                            <span id="next-day">&#9205;</span>
+                        </div>
+                    </div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六 / 一天前</div></div>
+                </div><div v-for="card in flowSheet.headerCards" class="header-card inline-block shadow">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.top}}</div></div>
                     <div class="h3-5"><div class='xl-word heavy-weight v-center'>{{card.mid}}</div></div>
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.bottom}}</div></div>
-                </div><div class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2017-05-13</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六 / 一天前</div></div>
                 </div><div class="header-card inline-block shadow">
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>NICU-１</div></div>
                     <div class="h3-5"><div class='xl-word heavy-weight v-center'>好早生之女</div></div>
@@ -442,6 +447,7 @@
                     <div class="h1-5"><div class='s-word grey-40-font v-center'>出生體重：2400g</div></div>
                 </div>
             </div>
+            <div id="datepicker">   </div>
             <div id="content">
                 <div class="scrollbar-inner h1-1">
                     <div class="chart shadow">

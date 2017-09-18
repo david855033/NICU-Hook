@@ -17,10 +17,35 @@
     padding-top:5px;
     padding-bottom:5px;
 }
-
+#flow-sheet #date,#flow-sheet #previous-day,#flow-sheet #next-day{
+    cursor: pointer;
+}
+#flow-sheet #date{
+    padding-left:5px;
+    padding-right:5px;
+}
+#flow-sheet #date:hover{
+    background-color: hsl(40,30%,85%);
+    border-radius: 5px
+}
+#flow-sheet #datepicker{
+    position: absolute;
+    z-index: 100;
+    border-radius: 10px;
+    margin-left:8px;
+}
+#flow-sheet #datepicker>.ui-corner-all{
+    border-radius: 10px;
+}
+#flow-sheet #previous-day,#flow-sheet #next-day{
+    color: hsl(0,0%,80%);
+}
+#flow-sheet #previous-day:hover,#flow-sheet #next-day:hover{
+    color: hsl(0,0%,20%)
+}
 #flow-sheet .header-card{
     height:70px;
-    background-color: hsl(40,20%,90%);
+    background-color: hsl(40,30%,95%);
     margin: 0 3px 0 3px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -94,10 +119,10 @@
 }
 /*sets of chart color : TPR*/
 #flow-sheet .chart table.tpr{
-    background-color: hsl(160,20%,60%);
+    background-color: hsl(160,25%,55%);
 }
 #flow-sheet .chart table.tpr .shift-name{
-    background-color: hsl(160,20%,75%);
+    background-color: hsl(160,25%,80%);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     width:auto;
@@ -105,22 +130,22 @@
 #flow-sheet .chart table.tpr .shift-name,
 #flow-sheet .chart table.tpr td:nth-child(8n+2),
 #flow-sheet .chart table.tpr td:first-child{
-    border-left:2.5px solid hsl(160,20%,60%);
+    border-left:2.5px solid hsl(160,25%,55%);
 }
 #flow-sheet .chart table.tpr td:last-child{
-    border-right:2.5px solid hsl(160,20%,60%);
+    border-right:2.5px solid hsl(160,25%,65%);
 }
 #flow-sheet .chart table.tpr .title-color{
-    background-color: hsl(160,20%,75%);
+    background-color: hsl(160,25%,80%);
 }
 #flow-sheet .chart table.tpr .header-color{
-    background-color: hsl(160,20%,75%);
+    background-color: hsl(160,25%,80%);
 }
 #flow-sheet .chart table.tpr .data-color{
-    background-color: hsl(160,20%,85%);
+    background-color: hsl(160,25%,90%);
 }
 #flow-sheet .chart table.tpr .no-data-color{
-    background-color: hsl(160,20%,65%)
+    background-color: hsl(160,25%,65%)
 }
 #flow-sheet .chart table.tpr .title{
     font-weight: 800;
@@ -133,26 +158,26 @@
 }
 /*sets of chart color : infusion*/
 #flow-sheet .chart table.infusion{
-    background-color: hsl(200,20%,60%);
+    background-color: hsl(200,25%,55%);
 }
 #flow-sheet .chart table.infusion td:first-child,
 #flow-sheet .chart table.infusion td:nth-child(8n+2){
-    border-left:2.5px solid hsl(200,20%,60%);
+    border-left:2.5px solid hsl(200,25%,55%);
 }
 #flow-sheet .chart table.infusion td:last-child{
-    border-right:2.5px solid hsl(200,20%,60%);
+    border-right:2.5px solid hsl(200,25%,65%);
 }
 #flow-sheet .chart table.infusion .title-color{
-    background-color: hsl(200,20%,75%);
+    background-color: hsl(200,25%,80%);
 }
 #flow-sheet .chart table.infusion .header-color{
-    background-color: hsl(200,20%,75%);
+    background-color: hsl(200,25%,80%);
 }
 #flow-sheet .chart table.infusion .data-color{
-    background-color: hsl(200,20%,85%);
+    background-color: hsl(200,25%,90%);
 }
 #flow-sheet .chart table.infusion .no-data-color{
-    background-color: hsl(200,20%,65%)
+    background-color: hsl(200,25%,65%)
 }
 #flow-sheet .chart table.infusion .title{
     font-weight: 800;
@@ -165,26 +190,26 @@
 }
 /*sets of chart color*/
 #flow-sheet .chart table.transfusion{
-    background-color: hsl(10,20%,60%);
+    background-color: hsl(10,25%,55%);
 }
 #flow-sheet .chart table.transfusion td:first-child,
 #flow-sheet .chart table.transfusion td:nth-child(8n+2){
-    border-left:2.5px solid hsl(10,20%,60%);
+    border-left:2.5px solid hsl(10,25%,55%);
 }
 #flow-sheet .chart table.transfusion td:last-child{
-    border-right:2.5px solid hsl(10,20%,60%);
+    border-right:2.5px solid hsl(10,25%,65%);
 }
 #flow-sheet .chart table.transfusion .title-color{
-    background-color: hsl(10,20%,75%);
+    background-color: hsl(10,25%,80%);
 }
 #flow-sheet .chart table.transfusion .header-color{
-    background-color: hsl(10,20%,75%);
+    background-color: hsl(10,25%,80%);
 }
 #flow-sheet .chart table.transfusion .data-color{
-    background-color: hsl(10,20%,85%);
+    background-color: hsl(10,25%,90%);
 }
 #flow-sheet .chart table.transfusion .no-data-color{
-    background-color: hsl(10,20%,65%)
+    background-color: hsl(10,25%,65%)
 }
 #flow-sheet .chart table.transfusion .title{
     font-weight: 800;
@@ -197,26 +222,26 @@
 }
 /*sets of chart color : feedning*/
 #flow-sheet .chart table.feeding{
-    background-color: hsl(50,20%,60%);
+    background-color: hsl(50,25%,55%);
 }
 #flow-sheet .chart table.feeding td:first-child,
 #flow-sheet .chart table.feeding td:nth-child(8n+2){
-    border-left:2.5px solid hsl(50,20%,60%);
+    border-left:2.5px solid hsl(50,25%,55%);
 }
 #flow-sheet .chart table.feeding td:last-child{
-    border-right:2.5px solid hsl(50,20%,60%);
+    border-right:2.5px solid hsl(50,25%,65%);
 }
 #flow-sheet .chart table.feeding .title-color{
-    background-color: hsl(50,20%,75%);
+    background-color: hsl(50,25%,80%);
 }
 #flow-sheet .chart table.feeding .header-color{
-    background-color: hsl(50,20%,75%);
+    background-color: hsl(50,25%,80%);
 }
 #flow-sheet .chart table.feeding .data-color{
-    background-color: hsl(50,20%,85%);
+    background-color: hsl(50,25%,90%);
 }
 #flow-sheet .chart table.feeding .no-data-color{
-    background-color: hsl(50,20%,65%)
+    background-color: hsl(50,25%,65%)
 }
 #flow-sheet .chart table.feeding .title{
     font-weight: 800;
@@ -229,26 +254,26 @@
 }
 /*sets of chart color :excretion*/
 #flow-sheet .chart table.excretion{
-    background-color: hsl(100,20%,60%);
+    background-color: hsl(100,25%,55%);
 }
 #flow-sheet .chart table.excretion td:first-child,
 #flow-sheet .chart table.excretion td:nth-child(8n+2){
-    border-left:2.5px solid hsl(100,20%,60%);
+    border-left:2.5px solid hsl(100,25%,55%);
 }
 #flow-sheet .chart table.excretion td:last-child{
-    border-right:2.5px solid hsl(100,20%,60%);
+    border-right:2.5px solid hsl(100,25%,65%);
 }
 #flow-sheet .chart table.excretion .title-color{
-    background-color: hsl(100,20%,75%);
+    background-color: hsl(100,25%,80%);
 }
 #flow-sheet .chart table.excretion .header-color{
-    background-color: hsl(100,20%,75%);
+    background-color: hsl(100,25%,80%);
 }
 #flow-sheet .chart table.excretion .data-color{
-    background-color: hsl(100,20%,85%);
+    background-color: hsl(100,25%,90%);
 }
 #flow-sheet .chart table.excretion .no-data-color{
-    background-color: hsl(100,20%,65%)
+    background-color: hsl(100,25%,65%)
 }
 #flow-sheet .chart table.excretion .title{
     font-weight: 800;
@@ -262,26 +287,26 @@
 
 /*sets of chart color :drain*/
 #flow-sheet .chart table.drain{
-    background-color: hsl(280,20%,60%);
+    background-color: hsl(280,25%,55%);
 }
 #flow-sheet .chart table.drain td:first-child,
 #flow-sheet .chart table.drain td:nth-child(8n+2){
-    border-left:2.5px solid hsl(280,20%,60%);
+    border-left:2.5px solid hsl(280,25%,55%);
 }
 #flow-sheet .chart table.drain td:last-child{
-    border-right:2.5px solid hsl(280,20%,60%);
+    border-right:2.5px solid hsl(280,25%,65%);
 }
 #flow-sheet .chart table.drain .title-color{
-    background-color: hsl(280,20%,75%);
+    background-color: hsl(280,25%,80%);
 }
 #flow-sheet .chart table.drain .header-color{
-    background-color: hsl(280,20%,75%);
+    background-color: hsl(280,25%,80%);
 }
 #flow-sheet .chart table.drain .data-color{
-    background-color: hsl(280,20%,85%);
+    background-color: hsl(280,25%,90%);
 }
 #flow-sheet .chart table.drain .no-data-color{
-    background-color: hsl(280,20%,65%)
+    background-color: hsl(280,25%,65%)
 }
 #flow-sheet .chart table.drain .title{
     font-weight: 800;
@@ -419,30 +444,30 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
     height: 40px;
-    background-color: hsl(120,30%,80%);
+    background-color: hsl(120,30%,90%);
     -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
     -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
     box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gasfull-card{
     height: 80px;
-    background-color: hsl(120,30%,75%);
+    background-color: hsl(120,30%,90%);
     -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
     -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
     box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
     height: 40px;
-    background-color: hsl(200,50%,75%);
+    background-color: hsl(200,50%,80%);
     -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
     -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
     box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .warn{
     background-color: hsl(0,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,80%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,80%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,80%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .upper
