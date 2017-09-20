@@ -122,15 +122,20 @@ var view= new Vue({
             headerCards:[],
             showDatePicker:false,
             currentDate:"",
+            weekDay:"",
+            dayDifference:"",
             bed:"NICU-1",
             name:"好早生之女",
             vs:"曹大大",
             patientID:"12345678",
-            admissionDate:"",
-            birthday:"",
-            GAweek:"",
-            GAday:"",
-            
+            caseNo:"",
+            admissionDate:"2017-07-01",
+            dischargeDate:"2017-07-10",
+            birthday:"2017-06-30",
+            GAweek:"35",
+            GAday:"3",
+            currentBW:"2.5",
+            bbw:"2.4",
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
@@ -361,14 +366,54 @@ var div=function(htmlText,classes)
 var viewRender={};
 viewRender.header={
     initialize:function(){
+        var FS=view.flowSheet;
         var headerCards=[];
-        headerCards.push(new this.headerCard(view.flowSheet.bed,view.flowSheet.name,view.flowSheet.vs));
-        view.flowSheet.headerCards=headerCards;
+        FS.weekDay=Parser.getDayString(new Date(FS.currentDate).getDay());
+        FS.dayDifference= Parser.getDayDifferenceString(FS.currentDate);
+        headerCards.push(new this.headerCard(FS.bed,FS.name,"主治醫師："+FS.vs));
+        
+        var admissionDateStr="";
+        if(FS.dischargeDate&&FS.admissionDate){
+            admissionDateStr="住院："+FS.admissionDate+" 離院："+FS.dischargeDate;
+        }else if(FS.admissionDate){
+            admissionDateStr="住院日期:"+FS.admissionDate+"(住院中)";
+        }
+        headerCards.push(new this.headerCard("病歷號",FS.patientID,admissionDateStr));
+        
+        
+        if(!FS.GAweek){ //no GA
+        }else if(FS.GAweek<37){  //no preterm
+            var ageInDay=Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday);
+            var GAString="GA："+FS.GAweek + (FS.GAday>0?("+"+FS.GAday):"wk");
+            var cGAWeek = Math.floor(ageInDay/7);
+            var cGADay = (ageInDay)%7;
+            var cGAString = cGAWeek + (cGADay>0?("+"+cGADay):"wk");
+            if(cGAWeek<40){
+                headerCards.push(new this.headerCard("矯正週數",cGAString,GAString));            
+            }else{
+                var correctedAgeStr=Parser.getCorrectedAgeString(ageInDay);
+                headerCards.push(new this.headerCard("矯正年齡",correctedAgeStr,GAString));
+            }
+        }else{// fullterm
+            headerCards.push(new this.headerCard("出生週數",FS.GAweek+(FS.GAday?("+"+FS.GAday):"")));
+        }
+
+        var ageStr=Parser.getAgeString(FS.currentDate,FS.birthday);
+        headerCards.push(new this.headerCard("實際年齡",ageStr,"生日："+FS.birthday));
+        
+        var currentBWString=FS.currentBW;
+        headerCards.push(new this.headerCard("體重",currentBWString,"出生體重"));
+
+        FS.headerCards=headerCards;
     },
-    headerCard:function(top,mid,bottom){
+    headerCard:function(top,mid,bottom,id){
         this.top=top;
         this.mid=mid;
         this.bottom=bottom;
+        id&&id.top&&(this.topId=id.top);
+        id&&id.mid&&(this.midId=id.mid);
+        id&&id.bottom&&(this.bottomId=id.bottom);
+        id&&id.cardId&&(this.cardId=id.cardId);
     }
 };
 
@@ -505,6 +550,7 @@ viewRender.initialize=function(patientID, currentDate){
             viewRender.setDate(date);
             view.flowSheet.showDatePicker=false;
         },
+        dateFormat: 'yy-mm-dd'
     });
     currentDate=currentDate||Parser.getDate();
     view.flowSheet.currentDate=currentDate;
@@ -512,7 +558,8 @@ viewRender.initialize=function(patientID, currentDate){
     viewRender.header.initialize();
 }
 viewRender.setDate=function(date){
-    viewRender.initialize("",date)
+    viewRender.initialize("",date);
+    view.flowSheet.currentDate=date;
 }
 
 viewRender.initialize();

@@ -23,6 +23,9 @@ Layout.header.calculateCardPadding=function(){
     $flowsheetHeaderCards.css('padding-left',padding);
     $flowsheetHeaderCards.css('padding-right',padding);
 }
+Layout.header.setCardFunctionPosition=function(){
+    $("#datepicker").css('left',$("#datepicker-card").position().left);
+}
 
 
 Layout.footbar={};
@@ -98,6 +101,7 @@ Layout.onWidthChange=function(){
     Layout.footbar.calculateCardWidth();
     Layout.footbar.calculateButtonPadding();
     Layout.footbar.scrollDown();
+    Layout.header.setCardFunctionPosition();
 }
 
 $(function(){
@@ -105,12 +109,6 @@ $(function(){
     Layout.onWidthChange();
     $('.scrollbar-inner').scrollbar();
     $('.scrollbar-outer').scrollbar();
-    $('#datepicker').datepicker({
-        onSelect: function(date) {
-            viewRender.setDate(date);
-            view.flowSheet.showDatePicker=false;
-        },
-    });
     $(window).click(function(){
         view.flowSheet.showDatePicker=false;
     });

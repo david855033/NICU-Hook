@@ -80,13 +80,69 @@ var Parser={
             return num;
         }
     },
-    getSecondDifference:function(dateTime1, dateTime2)
-    {
+    getSecondDifference:function(dateTime1, dateTime2){
         var date1 = new Date(dateTime1);
         var date2 = new Date(dateTime2);
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         var diff = Math.ceil(timeDiff / (1000)); 
         return diff?diff:0;
+    },
+    getDayDifference:function(dateTime1, dateTime2){
+        var date1 = dateTime1?new Date(dateTime1):new Date();
+        var date2 = dateTime2?new Date(dateTime2):new Date();
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var diff = Number(Math.floor(timeDiff/1000/24/60/60).toFixed(0));
+        return diff?diff:0;
+    },
+    getDayString:function(day){
+        switch(day){
+            case 0: return "星期日";
+            case 1: return "星期一";
+            case 2: return "星期二";
+            case 3: return "星期三";
+            case 4: return "星期四";
+            case 5: return "星期五";
+            case 6: return "星期六";
+        }
+    },
+    getDayDifferenceString:function(currentDate){
+        var dayDiff = Parser.getDayDifference(currentDate);
+        if(dayDiff==0){
+          return "今日";
+        }else if (dayDiff<14){
+            return dayDiff+"天前";
+        }else if (dayDiff<60){
+            return Math.floor(dayDiff/7).toFixed(0)+"周前";
+        }else if (dayDiff<365){
+            return Math.floor(dayDiff/30).toFixed(0)+"月前";
+        }else{
+            var remainDay = dayDiff%365;
+            var month = Math.floor(remainDay/30).toFixed(0);
+            return ((dayDiff-remainDay)/365).toFixed(0)+"年"+(month>0?(month+"月"):"")+"前";
+        }
+    },
+    getAgeString:function(currentDate,birthday){
+        if(!currentDate||!birthday||currentDate<birthday) return "null";
+        var dayDiff = Parser.getDayDifference(currentDate,birthday);
+        return Parser.getStrFromDayDiff(dayDiff);
+    },
+    getCorrectedAgeString:function(ageInDay){
+        if(!ageInDay) return "null";
+        var dayDiff=ageInDay-280;
+        return Parser.getStrFromDayDiff(dayDiff);
+    },
+    getStrFromDayDiff:function(dayDiff)
+    {
+        if(dayDiff<31){
+            return dayDiff+" d/o";
+        }else if(dayDiff<365){
+            var remainDay = Math.floor(dayDiff%(365/12));
+            return ((dayDiff-remainDay)/(365/12)).toFixed(0)+"m"+(remainDay>0?(" "+remainDay+"d"):"");
+        }else{
+            var remainDay = dayDiff%365;
+            var month = Math.floor(remainDay/(365/12)).toFixed(0);
+            return ((dayDiff-remainDay)/365).toFixed(0)+"y"+(month>0?(" "+month+"m"):"");
+        }
     },
     //DOM manipulate
     getDOM:function(htmlText){

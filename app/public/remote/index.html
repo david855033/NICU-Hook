@@ -412,38 +412,27 @@
             </table>
         </div>
         <div class="main" id="flow-sheet" v-show="selectedView=='flow-sheet'">
-            <div id="header" class="w1-1 nowrap h-center"><div class="header-card inline-block shadow">
-                <div class="h1-5"><div class='s-word grey-40-font v-center'>資料日期</div></div>
-                    <div class="h3-5">
-                        <div class='xl-word heavy-weight v-center'>
-                            <span id="first-day" class="day-change">&#10073;</span>
-                            <span id="previous-day" class="day-change">&#9204;</span>
-                            <span id="date" @click="flowSheet.showDatePicker=!flowSheet.showDatePicker">{{flowSheet.currentDate}}</span>
-                            <span id="next-day" class="day-change">&#9205;</span>
-                            <span id="last-day" class="day-change">&#10073;</span>
-                        </div>
+            <div id="header" class="w1-1 nowrap h-center">
+                <div id="datepicker-card" class="header-card inline-block shadow">
+                    <div class="h1-5">
+                        <div class='s-word grey-40-font v-center'>資料日期</div>
                     </div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>星期六 / 一天前</div></div>
-                </div><div v-for="card in flowSheet.headerCards" class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.top}}</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>{{card.mid}}</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>{{card.bottom}}</div></div>
-                </div><div class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>病歷號</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>41237362</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>住院日：2017-05-12</div></div>
-                </div><div class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>實際年齡</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>5 d/o</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>生日：2017-05-11</div></div>
-                </div><div class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>矯正週數</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>35+2</div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>出生週數：35+1</div></div>
-                </div><div class="header-card inline-block shadow">
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>體重</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center'>2400g <span class="s-word">(+20)</span></div></div>
-                    <div class="h1-5"><div class='s-word grey-40-font v-center'>出生體重：2400g</div></div>
+                        <div class="h3-5">
+                            <div class='xl-word heavy-weight v-center'>
+                                <span id="first-day" class="day-change">&#10073;</span>
+                                <span id="previous-day" class="day-change">&#9204;</span>
+                                <span id="date" @click="flowSheet.showDatePicker=!flowSheet.showDatePicker">{{flowSheet.currentDate}}</span>
+                                <span id="next-day" class="day-change">&#9205;</span>
+                                <span id="last-day" class="day-change">&#10073;</span>
+                            </div>
+                        </div>
+                    <div class="h1-5">
+                        <div class='s-word grey-40-font v-center'>{{flowSheet.weekDay}} / {{flowSheet.dayDifference}}</div>
+                    </div>
+                </div><div v-for="card in flowSheet.headerCards" :id="card.cardId" class="header-card inline-block shadow">
+                    <div class="h1-5"><div class='s-word grey-40-font v-center' :id="card.topId">{{card.top}}</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center':id="card.midId">{{card.mid}}</div></div>
+                    <div class="h1-5"><div class='s-word grey-40-font v-center' :id="card.bottomId">{{card.bottom}}</div></div>
                 </div>
             </div>
             <div id="datepicker" v-show="flowSheet.showDatePicker"></div>
@@ -1251,7 +1240,6 @@
 
 </body>
 <script type="text/javascript" src="server.js"></script>
-<!-- <script type="text/javascript" src="fake-server.js"></script>    -->
 <script type="text/javascript" src="parser.js"></script>
 <script type="text/javascript" src="parser-html.js"></script>
 <script type="text/javascript" src="data-manager.js"></script>
