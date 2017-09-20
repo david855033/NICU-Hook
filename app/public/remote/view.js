@@ -121,7 +121,7 @@ var view= new Vue({
         flowSheet:{
             headerCards:[],
             showDatePicker:false,
-            currentDate:"",
+            currentDate:Parser.getDate(),
             weekDay:"",
             dayDifference:"",
             bed:"NICU-1",
@@ -183,8 +183,7 @@ var view= new Vue({
         },
         updatePatient:function(patientID){
             view.selectedPatientID=patientID;
-            view.updateAdmissionList(patientID);
-
+            // view.updateAdmissionList(patientID);
             // view.updatePatientData(patientID)
             // view.updateChangeBedSection(patientID);
             // view.updateConsultation(patientID);
@@ -193,6 +192,7 @@ var view= new Vue({
             // view.updateOrder(patientID,7);
             // view.updateReport(patientID, 1);
             // view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
+            viewRender.queryPatientData(patientID);
         },
         updateCase:function(patientID, caseNo){
             patientID=patientID||view.selectedPatientID;
@@ -204,7 +204,7 @@ var view= new Vue({
             // view.updateMedication(patientID, caseNo);
             // view.updateBirthSheet(patientID, caseNo);
             // view.updateNISHandOver(patientID, caseNo);
-            view.updateFlowSheet(patientID, caseNo, Parser.getDateTime());
+            // view.updateFlowSheet(patientID, caseNo, Parser.getDateTime());
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -545,6 +545,7 @@ viewRender.chart = {
 };
 
 viewRender.initialize=function(patientID, currentDate){
+    var FS=view.flowSheet;
     $('#datepicker').datepicker({
         onSelect: function(date) {
             viewRender.setDate(date);
@@ -553,7 +554,7 @@ viewRender.initialize=function(patientID, currentDate){
         dateFormat: 'yy-mm-dd'
     });
     currentDate=currentDate||Parser.getDate();
-    view.flowSheet.currentDate=currentDate;
+    
     viewRender.chart.initialize();
     viewRender.header.initialize();
 }
@@ -561,5 +562,20 @@ viewRender.setDate=function(date){
     viewRender.initialize("",date);
     view.flowSheet.currentDate=date;
 }
+viewRender.queryPatientData=function(patientID){
+    var FS=view.flowSheet;
+    FS.patientID=patientID;
+    requestPatientData(patientID,function(data,timeStamp){
+        FS.patientID=patientID;
+        FS.bed=data&&data.currentBed;
+        FS.name=data&&data.patientName;
+        FS.birthday=data&&data.birthDate;
+        FS.vs=data&&data.visitingStaff&&data.visitingStaff.name;
+        viewRender.initialize();
+    });
+}
 
 viewRender.initialize();
+
+
+ 
