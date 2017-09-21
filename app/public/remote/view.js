@@ -121,6 +121,7 @@ var view= new Vue({
         flowSheet:{
             headerCards:[],
             showDatePicker:false,
+            showAdPicker:true,
             currentDate:Parser.getDate(),
             weekDay:"",
             dayDifference:"",
@@ -129,6 +130,7 @@ var view= new Vue({
             vs:"曹大大",
             patientID:"12345678",
             caseNo:"",
+            admissionList:[],
             admissionDate:"2017-07-01",
             dischargeDate:"2017-07-10",
             birthday:"2017-06-30",
@@ -331,6 +333,9 @@ var view= new Vue({
                 }
             });
         },
+        queryCaseNo:function(patientID,caseNo){
+            viewRender.queryCaseNo(patientID,caseNo);
+        },
         selectFlowSheetFn:function(fn){
             view.flowSheet.selectedfootbarMenu=fn;
             if(view.flowSheet.footbarStatus=='close'){
@@ -378,7 +383,7 @@ viewRender.header={
         }else if(FS.admissionDate){
             admissionDateStr="住院日期:"+FS.admissionDate+"(住院中)";
         }
-        headerCards.push(new this.headerCard("病歷號",FS.patientID,admissionDateStr));
+        headerCards.push(new this.headerCard("病歷號",FS.patientID,admissionDateStr,{cardId:"admission-card"}));
         
         
         if(!FS.GAweek){ //no GA
@@ -561,6 +566,7 @@ viewRender.initialize=function(patientID, currentDate){
 viewRender.setDate=function(date){
     viewRender.initialize("",date);
     view.flowSheet.currentDate=date;
+    viewRender.adjustHeaderWidth();
 }
 viewRender.queryPatientData=function(patientID){
     var FS=view.flowSheet;
@@ -571,11 +577,34 @@ viewRender.queryPatientData=function(patientID){
         FS.name=data&&data.patientName;
         FS.birthday=data&&data.birthDate;
         FS.vs=data&&data.visitingStaff&&data.visitingStaff.name;
-        viewRender.initialize();
+        requestAdmissionList(patientID,function(data,timeStamp){
+            FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
+            if(FS.admissionList){
+                var admission=FS.admissionList[0];
+                viewRender.queryCaseNo(patientID,admission.caseNo);
+            }
+        });
     });
+};
+
+viewRender.queryCaseNo=function(patientID,caseNo){
+    var FS=view.flowSheet;
+    var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
+    if(admission){
+        admission=admission[0];
+        FS.caseNo=caseNo;
+        FS.admissionDate=admission.admissionDate;
+        FS.dischargeDate=admission.dischargeDate;
+    };
+    viewRender.initialize();
+    viewRender.adjustHeaderWidth();
+}
+
+viewRender.adjustHeaderWidth=function(){
+    setTimeout(function() {
+        Layout.selectHeaderCards();
+        Layout.onWidthChange();
+    }, 0);
 }
 
 viewRender.initialize();
-
-
- 

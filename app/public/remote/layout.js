@@ -13,6 +13,12 @@ var $window=$(window);
 
 var Layout={};
 Layout.header={};
+Layout.selectHeaderCards=function(){
+    var $flowsheetHeader=$("#flow-sheet #header");
+    var $flowsheetHeaderCards=$('#flow-sheet .header-card');
+    var $flowsheetContent=$("#flow-sheet #content");
+    var $flowsheetContentTPR=$("#flow-sheet #content .chart");
+};
 Layout.header.calculateCardPadding=function(){
     var headerWidth=$flowsheetHeader.width();
     var cardsWidth=0;
@@ -25,6 +31,7 @@ Layout.header.calculateCardPadding=function(){
 }
 Layout.header.setCardFunctionPosition=function(){
     $("#datepicker").css('left',$("#datepicker-card").position().left);
+    $("#adpicker").css('left',$("#admission-card").position().left);
 }
 
 
@@ -124,3 +131,5 @@ $(window).resize(function(){
     Layout.footbar.modeSwitched();
     Layout.onWidthChange();
 });
+
+

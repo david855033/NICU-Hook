@@ -30,7 +30,6 @@
 }
 #flow-sheet #datepicker{
     position: absolute;
-    left:100px;
     z-index: 100;
     border-radius: 10px;
 }
@@ -44,7 +43,46 @@
 #flow-sheet #datepicker .ui-widget.ui-widget-content{
   background-color: hsl(40,30%,85%);
 }
-
+#flow-sheet #adpicker{
+    background-color: hsl(40,30%,85%);
+    position: absolute;
+    z-index: 100;
+    border-radius: 10px;
+    width:250px;
+    height: 200px;
+    padding:5px;
+}
+#flow-sheet #adpicker .title{
+    background-color: hsl(40,30%,80%);
+    height:22px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+#flow-sheet #adpicker table{
+    width:100%;
+    font-size: 12px;
+    background-color:hsl(40,30%,80%);
+    padding-top:1px;
+    padding-bottom:1px;
+    border-collapse: separate;
+    empty-cells: show;
+    table-layout:fixed;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+#flow-sheet #adpicker td{
+    height:16px;
+    vertical-align: middle;
+}
+#flow-sheet #adpicker tr.row{
+    cursor: pointer;
+}
+#flow-sheet #adpicker tr.row.selected{
+    background-color:hsl(40,30%,70%);
+}
+#flow-sheet #adpicker tr.row:hover{
+    background-color:hsl(40,30%,75%);
+}
 #flow-sheet .day-change{
     color: hsl(0,0%,80%);
 }
