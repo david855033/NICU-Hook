@@ -16,7 +16,7 @@ var queryData=function(query, callback){
     //from server
     var secDiff = -1;
     if(queryDataSet_local.timeStamp){
-        var secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
+        secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
     };
     var maxReqInterval = serverRequest.maxReqInterval||10;
     if(secDiff==-1||secDiff<maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
