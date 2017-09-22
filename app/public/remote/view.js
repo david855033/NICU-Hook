@@ -121,7 +121,7 @@ var view= new Vue({
         flowSheet:{
             headerCards:[],
             showDatePicker:false,
-            showAdPicker:true,
+            showAdPicker:false,
             currentDate:Parser.getDate(),
             weekDay:"",
             dayDifference:"",
@@ -134,8 +134,9 @@ var view= new Vue({
             admissionDate:"2017-07-01",
             dischargeDate:"2017-07-10",
             birthday:"2017-06-30",
-            GAweek:"35",
-            GAday:"3",
+            birthSheet:{},
+            GAweek:"",
+            GAday:"",
             currentBW:"2.5",
             bbw:"2.4",
             chart:[],
@@ -145,6 +146,14 @@ var view= new Vue({
             {key:'fnLab',title:'檢驗'},{key:'fnInfection',title:'感染'},{key:'fnMedication',title:'藥物'},{key:'fnConsult',title:'會診'},
             {key:'fnTransfusion',title:'輸血'},{key:'fnSurgery',title:'手術'},{key:'fnNurse',title:'護理'}],
             selectedfootbarMenu:"fnOverview"
+        }
+    },
+    computed:{
+        isFlowSheetFirstDay:function(){
+            return this.flowSheet.currentDate==this.flowSheet.admissionDate;
+        },
+        isFlowSheetLastDay:function(){
+            return this.flowSheet.currentDate==this.flowSheet.dischargeDate||this.flowSheet.currentDate==Parser.getDate();
         }
     },
     watch:{
@@ -343,7 +352,21 @@ var view= new Vue({
             }
         },
         dayChange:function(n){
-            
+            if(n=='first'){
+                viewRender.queryDate(view.flowSheet.admissionDate);
+            }else if(n=='last'){
+                viewRender.queryDate(view.flowSheet.dischargeDate||Parser.getDate());
+            }else{
+                var date = new Date(view.flowSheet.currentDate);
+                date.setDate(date.getDate() + n);
+                if(date>new Date()){date=new Date()};
+                var dischargeDate=new Date(view.flowSheet.dischargeDate);
+                if(view.flowSheet.dischargeDate&&date>dischargeDate){date=dischargeDate;}
+                var admissionDate=new Date(view.flowSheet.admissionDate);
+                if(view.flowSheet.admissionDate&&date<admissionDate){date=admissionDate;}
+                viewRender.queryDate(Parser.getDate(date));
+                
+            }
         }
     },
 })
@@ -368,10 +391,11 @@ var div=function(htmlText,classes)
     return "<div"+classString+">"+htmlText+"</div>";
 };
 
+var FS=view.flowSheet;
+var Layout=Layout||{};
 var viewRender={};
 viewRender.header={
     initialize:function(){
-        var FS=view.flowSheet;
         var headerCards=[];
         FS.weekDay=Parser.getDayString(new Date(FS.currentDate).getDay());
         FS.dayDifference= Parser.getDayDifferenceString(FS.currentDate);
@@ -548,31 +572,59 @@ viewRender.chart = {
         return [new cell("","spacer")];
     },
 };
+viewRender.closeAll=function(){
+    FS.showDatePicker=false;
+    FS.showAdPicker=false;
+}
+viewRender.jquery=function(){
+    Layout.footbar&&Layout.footbar.min();
+    $('.scrollbar-inner').scrollbar();
+    $('.scrollbar-outer').scrollbar();
+    $(window).off("click").on("click",function(){
+        viewRender.closeAll();
+    });
+    $('#date').off().on("click",function(){
+        var status=!FS.showDatePicker;
+        viewRender.closeAll();
+        FS.showDatePicker = status;
+        return false;
+    });
+    $('#datepicker').off().on('click',function(){
+        return false;
+    });
 
-viewRender.initialize=function(patientID, currentDate){
-    var FS=view.flowSheet;
     $('#datepicker').datepicker({
         onSelect: function(date) {
-            viewRender.setDate(date);
-            view.flowSheet.showDatePicker=false;
+            viewRender.queryDate(date);
+            FS.showDatePicker=false;
         },
         dateFormat: 'yy-mm-dd'
     });
-    currentDate=currentDate||Parser.getDate();
+    $('#datepicker').datepicker('option', 'minDate', new Date(FS.admissionDate||FS.birthDate));
+    $('#datepicker').datepicker('option', 'maxDate', new Date(FS.dischargeDate||Parser.getDate()));
+    $('#datepicker').datepicker('option', 'currentDate', new Date(FS.currentDate||""));
     
+    //header DOMs..
+    setTimeout(function() {
+        Layout.onWidthChange();
+        $('#admission-card').off().on("click",function(){
+            var status=!FS.showAdPicker;
+            viewRender.closeAll();
+            FS.showAdPicker = status;
+            return false;
+        });
+    }, 0);
+};
+
+viewRender.initialize=function(){
     viewRender.chart.initialize();
     viewRender.header.initialize();
+    viewRender.jquery();
 }
-viewRender.setDate=function(date){
-    viewRender.initialize("",date);
-    view.flowSheet.currentDate=date;
-    viewRender.adjustHeaderWidth();
-}
+
 viewRender.queryPatientData=function(patientID){
-    var FS=view.flowSheet;
     FS.patientID=patientID;
     requestPatientData(patientID,function(data,timeStamp){
-        FS.patientID=patientID;
         FS.bed=data&&data.currentBed;
         FS.name=data&&data.patientName;
         FS.birthday=data&&data.birthDate;
@@ -581,30 +633,39 @@ viewRender.queryPatientData=function(patientID){
             FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
             if(FS.admissionList){
                 var admission=FS.admissionList[0];
-                viewRender.queryCaseNo(patientID,admission.caseNo);
+                var caseNo=admission.caseNo;
+                var firstCaseNo=FS.admissionList.slice(-1)[0].caseNo;
+                updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
+                    FS.birthSheet=data||{};
+                    FS.GAweek="";
+                    FS.GAday="";
+                    if(FS.birthSheet.hasBirthSheet){
+                        FS.birthSheet=data;
+                        FS.GAweek=FS.birthSheet.child.GAweek;
+                        FS.GAday=FS.birthSheet.child.GAday;
+                    }
+                    viewRender.queryCaseNo(caseNo);
+                })
             }
         });
     });
 };
 
-viewRender.queryCaseNo=function(patientID,caseNo){
-    var FS=view.flowSheet;
+viewRender.queryCaseNo=function(caseNo){
     var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
-    if(admission){
+    if(admission&&admission[0]){
         admission=admission[0];
         FS.caseNo=caseNo;
         FS.admissionDate=admission.admissionDate;
         FS.dischargeDate=admission.dischargeDate;
+        var qdate = FS.dischargeDate||Parser.getDate();
+        viewRender.queryDate(qdate);
     };
+}
+
+viewRender.queryDate=function(date){
+    FS.currentDate=date;
     viewRender.initialize();
-    viewRender.adjustHeaderWidth();
 }
 
-viewRender.adjustHeaderWidth=function(){
-    setTimeout(function() {
-        Layout.selectHeaderCards();
-        Layout.onWidthChange();
-    }, 0);
-}
 
-viewRender.initialize();

@@ -19,6 +19,10 @@
 }
 #flow-sheet #date,#flow-sheet .day-change{
     cursor: pointer;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 }
 #flow-sheet #date{
     padding-left:5px;
@@ -28,6 +32,19 @@
     background-color: hsl(40,30%,85%);
     border-radius: 5px
 }
+#flow-sheet .day-change{
+    color: hsl(0,0%,80%);
+}
+#flow-sheet .day-change:hover{
+    color: hsl(0,0%,40%);
+}
+#flow-sheet .day-change.invisible{
+    color: hsl(40,30%,95%);
+}
+#flow-sheet .day-change.invisible:hover{
+    color: hsl(40,30%,95%);
+}
+
 #flow-sheet #datepicker{
     position: absolute;
     z-index: 100;
@@ -41,7 +58,12 @@
     border-radius: 5px;
   }
 #flow-sheet #datepicker .ui-widget.ui-widget-content{
-  background-color: hsl(40,30%,85%);
+    background-color: hsl(40,30%,85%);
+}
+
+
+#flow-sheet #admission-card:hover{
+    background-color: hsl(40,30%,85%);
 }
 #flow-sheet #adpicker{
     background-color: hsl(40,30%,85%);
@@ -49,7 +71,7 @@
     z-index: 100;
     border-radius: 10px;
     width:250px;
-    height: 200px;
+    max-height: 200px;
     padding:5px;
 }
 #flow-sheet #adpicker .title{
@@ -57,6 +79,12 @@
     height:22px;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
+}
+#flow-sheet #adpicker #table-container{
+    height:170px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow: hidden;
 }
 #flow-sheet #adpicker table{
     width:100%;
@@ -67,8 +95,6 @@
     border-collapse: separate;
     empty-cells: show;
     table-layout:fixed;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
 }
 #flow-sheet #adpicker td{
     height:16px;
@@ -83,12 +109,7 @@
 #flow-sheet #adpicker tr.row:hover{
     background-color:hsl(40,30%,75%);
 }
-#flow-sheet .day-change{
-    color: hsl(0,0%,80%);
-}
-#flow-sheet .day-change:hover{
-    color: hsl(0,0%,40%);
-}
+
 
 #flow-sheet .header-card{
     height:70px;

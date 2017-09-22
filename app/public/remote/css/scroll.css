@@ -135,6 +135,10 @@
 .scrollbar-inner > .scroll-element:hover .scroll-bar { background-color: hsl(220,0%,30%); }
 .scrollbar-inner > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(220,0%,30%); }
 
+#adpicker .scrollbar-inner > .scroll-element .scroll-element_track { background-color: hsl(40,20%,80%); }
+#adpicker .scrollbar-inner > .scroll-element .scroll-bar { background-color: hsl(40,20%,50%); }
+#adpicker .scrollbar-inner > .scroll-element:hover .scroll-bar { background-color: hsl(40,20%,30%); }
+#adpicker .scrollbar-inner > .scroll-element.scroll-draggable .scroll-bar { background-color: hsl(40,20%,30%); }
 
 /* update scrollbar offset if both scrolls are visible */
 

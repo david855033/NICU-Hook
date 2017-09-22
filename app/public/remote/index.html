@@ -419,11 +419,11 @@
                     </div>
                         <div class="h3-5">
                             <div class='xl-word heavy-weight v-center'>
-                                <span id="first-day" class="day-change">&#10073;</span>
-                                <span id="previous-day" class="day-change">&#9664;</span>
-                                <span id="date" @click="flowSheet.showDatePicker=!flowSheet.showDatePicker">{{flowSheet.currentDate}}</span>
-                                <span id="next-day" class="day-change">&#9654;</span>
-                                <span id="last-day" class="day-change">&#10073;</span>
+                                <span id="first-day" class="day-change" @click="dayChange('first')" :class="{invisible:isFlowSheetFirstDay}">&#10073;</span>
+                                <span id="previous-day" class="day-change" @click="dayChange(-1)" :class="{invisible:isFlowSheetFirstDay}">&#9664;</span>
+                                <span id="date">{{flowSheet.currentDate}}</span>
+                                <span id="next-day" class="day-change" @click="dayChange(1)" :class="{invisible:isFlowSheetLastDay}">&#9654;</span>
+                                <span id="last-day" class="day-change" @click="dayChange('last')" :class="{invisible:isFlowSheetLastDay}">&#10073;</span>
                             </div>
                         </div>
                     <div class="h1-5">
@@ -437,20 +437,24 @@
             </div>
             <div id="datepicker" v-show="flowSheet.showDatePicker"></div>
             <div id="adpicker" v-show="flowSheet.showAdPicker">
-                <div class="title h-center"><div class="v-center">住院清單</div></div>
-                <div class="scrollbar-inner">
-                    <table class='h-center'>
-                        <tr>
-                            <th>住院日</th>
-                            <th>離院日</th>
-                            <th>科別</th>
-                        </tr>
-                        <tr v-for="ad in flowSheet.admissionList" class='row' :class="{selected:flowSheet.caseNo==ad.caseNo}" @click="queryCaseNo(flowSheet.patientID,ad.caseNo)">
-                            <td>{{ad.admissionDate}}</td>
-                            <td>{{ad.dischargeDate}}</td>
-                            <td>{{ad.section}}</td>
-                        </tr>
-                    </table>
+                <div class="title h-center">
+                    <div class="v-center">住院清單</div>
+                </div>
+                <div id="table-container">
+                    <div class="scrollbar-inner h1-1">
+                        <table class='h-center'>
+                            <tr>
+                                <th>住院日</th>
+                                <th>離院日</th>
+                                <th>科別</th>
+                            </tr>
+                            <tr v-for="ad in flowSheet.admissionList" class='row' :class="{selected:flowSheet.caseNo==ad.caseNo}" @click="queryCaseNo(ad.caseNo)">
+                                <td>{{ad.admissionDate}}</td>
+                                <td>{{ad.dischargeDate}}</td>
+                                <td>{{ad.section}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div id="content">

@@ -13,13 +13,9 @@ var $window=$(window);
 
 var Layout={};
 Layout.header={};
-Layout.selectHeaderCards=function(){
-    var $flowsheetHeader=$("#flow-sheet #header");
-    var $flowsheetHeaderCards=$('#flow-sheet .header-card');
-    var $flowsheetContent=$("#flow-sheet #content");
-    var $flowsheetContentTPR=$("#flow-sheet #content .chart");
-};
+
 Layout.header.calculateCardPadding=function(){
+    var $flowsheetHeaderCards=$('#flow-sheet .header-card');
     var headerWidth=$flowsheetHeader.width();
     var cardsWidth=0;
     $flowsheetHeaderCards.each(function(){
@@ -63,10 +59,9 @@ Layout.footbar.modeSwitched=function(){
     var windowHeight=$window.height();
     var headerHeight=$flowsheetHeader.height();
     var TPRHeight= $flowsheetContentTPR.height();
-    // var contentRemaing = windowHeight-headerHeight-10;
-    // var remaining = windowHeight-headerHeight-TPRHeight-30;
-    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  450;//d3.max([remaining,contentRemaing*0.7]);
-    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  300;//d3.min([remaining,contentRemaing*0.5]);
+
+    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  450;
+    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  300;
 
     if(Layout.footbar.mode=='max')
     {
@@ -112,24 +107,11 @@ Layout.onWidthChange=function(){
 }
 
 $(function(){
-    Layout.footbar.min();
-    Layout.onWidthChange();
-    $('.scrollbar-inner').scrollbar();
-    $('.scrollbar-outer').scrollbar();
-    $(window).click(function(){
-        view.flowSheet.showDatePicker=false;
-    });
-    $('#date').click(function(){
-        return false;
-    });
-    $('#datepicker').click(function(){
-        return false;
-    });
+    viewRender.initialize();
 });
 
 $(window).resize(function(){
     Layout.footbar.modeSwitched();
     Layout.onWidthChange();
 });
-
 
