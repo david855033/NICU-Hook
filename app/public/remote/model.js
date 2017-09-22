@@ -14,12 +14,12 @@ var queryData=function(query, callback){
     }
 
     //from server
+    var secDiff = -1;
     if(queryDataSet_local.timeStamp){
         var secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
-    }else{
-        secDiff=100;
-    }
-    if(secDiff>10||(!queryDataSet_local&&secDiff>1)){   //限制對同一資源的存取間隔
+    };
+    var maxReqInterval = serverRequest.maxReqInterval||10;
+    if(secDiff==-1||secDiff<maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
         server.request(serverRequest, function(serverData, timeStamp){ 
             if(serverData=='""'){
                 //console.log('not logged, trying log again');
