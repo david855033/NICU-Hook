@@ -431,7 +431,7 @@
                     </div>
                 </div><div v-for="card in flowSheet.headerCards" :id="card.cardId" class="header-card inline-block shadow">
                     <div class="h1-5"><div class='s-word grey-40-font v-center' :id="card.topId">{{card.top}}</div></div>
-                    <div class="h3-5"><div class='xl-word heavy-weight v-center':id="card.midId">{{card.mid}}</div></div>
+                    <div class="h3-5"><div class='xl-word heavy-weight v-center':id="card.midId" v-html="card.mid"></div></div>
                     <div class="h1-5"><div class='s-word grey-40-font v-center' :id="card.bottomId">{{card.bottom}}</div></div>
                 </div>
             </div>
@@ -454,6 +454,20 @@
                                 <td>{{ad.section}}</td>
                             </tr>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <div id="bw" v-show="flowSheet.showBW">
+                <div class="title h-center w1-1">
+                    <div class="v-center">設定體重</div>
+                </div>
+                <div class="container w1-1 h-center">
+                    <div class="w1-1 nowrap">
+                        <input type="text" class="w4-5">
+                    </div>
+                    <div class="w1-1">
+                        <div id="inputBW" class="float-left w1-2">輸入</div>
+                        <div id="clearBW" class="float-left w1-2">清除</div>
                     </div>
                 </div>
             </div>

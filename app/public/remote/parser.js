@@ -19,6 +19,7 @@ var Parser={
     //時間日期
     getDateTime:function(dateObj){
         var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))+" "
@@ -32,6 +33,13 @@ var Parser={
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))
+        return str;
+    },
+    getMMDD:function(dateObj){
+        var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        var str = this.get2DigiNum((toParse.getMonth()+1))+"/"
+            +this.get2DigiNum((toParse.getDate()));
         return str;
     },
     getDateFromShortDate:function(dateString){

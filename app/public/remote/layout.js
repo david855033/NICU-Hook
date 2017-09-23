@@ -28,6 +28,7 @@ Layout.header.calculateCardPadding=function(){
 Layout.header.setCardFunctionPosition=function(){
     $("#datepicker").css('left',$("#datepicker-card").position().left);
     $("#adpicker").css('left',$("#admission-card").position().left);
+    $("#bw").css('left',$("#bw-card").position().left);
 }
 
 

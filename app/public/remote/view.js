@@ -122,6 +122,7 @@ var view= new Vue({
             headerCards:[],
             showDatePicker:false,
             showAdPicker:false,
+            showBW:false,
             currentDate:Parser.getDate(),
             weekDay:"",
             dayDifference:"",
@@ -137,15 +138,28 @@ var view= new Vue({
             birthSheet:{},
             GAweek:"",
             GAday:"",
-            currentBW:"2.5",
-            bbw:"2.4",
+            bw:[],
+            bwForCalculate:"4.32",
+            bwLast:"4.3222",
+            bwLastDate:Parser.getDate(),
+            bwDelta:"0.012",
+            bwFirst:"0.77",
+            bbw:"",
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
             {key:'fnNutrition',title:'營養'},
             {key:'fnLab',title:'檢驗'},{key:'fnInfection',title:'感染'},{key:'fnMedication',title:'藥物'},{key:'fnConsult',title:'會診'},
             {key:'fnTransfusion',title:'輸血'},{key:'fnSurgery',title:'手術'},{key:'fnNurse',title:'護理'}],
-            selectedfootbarMenu:"fnOverview"
+            selectedfootbarMenu:"fnOverview",
+            io:{
+                morning:{IV:"",Feed:"",input:"",urine:"",UO:"",IO:""},
+                afternoon:{},
+                night:{},
+                day1:{},
+                day2:{},
+                day3:{},
+            }
         }
     },
     computed:{
@@ -411,7 +425,7 @@ viewRender.header={
         
         
         if(!FS.GAweek){ //no GA
-        }else if(FS.GAweek<37){  //no preterm
+        }else if(FS.GAweek<37){  //preterm
             var ageInDay=Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday);
             var GAString="GA："+FS.GAweek + (FS.GAday>0?("+"+FS.GAday):"wk");
             var cGAWeek = Math.floor(ageInDay/7);
@@ -419,7 +433,7 @@ viewRender.header={
             var cGAString = cGAWeek + (cGADay>0?("+"+cGADay):"wk");
             if(cGAWeek<40){
                 headerCards.push(new this.headerCard("矯正週數",cGAString,GAString));            
-            }else{
+            }else if(ageInDay<=365){
                 var correctedAgeStr=Parser.getCorrectedAgeString(ageInDay);
                 headerCards.push(new this.headerCard("矯正年齡",correctedAgeStr,GAString));
             }
@@ -430,8 +444,45 @@ viewRender.header={
         var ageStr=Parser.getAgeString(FS.currentDate,FS.birthday);
         headerCards.push(new this.headerCard("實際年齡",ageStr,"生日："+FS.birthday));
         
-        var currentBWString=FS.currentBW;
-        headerCards.push(new this.headerCard("體重",currentBWString,"出生體重"));
+        var bwString="體重";
+        if(FS.bwForCalculate){
+            if(FS.bwForCalculate>=5){
+                bwString="設定體重："+Math.round(FS.bwForCalculate*100)/100+"kg";
+            }else{
+                bwString="設定體重："+Math.round(FS.bwForCalculate*1000)+"g";
+            }
+        };
+        var currentBWString="";
+        var delta="";
+        if(FS.bwLast){
+            if(FS.bwLast<=5){
+                currentBWString=Math.round(FS.bwLast*1000)+"g";
+                delta=Math.round(FS.bwDelta*1000); 
+            }
+            else{
+                currentBWString=Math.round(FS.bwLast*100)/100+"kg";
+                delta=Math.round(FS.bwDelta*100)/100;
+            }
+            if(FS.bwLastDate==FS.currentDate&&FS.bwDelta!="null"){
+                currentBWString+="<span class='s-word grey-40-font'>(";
+                if(FS.bwDelta>0){
+                    currentBWString+="+"+delta;
+                }else{
+                    currentBWString+=delta;
+                }
+                currentBWString+=")</span>"
+            }else{
+                currentBWString+="<span class='s-word grey-40-font'>("+
+                Parser.getMMDD(FS.bwLastDate)+")</span>";
+            }
+        }
+        var bbwString="";
+        if(FS.bbw){
+            bbwString="出生體重："+Math.round(FS.bbw*1000)+"g";
+        }else if(FS.bwFirst){
+            bbwString="住院體重："+Math.round(FS.bwFirst*1000)+"g";
+        }
+        headerCards.push(new this.headerCard(bwString,currentBWString,bbwString,{cardId:"bw-card"}));
 
         FS.headerCards=headerCards;
     },
@@ -575,6 +626,7 @@ viewRender.chart = {
 viewRender.closeAll=function(){
     FS.showDatePicker=false;
     FS.showAdPicker=false;
+    FS.showBW=false;
 }
 viewRender.jquery=function(){
     Layout.footbar&&Layout.footbar.min();
@@ -603,7 +655,6 @@ viewRender.jquery=function(){
     $('#datepicker').datepicker('option', 'minDate', new Date(FS.admissionDate||FS.birthDate));
     $('#datepicker').datepicker('option', 'maxDate', new Date(FS.dischargeDate||Parser.getDate()));
     $('#datepicker').datepicker('option', 'currentDate', new Date(FS.currentDate||""));
-    
     //header DOMs..
     setTimeout(function() {
         Layout.onWidthChange();
@@ -611,6 +662,18 @@ viewRender.jquery=function(){
             var status=!FS.showAdPicker;
             viewRender.closeAll();
             FS.showAdPicker = status;
+            return false;
+        });
+        $('#adpicker').off().on('click',function(){
+            return false;
+        });
+        $('#bw-card').off().on("click",function(){
+            var status=!FS.showBW;
+            viewRender.closeAll();
+            FS.showBW = status;
+            return false;
+        });
+        $('#bw').off().on('click',function(){
             return false;
         });
     }, 0);
