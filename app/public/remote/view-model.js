@@ -1,7 +1,7 @@
 "use strict";
 var PreSelect={};
 PreSelect.Patient={patientID:"",timeStamp:""};
-PreSelect.BirthSheet={patientID:"",caseNo:"",timeStamp:""};
+PreSelect.BirthSheet={patientID:"",caseNo:"",timeStamp:"",data_preSelect:{}};
 PreSelect.NIS={patientID:"",timeStamp:""};
 PreSelect.FlowSheet={patientID:"",timeStamp:""};
 
@@ -128,18 +128,16 @@ var updateMedicationInfo=function(patientID,caseNo,seq,callback){
 }
 
 var preSelectBirthSheet=function(patientID,caseNo,callback){
-
     if(patientID==PreSelect.BirthSheet.patientID&&
         caseNo==PreSelect.BirthSheet.caseNo&&
         Parser.getSecondDifference(PreSelect.BirthSheet.timeStamp,Parser.getDateTime()<=60)){
-        console.log('no preselect');
-        callback&&callback();
+        callback&&callback(PreSelect.BirthSheet.data_preSelect);
     }else{
-        console.log('call preselect');
-        PreSelect.BirthSheet.patientID=patientID;
-        PreSelect.BirthSheet.caseNo=caseNo;
         PreSelect.BirthSheet.timeStamp=Parser.getDateTime();
         queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
+            PreSelect.BirthSheet.patientID=patientID;
+            PreSelect.BirthSheet.caseNo=caseNo;
+            PreSelect.BirthSheet.data_preSelect=data;
             callback&&callback(data, timeStamp);
         });
     }    

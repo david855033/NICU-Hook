@@ -10,6 +10,7 @@ var queryData=function(query, callback){
         if(queryDataSet){
             queryDataSet_local = queryDataSet;
             callback(queryDataSet.data, queryDataSet.timeStamp);  
+            console.log('from local: '+query);
         }
     }
 
@@ -19,7 +20,8 @@ var queryData=function(query, callback){
         secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
     };
     var maxReqInterval = serverRequest.maxReqInterval||120;
-    if(secDiff==-1||secDiff<maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
+    if(secDiff==-1||secDiff>=maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
+        console.log('from server: '+query);
         server.request(serverRequest, function(serverData, timeStamp){ 
             if(serverData=='""'){
                 //console.log('not logged, trying log again');
