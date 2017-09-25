@@ -463,11 +463,11 @@
                 </div>
                 <div class="container w1-1 h-center">
                     <div class="w1-1 nowrap">
-                        <input type="text" class="w4-5">
+                        <input type="text" class="w4-5" v-model="flowSheet.inputBW" @keyup.enter="setBW" @keyup.esc="clearBW">
                     </div>
                     <div class="w1-1">
-                        <div id="inputBW" class="float-left w1-2">輸入</div>
-                        <div id="clearBW" class="float-left w1-2">清除</div>
+                        <div id="setBW" @click="setBW" class="float-left w1-2">輸入</div>
+                        <div id="clearBW" @click="clearBW" class="float-left w1-2">清除</div>
                     </div>
                 </div>
             </div>

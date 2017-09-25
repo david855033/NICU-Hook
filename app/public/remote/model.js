@@ -18,7 +18,7 @@ var queryData=function(query, callback){
     if(queryDataSet_local.timeStamp){
         secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
     };
-    var maxReqInterval = serverRequest.maxReqInterval||10;
+    var maxReqInterval = serverRequest.maxReqInterval||120;
     if(secDiff==-1||secDiff<maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
         server.request(serverRequest, function(serverData, timeStamp){ 
             if(serverData=='""'){
@@ -62,7 +62,7 @@ var queryToServerRequest=function(query)
     }else if(queryList[0]  == "admissionList"){
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findNicu&histno="+queryList[1],
-            parser:Parser.getAdmissionList
+            parser:Parser.getAdmissionList,
         };
     }else if(queryList[0]  == "patientData"){
         return {

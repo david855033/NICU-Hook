@@ -1,6 +1,6 @@
 "use strict";
 
-
+var bwHolder=[];
 var view= new Vue({
     el:'#view',
     data:{
@@ -138,13 +138,14 @@ var view= new Vue({
             birthSheet:{},
             GAweek:"",
             GAday:"",
-            bw:[],
-            bwForCalculate:"4.32",
+            bwData:[],
+            bwForCalculate:"",
+            inputBW:"",
             bwLast:"4.3222",
             bwLastDate:Parser.getDate(),
             bwDelta:"0.012",
             bwFirst:"0.77",
-            bbw:"",
+            bbw:"0.77",
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
@@ -359,6 +360,30 @@ var view= new Vue({
         queryCaseNo:function(patientID,caseNo){
             viewRender.queryCaseNo(patientID,caseNo);
         },
+        setBW:function(){
+            var fixBW=view.flowSheet.inputBW.match(/\d+(.\d+)?/);
+            fixBW=(Number(fixBW&&fixBW[0]))||"";
+            if(fixBW>=300){fixBW/=1000};
+            var index= bwHolder.indexOf(function(x){x.patientID==view.flowSheet.patientID;});
+            if(index>=0){
+                var savedBW = savedBW[index];
+            }else{
+                bwHolder.push({patientID:view.flowSheet.patientID,bw:fixBW});
+            }
+
+            view.flowSheet.bwForCalculate=view.flowSheet.inputBW=fixBW;
+            view.flowSheet.showBW=false;
+            viewRender.queryDate(view.flowSheet.currentDate);
+        },
+        clearBW:function(){
+            var index= bwHolder.indexOf(function(x){x.patientID==view.flowSheet.patientID;});
+            if(index>=0){
+                savedBW[index].bw="";
+            }
+            view.flowSheet.bwForCalculate=view.flowSheet.inputBW="";
+            view.flowSheet.showBW=false;
+            viewRender.queryDate(view.flowSheet.currentDate);
+        },
         selectFlowSheetFn:function(fn){
             view.flowSheet.selectedfootbarMenu=fn;
             if(view.flowSheet.footbarStatus=='close'){
@@ -408,6 +433,15 @@ var div=function(htmlText,classes)
 var FS=view.flowSheet;
 var Layout=Layout||{};
 var viewRender={};
+viewRender.bw={};
+viewRender.bw.initialize=function(){
+    if(!FS.bwData.colNames){
+        return;
+    }
+    var indexDate = FS.bwData.colNames.indexOf("日期時間");
+    var indexBW = FS.bwData.colNames.indexOf("體重");
+    console.log(indexDate+" " +indexBW);
+}
 viewRender.header={
     initialize:function(){
         var headerCards=[];
@@ -451,6 +485,8 @@ viewRender.header={
             }else{
                 bwString="設定體重："+Math.round(FS.bwForCalculate*1000)+"g";
             }
+        }else if(FS.bbw&&Number(Parser.getDayDifference(FS.birthday, FS.currentDate))<7){
+            bwString="(使用出生體重)";
         };
         var currentBWString="";
         var delta="";
@@ -670,7 +706,11 @@ viewRender.jquery=function(){
         $('#bw-card').off().on("click",function(){
             var status=!FS.showBW;
             viewRender.closeAll();
+            FS.inputBW="";
             FS.showBW = status;
+            Vue.nextTick(function(){
+               $('#bw input').focus();
+            });
             return false;
         });
         $('#bw').off().on('click',function(){
@@ -680,6 +720,7 @@ viewRender.jquery=function(){
 };
 
 viewRender.initialize=function(){
+    viewRender.bw.initialize();
     viewRender.chart.initialize();
     viewRender.header.initialize();
     viewRender.jquery();
@@ -692,22 +733,27 @@ viewRender.queryPatientData=function(patientID){
         FS.name=data&&data.patientName;
         FS.birthday=data&&data.birthDate;
         FS.vs=data&&data.visitingStaff&&data.visitingStaff.name;
+        var findBW=bwHolder.find(function(x){return x.patientID==patientID;});
+        FS.bwForCalculate=(findBW&&findBW.bw)||"";
         requestAdmissionList(patientID,function(data,timeStamp){
             FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
             if(FS.admissionList){
                 var admission=FS.admissionList[0];
                 var caseNo=admission.caseNo;
                 var firstCaseNo=FS.admissionList.slice(-1)[0].caseNo;
-                updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
-                    FS.birthSheet=data||{};
-                    FS.GAweek="";
-                    FS.GAday="";
-                    if(FS.birthSheet.hasBirthSheet){
-                        FS.birthSheet=data;
-                        FS.GAweek=FS.birthSheet.child.GAweek;
-                        FS.GAday=FS.birthSheet.child.GAday;
-                    }
-                    viewRender.queryCaseNo(caseNo);
+                requestVitalSign(patientID,caseNo, "HWS",function(data,timeStamp){
+                    FS.bwData=data;
+                    updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
+                        FS.birthSheet=data||{};
+                        FS.GAweek="";
+                        FS.GAday="";
+                        if(FS.birthSheet.hasBirthSheet){
+                            FS.birthSheet=data;
+                            FS.GAweek=FS.birthSheet.child.GAweek;
+                            FS.GAday=FS.birthSheet.child.GAday;
+                        }
+                        viewRender.queryCaseNo(caseNo);
+                    })
                 })
             }
         });
@@ -730,5 +776,4 @@ viewRender.queryDate=function(date){
     FS.currentDate=date;
     viewRender.initialize();
 }
-
 

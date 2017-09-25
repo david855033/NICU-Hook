@@ -63,6 +63,7 @@
 
 
 #flow-sheet #admission-card:hover{
+    cursor: pointer;
     background-color: hsl(40,30%,85%);
 }
 #flow-sheet #adpicker{
@@ -111,6 +112,7 @@
 }
 
 #flow-sheet #bw-card:hover{
+    cursor: pointer;
     background-color: hsl(40,30%,85%);
 }
 #flow-sheet #bw{
@@ -132,8 +134,14 @@
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-#flow-sheet #bw input{
-    
+#flow-sheet #bw #clearBW,
+#flow-sheet #bw #setBW{
+    border-radius: 5px;
+    cursor: pointer;
+}
+#flow-sheet #bw #clearBW:hover,
+#flow-sheet #bw #setBW:hover{
+    background-color: hsl(40,30%,70%);
 }
 
 #flow-sheet .header-card{

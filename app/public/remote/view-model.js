@@ -1,13 +1,26 @@
 "use strict";
+var PreSelect={};
+PreSelect.Patient={patientID:"",timeStamp:""};
+PreSelect.BirthSheet={patientID:"",caseNo:"",timeStamp:""};
+PreSelect.NIS={patientID:"",timeStamp:""};
+PreSelect.FlowSheet={patientID:"",timeStamp:""};
+
 var requestPatientList=function(ward,callback){
     queryData("patientList_"+ward,function(data, timeStamp){
         callback&&callback(data, timeStamp);
     });
 }
 var preSelectPatient=function(patientID, callback){
-    queryData("preSelectPatient_"+patientID,function(data, timeStamp){
-        callback&&callback(data, timeStamp);
-    });
+    if(patientID==PreSelect.Patient.patientID&&
+        Parser.getSecondDifference(PreSelect.Patient.timeStamp,Parser.getDateTime()<=60)){
+        callback&&callback();
+    }else{
+        PreSelect.Patient.patientID=patientID;
+        PreSelect.Patient.timeStamp=Parser.getDateTime();
+        queryData("preSelectPatient_"+patientID,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    }
 }
 var requestAdmissionList=function(patientID, callback){
     preSelectPatient(patientID, function(data_preSelect, timeStamp_preSelect){
@@ -115,9 +128,21 @@ var updateMedicationInfo=function(patientID,caseNo,seq,callback){
 }
 
 var preSelectBirthSheet=function(patientID,caseNo,callback){
-    queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
-        callback&&callback(data, timeStamp);
-    });
+
+    if(patientID==PreSelect.BirthSheet.patientID&&
+        caseNo==PreSelect.BirthSheet.caseNo&&
+        Parser.getSecondDifference(PreSelect.BirthSheet.timeStamp,Parser.getDateTime()<=60)){
+        console.log('no preselect');
+        callback&&callback();
+    }else{
+        console.log('call preselect');
+        PreSelect.BirthSheet.patientID=patientID;
+        PreSelect.BirthSheet.caseNo=caseNo;
+        PreSelect.BirthSheet.timeStamp=Parser.getDateTime();
+        queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
+            callback&&callback(data, timeStamp);
+        });
+    }    
 }
 var updateBirthSheet=function(patientID,caseNo,callback){
     preSelectBirthSheet(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
