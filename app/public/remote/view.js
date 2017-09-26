@@ -141,11 +141,11 @@ var view= new Vue({
             bwData:[],
             bwForCalculate:"",
             inputBW:"",
-            bwLast:"4.3222",
+            bwLast:"9.99",
             bwLastDate:Parser.getDate(),
-            bwDelta:"0.012",
-            bwFirst:"0.77",
-            bbw:"0.77",
+            bwDelta:"99",
+            bwFirst:"0.99",
+            bbw:"0.999",
             chart:[],
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
@@ -359,6 +359,7 @@ var view= new Vue({
             });
         },
         queryCaseNo:function(patientID,caseNo){
+            patientID=patientID||view.flowSheet.patientID;
             viewRender.queryCaseNo(patientID,caseNo);
         },
         setBW:function(){
@@ -435,13 +436,64 @@ var FS=view.flowSheet;
 var Layout=Layout||{};
 var viewRender={};
 viewRender.bw={};
-viewRender.bw.initialize=function(){
-    if(!FS.bwData.colNames){
+viewRender.bw.parsed=[];
+viewRender.bw.initialize=function(rawBW){
+    if(!rawBW||!rawBW.colNames){
         return;
     }
-    var indexDate = FS.bwData.colNames.indexOf("日期時間");
-    var indexBW = FS.bwData.colNames.indexOf("體重");
-    console.log(indexDate+" " +indexBW);  //todo
+    var indexDate = rawBW.colNames.indexOf("日期時間");
+    var indexBW = rawBW.colNames.indexOf("體重");
+    var parsedbw=[];
+    var lastPushedDateTime="";
+    rawBW.data.forEach(function(x){
+        if(x[indexDate]!=lastPushedDateTime){
+            parsedbw.push({dateTime:x[indexDate],bw:Parser.getNumberPartFromString(x[indexBW])});
+            lastPushedDateTime=x[indexDate];
+        }
+    });
+    parsedbw.sort(function(a,b){return new Date(a.dateTime)-new Date(b.dateTime)});
+    
+    var firstBwObj=(parsedbw&&parsedbw[0])||null;
+    if(firstBwObj){
+        FS.bwFirst=firstBwObj.bw;
+        if(Parser.getDayDifference(firstBwObj.dateTime,FS.birthday)<=1){
+            FS.bbw=firstBwObj.bw;
+        }else{
+            FS.bbw=null;
+        }
+    }else{
+        FS.bwFirst=null;
+    }
+    viewRender.bw.parsed=parsedbw;
+}
+viewRender.bw.selectBw=function(){
+    var parsedbw=viewRender.bw.parsed;
+
+    var lastIndexToday=parsedbw.findLastIndexOf(function(x){
+        return Parser.getDate(x.dateTime)==FS.currentDate;}
+    );
+    var lastBwObj=(parsedbw&&(parsedbw[lastIndexToday]||parsedbw.slice(-1)[0]))||null;
+    if(lastBwObj){
+        FS.bwLast=lastBwObj.bw;
+        FS.bwLastDate=Parser.getDate(lastBwObj.dateTime);
+    }else{
+        FS.bwLast=null;
+        FS.bwLastDate=null;
+    }
+
+    var yesterday = new Date(FS.currentDate);
+    yesterday.setDate(yesterday.getDate() -1);
+    yesterday=Parser.getDate(yesterday);
+    var lastIndexYesterday=parsedbw.findLastIndexOf(function(x){
+        return Parser.getDate(x.dateTime)==yesterday;}
+    );
+    var yesterdayBwObj=(parsedbw&&parsedbw[lastIndexYesterday])||null;
+    
+    if(yesterdayBwObj&&lastBwObj){
+        FS.bwDelta = lastBwObj.bw - yesterdayBwObj.bw;
+    }else{
+        FS.bwDelta=null;
+    } 
 }
 viewRender.header={
     initialize:function(){
@@ -480,6 +532,7 @@ viewRender.header={
         headerCards.push(new this.headerCard("實際年齡",ageStr,"生日："+FS.birthday));
         
         var bwString="體重";
+        viewRender.bw.selectBw();
         if(FS.bwForCalculate){
             if(FS.bwForCalculate>=5){
                 bwString="設定體重："+Math.round(FS.bwForCalculate*100)/100+"kg";
@@ -487,7 +540,7 @@ viewRender.header={
                 bwString="設定體重："+Math.round(FS.bwForCalculate*1000)+"g";
             }
         }else if(FS.bbw&&Number(Parser.getDayDifference(FS.birthday, FS.currentDate))<7){
-            bwString="(使用出生體重)";
+            bwString="(小於一週使用出生體重)";
         };
         var currentBWString="";
         var delta="";
@@ -500,7 +553,7 @@ viewRender.header={
                 currentBWString=Math.round(FS.bwLast*100)/100+"kg";
                 delta=Math.round(FS.bwDelta*100)/100;
             }
-            if(FS.bwLastDate==FS.currentDate&&FS.bwDelta!="null"){
+            if(FS.bwLastDate==FS.currentDate&&FS.bwDelta!=null){
                 currentBWString+="<span class='s-word grey-40-font'>(";
                 if(FS.bwDelta>0){
                     currentBWString+="+"+delta;
@@ -517,7 +570,13 @@ viewRender.header={
         if(FS.bbw){
             bbwString="出生體重："+Math.round(FS.bbw*1000)+"g";
         }else if(FS.bwFirst){
-            bbwString="住院體重："+Math.round(FS.bwFirst*1000)+"g";
+            if(FS.bwFirst<=5){
+                var bwFirstString=Math.round(FS.bwFirst*1000)+"g";
+            }else{
+                var bwFirstString=Math.round(FS.bwFirst*100)/100+"kg";
+            }
+
+            bbwString="住院體重："+bwFirstString;
         }
         headerCards.push(new this.headerCard(bwString,currentBWString,bbwString,{cardId:"bw-card"}));
 
@@ -695,16 +754,17 @@ viewRender.jquery=function(){
     //header DOMs..
     setTimeout(function() {
         Layout.onWidthChange();
-        $('#admission-card').off().on("click",function(){
+        $('.header-card').off();
+        $('#admission-card').on("click",function(){
             var status=!FS.showAdPicker;
             viewRender.closeAll();
             FS.showAdPicker = status;
             return false;
         });
-        $('#adpicker').off().on('click',function(){
+        $('#adpicker').on('click',function(){
             return false;
         });
-        $('#bw-card').off().on("click",function(){
+        $('#bw-card').on("click",function(){
             var status=!FS.showBW;
             viewRender.closeAll();
             FS.inputBW="";
@@ -724,7 +784,9 @@ viewRender.initialize=function(){
     viewRender.bw.initialize();
     viewRender.chart.initialize();
     viewRender.header.initialize();
-    viewRender.jquery();
+    Vue.nextTick(function(){
+        viewRender.jquery();
+    });
 }
 
 viewRender.queryPatientData=function(patientID){
@@ -742,35 +804,45 @@ viewRender.queryPatientData=function(patientID){
                 var admission=FS.admissionList[0];
                 var caseNo=admission.caseNo;
                 var firstCaseNo=FS.admissionList.slice(-1)[0].caseNo;
-                requestVitalSign(patientID,caseNo, "HWS",function(data,timeStamp){
-                    FS.bwData=data;
-                    updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
-                        FS.birthSheet=data||{};
-                        FS.GAweek="";
-                        FS.GAday="";
-                        if(FS.birthSheet.hasBirthSheet){
-                            FS.birthSheet=data;
-                            FS.GAweek=FS.birthSheet.child.GAweek;
-                            FS.GAday=FS.birthSheet.child.GAday;
-                        }
-                        viewRender.queryCaseNo(caseNo);
-                    })
+                updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
+                    FS.birthSheet=data||{};
+                    FS.GAweek="";
+                    FS.GAday="";
+                    if(FS.birthSheet.hasBirthSheet){
+                        FS.birthSheet=data;
+                        FS.GAweek=FS.birthSheet.child.GAweek;
+                        FS.GAday=FS.birthSheet.child.GAday;
+                    }
+                    viewRender.queryCaseNo(patientID, caseNo);
                 })
             }
         });
     });
 };
 
-viewRender.queryCaseNo=function(caseNo){
-    var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
-    if(admission&&admission[0]){
-        admission=admission[0];
-        FS.caseNo=caseNo;
-        FS.admissionDate=admission.admissionDate;
-        FS.dischargeDate=admission.dischargeDate;
-        var qdate = FS.dischargeDate||Parser.getDate();
-        viewRender.queryDate(qdate);
-    };
+viewRender.queryCaseNo=function(patientID, caseNo){
+    
+        var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
+        if(admission&&admission[0]){
+            admission=admission[0];
+            FS.caseNo=caseNo;
+            FS.admissionDate=admission.admissionDate;
+            FS.dischargeDate=admission.dischargeDate;
+            var qdate = FS.dischargeDate||Parser.getDate();
+            
+            requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
+                if(FS.admissionList.slice(-1)[0].section=="NB"){
+                    requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
+                        data.data=data.data.concat(firstAddata.data);
+                        viewRender.bw.initialize(data);
+                        viewRender.queryDate(qdate);
+                    });
+                }else{
+                    viewRender.bw.initialize(data);
+                    viewRender.queryDate(qdate);
+                }
+            })
+        };
 }
 
 viewRender.queryDate=function(date){

@@ -448,7 +448,7 @@
                                 <th>離院日</th>
                                 <th>科別</th>
                             </tr>
-                            <tr v-for="ad in flowSheet.admissionList" class='row' :class="{selected:flowSheet.caseNo==ad.caseNo}" @click="queryCaseNo(ad.caseNo)">
+                            <tr v-for="ad in flowSheet.admissionList" class='row' :class="{selected:flowSheet.caseNo==ad.caseNo}" @click="queryCaseNo(null,ad.caseNo)">
                                 <td>{{ad.admissionDate}}</td>
                                 <td>{{ad.dischargeDate}}</td>
                                 <td>{{ad.section}}</td>

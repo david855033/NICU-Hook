@@ -30,6 +30,7 @@ var Parser={
     },
     getDate:function(dateObj){
         var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))
@@ -180,5 +181,12 @@ var Parser={
     //html fix
     removeHtmlBlank:function(htmlText){
         return htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
+    },
+    
+    //number
+    getNumberPartFromString:function(inputStr){
+        var matchNum=inputStr.match(/\d+(.\d+)?/);
+        matchNum=(matchNum &&Number(matchNum[0]))||null;
+        return matchNum;
     }
 }
