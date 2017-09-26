@@ -138,7 +138,6 @@ var view= new Vue({
             birthSheet:{},
             GAweek:"",
             GAday:"",
-            bwData:[],
             bwForCalculate:"",
             inputBW:"",
             bwLast:"9.99",
@@ -342,7 +341,7 @@ var view= new Vue({
         },
         updateFlowSheet:function(patientID, caseNo, date){
             date=Parser.getShortDate(date);
-            updateFlowSheet(patientID,caseNo, date,function(data,timeStamp)
+            requestFlowSheet(patientID,caseNo, date,function(data,timeStamp)
             {
                 var obj={};
                 obj.date=date;
@@ -394,9 +393,9 @@ var view= new Vue({
         },
         dayChange:function(n){
             if(n=='first'){
-                viewRender.queryDate(view.flowSheet.admissionDate);
+                viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo,view.flowSheet.admissionDate);
             }else if(n=='last'){
-                viewRender.queryDate(view.flowSheet.dischargeDate||Parser.getDate());
+                viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo,view.flowSheet.dischargeDate||Parser.getDate());
             }else{
                 var date = new Date(view.flowSheet.currentDate);
                 date.setDate(date.getDate() + n);
@@ -405,7 +404,7 @@ var view= new Vue({
                 if(view.flowSheet.dischargeDate&&date>dischargeDate){date=dischargeDate;}
                 var admissionDate=new Date(view.flowSheet.admissionDate);
                 if(view.flowSheet.admissionDate&&date<admissionDate){date=admissionDate;}
-                viewRender.queryDate(Parser.getDate(date));
+                viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo,Parser.getDate(date));
                 
             }
         }
@@ -470,7 +469,7 @@ viewRender.bw.selectBw=function(){
     var parsedbw=viewRender.bw.parsed;
 
     var lastIndexToday=parsedbw.findLastIndexOf(function(x){
-        return Parser.getDate(x.dateTime)==FS.currentDate;}
+        return Parser.getDate(x.dateTime)<=FS.currentDate;}
     );
     var lastBwObj=(parsedbw&&(parsedbw[lastIndexToday]||parsedbw.slice(-1)[0]))||null;
     if(lastBwObj){
@@ -593,13 +592,61 @@ viewRender.header={
     }
 };
 
+viewRender.bt={};
+viewRender.bt.parsed=[];
+viewRender.bt.initialize=function(rawBT){
+    
+    if(!rawBT||!rawBT.colNames){
+        return;
+    }
+    var indexDate = rawBT.colNames.indexOf("日期時間");
+    var indexBT = rawBT.colNames.indexOf("體溫");
+    var parsedbt=[];
+    var lastPushedDateTime="";
+    rawBT.data.forEach(function(x){
+        if(x[indexDate]!=lastPushedDateTime){
+            parsedbt.push({dateTime:x[indexDate],bt:Parser.getNumberPartFromString(x[indexBT])});
+            lastPushedDateTime=x[indexDate];
+        }
+    });
+    parsedbt.sort(function(a,b){return new Date(a.dateTime)-new Date(b.dateTime)});
+    viewRender.bt.parsed=parsedbt;
+}
+viewRender.bt.toShow=[];
+viewRender.bt.selectDate=function(date){
+    var parsedbt=viewRender.bt.parsed;
+    var tommorow = new Date(date);
+    tommorow.setDate(tommorow.getDate() +1);
+    tommorow=Parser.getDate(tommorow);
+
+    var startDateTime=date+" 07:00";
+    var endDateTime=Parser.getDate(tommorow)+" 07:00";
+    var startIndex=1 + parsedbt.findLastIndexOf(function(x){
+        return new Date(x.dateTime)<new Date(startDateTime);
+    });
+    var endIndex= parsedbt.findLastIndexOf(function(x){
+        return new Date(x.dateTime) < new Date(endDateTime);
+    });
+  
+    var toShow=[];
+    for(var i = startIndex; i<=endIndex;i++)
+    {
+        var hour = Parser.getHour(parsedbt[i].dateTime)
+        hour-=7;
+        if(hour<0){hour+=24;}
+        toShow[hour]||(toShow[hour]="");
+        toShow[hour]+=div(parsedbt[i].bt);
+    }
+    viewRender.bt.toShow=toShow;
+}
+
 viewRender.chart = {
     initialize:function(){
         var chartArray =[];
         var TPRTable={
             classes:['tpr'],
             rows:[this.header(),
-                this.tprRow("體溫","(&#8451;)",[36,38],[]),
+                this.tprRow("體溫","(&#8451;)",[36,38],viewRender.bt.toShow),
                 this.tprRow("心律","(/min)",[100,180],[]),
                 this.tprRow("呼吸","(/min)",[30,60],[]),
                 this.tprRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
@@ -691,7 +738,7 @@ viewRender.chart = {
         for(var i = 0; i < 24;i++)
         {
             if(data[i]){
-                resultArray.push(new cell(data[i],'data-color'))
+                resultArray.push(new cell(data[i].htmlText||data[i],'data-color',data[i].tooltip||""))
             }else
             {   
                 resultArray.push(new cell("",'no-data-color'))
@@ -821,15 +868,16 @@ viewRender.queryPatientData=function(patientID){
 };
 
 viewRender.queryCaseNo=function(patientID, caseNo){
-    
-        var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
-        if(admission&&admission[0]){
-            admission=admission[0];
-            FS.caseNo=caseNo;
-            FS.admissionDate=admission.admissionDate;
-            FS.dischargeDate=admission.dischargeDate;
-            var qdate = FS.dischargeDate||Parser.getDate();
-            
+    var admission = FS.admissionList.filter(function(x){return x.caseNo==caseNo;})
+    if(admission&&admission[0]){
+        admission=admission[0];
+        FS.caseNo=caseNo;
+        FS.admissionDate=admission.admissionDate;
+        FS.dischargeDate=admission.dischargeDate;
+        var qdate = FS.dischargeDate||Parser.getDate();
+        requestVitalSign(patientID, caseNo, "TMP",function(data,timeStamp){ 
+            viewRender.bt.initialize(data);
+
             requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
                 if(FS.admissionList.slice(-1)[0].section=="NB"){
                     requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
@@ -839,14 +887,20 @@ viewRender.queryCaseNo=function(patientID, caseNo){
                     });
                 }else{
                     viewRender.bw.initialize(data);
-                    viewRender.queryDate(qdate);
+                    viewRender.queryDate(patientID,caseNo,qdate);
                 }
-            })
-        };
+            });
+        });
+    };
 }
 
-viewRender.queryDate=function(date){
+viewRender.queryDate=function(patientID,caseNo,date){
     FS.currentDate=date;
-    viewRender.initialize();
+    viewRender.bt.selectDate(date);
+    requestFlowSheet(patientID,caseNo, Parser.getShortDate(date),function(data,timeStamp)
+    {
+        console.log(data);
+        viewRender.initialize();
+    });
 }
 

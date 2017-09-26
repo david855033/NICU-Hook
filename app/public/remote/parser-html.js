@@ -671,7 +671,7 @@ Parser.flowSheet=function(htmlText){
     }
 
     var result={};
-    
+
     var event=getProperty("event_Array");
     event&&(result.event=event);
 

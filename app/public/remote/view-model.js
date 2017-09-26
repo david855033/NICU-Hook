@@ -3,7 +3,7 @@ var PreSelect={};
 PreSelect.Patient={patientID:"",timeStamp:""};
 PreSelect.BirthSheet={patientID:"",caseNo:"",timeStamp:"",data_preSelect:{}};
 PreSelect.NIS={patientID:"",timeStamp:""};
-PreSelect.FlowSheet={patientID:"",timeStamp:""};
+PreSelect.FlowSheet={patientID:"",caseNo:"",timeStamp:""};
 
 var requestPatientList=function(ward,callback){
     queryData("patientList_"+ward,function(data, timeStamp){
@@ -177,12 +177,25 @@ var updateNISHandOver=function(patientID,caseNo,callback){
     });
 }
 var preSelectFlowSheet=function(patientID,caseNo,callback){
+    if(false&&patientID==PreSelect.FlowSheet.patientID&&
+    caseNo==PreSelect.FlowSheet.caseNo&&
+    Parser.getSecondDifference(PreSelect.FlowSheet.timeStamp,Parser.getDateTime()<=60)){
+        callback&&callback();
+    }else{
+        PreSelect.FlowSheet.timeStamp=Parser.getDateTime();
+        queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
+            PreSelect.FlowSheet.patientID=patientID;
+            PreSelect.FlowSheet.caseNo=caseNo;
+            callback&&callback(data, timeStamp);
+        });
+    }    
+
     queryData("preSelectFlowSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
         callback&&callback(data, timeStamp);
     });
 };
 
-var updateFlowSheet=function(patientID,caseNo,date,callback){
+var requestFlowSheet=function(patientID,caseNo,date,callback){
     preSelectFlowSheet(patientID, caseNo, function(data_preSelect, timeStamp_preSelect){
         queryData("flowSheet_"+patientID+"_"+caseNo+"_"+date,function(data, timeStamp){
             callback&&callback(data, timeStamp, date);

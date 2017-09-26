@@ -36,6 +36,12 @@ var Parser={
             +this.get2DigiNum((toParse.getDate()))
         return str;
     },
+    getHour:function(dateObj){
+        var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        var str = toParse.getHours();
+        return str;
+    },
     getMMDD:function(dateObj){
         var toParse = dateObj || new Date();
         if(typeof dateObj=="string"){toParse=new Date(dateObj);}
