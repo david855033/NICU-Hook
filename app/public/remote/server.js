@@ -38,7 +38,7 @@ var defaulOption = function(){
         "Connection": "keep-alive",
         "Cache-Control": "max-age=0",
         "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
         "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4"
@@ -60,7 +60,12 @@ var setCookieString=function(cookieObj, str){
     //將input的K-V pair更新到originObj(用來判斷新增/取代cookies)
     var keysInInputObj = Object.keys(inputObj);
     var keysInOriginObj = Object.keys(originObj);
-    keysInInputObj.forEach(function(x)  {originObj[x]=inputObj[x]});
+    keysInInputObj.forEach(function(x){originObj[x]=inputObj[x]});
+    
+    //remove start with dt/WAS
+    keysInInputObj=keysInInputObj.filter(function(x){return x.slice(0,2)!='dt'})
+    keysInInputObj=keysInInputObj.filter(function(x){return x.slice(0,3)!='WAS'})    
+
     //轉換成string
     var combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
     cookieObj.string = combinedString;
@@ -83,8 +88,10 @@ server.signIn=function(account, password, callback){
     option.url="https://web9.vghtpe.gov.tw/Signon/lockaccount";
     option.method='POST';
     option.form={j_username:server.account,j_password:server.password};
+    console.log("sign in: "+server.account);
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
+        //console.log("recieve cookie: "+resObj.cookieString)
         setCookieString(cookieObj, resObj.cookieString);
         isFunction(callback)&&callback();
     });
@@ -104,10 +111,13 @@ server.request=function(serverRequest,callback){
     option.url=serverRequest.url;
     serverRequest.method && (option.method=serverRequest.method);
     serverRequest.form && (option.form=serverRequest.form);
-    
+
+    //console.log("send cookie: "+cookieObj.string);
+
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
         setCookieString(cookieObj, resObj.cookieString);
+        //console.log("recieve cookie: "+resObj.cookieString)
         callback&&callback(resObj.body, Parser.getDateTime());
     });
 }

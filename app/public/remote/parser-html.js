@@ -35,6 +35,7 @@ Parser.getPatientList=function(htmlText){
 //取得某病患的住院清單
 //[{admissionDate:"2017-01-01",dischargeDate:"2017-01-02",caseNo:"1234567",section:""}]
 Parser.getAdmissionList=function(htmlText){
+    htmlText=Parser.removeHtmlBlank(htmlText);
     var resultArray=[];
     var doc = Parser.getDOM(htmlText);
     var tbody = doc.getElementsByTagName("tbody");

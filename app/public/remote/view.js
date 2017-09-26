@@ -204,7 +204,7 @@ var view= new Vue({
                 view.admissionList.content = data;
                 view.admissionList.timeStamp = timeStamp;
                 view.selectedCaseNo=view.admissionList.content&&view.admissionList.content[0].caseNo;
-                view.updateCase(patientID, view.selectedCaseNo);    //for dev show
+                // view.updateCase(patientID, view.selectedCaseNo);    //for dev show
             });
         },
         updatePatient:function(patientID){
@@ -218,19 +218,20 @@ var view= new Vue({
             // view.updateOrder(patientID,7);
             // view.updateReport(patientID, 1);
             // view.updateCummulative(patientID,3,view.dev.selectedCummulativeList);
+            
             viewRender.queryPatientData(patientID);
         },
         updateCase:function(patientID, caseNo){
             patientID=patientID||view.selectedPatientID;
             view.selectedCaseNo=caseNo;
 
-            // view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList);
-            // view.updateTreatment(patientID, caseNo);
-            // view.updateTransfusion(patientID, caseNo);
-            // view.updateMedication(patientID, caseNo);
-            // view.updateBirthSheet(patientID, caseNo);
-            // view.updateNISHandOver(patientID, caseNo);
-            // view.updateFlowSheet(patientID, caseNo, Parser.getDateTime());
+            view.updateVitalSign(patientID, caseNo, view.dev.selectedVitalSignList);
+            view.updateTreatment(patientID, caseNo);
+            view.updateTransfusion(patientID, caseNo);
+            view.updateMedication(patientID, caseNo);
+            view.updateBirthSheet(patientID, caseNo);
+            view.updateNISHandOver(patientID, caseNo);
+            view.updateFlowSheet(patientID, caseNo, Parser.getDateTime());
         },
         updatePatientData:function(patientID){
             requestPatientData(patientID,function(data,timeStamp){
@@ -440,7 +441,7 @@ viewRender.bw.initialize=function(){
     }
     var indexDate = FS.bwData.colNames.indexOf("日期時間");
     var indexBW = FS.bwData.colNames.indexOf("體重");
-    console.log(indexDate+" " +indexBW);
+    console.log(indexDate+" " +indexBW);  //todo
 }
 viewRender.header={
     initialize:function(){

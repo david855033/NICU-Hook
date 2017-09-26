@@ -175,5 +175,10 @@ var Parser={
             }
         }  
         return null;
+    },
+
+    //html fix
+    removeHtmlBlank:function(htmlText){
+        return htmlText.regReplaceAll(/\\r/g,'').regReplaceAll(/\\n/g,'').regReplaceAll(/\\t/g,'').regReplaceAll(/\\\"/g,'').replaceNbsps().trim();
     }
 }

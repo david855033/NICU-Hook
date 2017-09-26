@@ -21,8 +21,10 @@ var queryData=function(query, callback){
     };
     var maxReqInterval = serverRequest.maxReqInterval||120;
     if(secDiff==-1||secDiff>=maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
-        console.log('from server: '+query);
+        
         server.request(serverRequest, function(serverData, timeStamp){ 
+            console.log('from server: '+query);
+            // console.log(Parser.getDOM(serverData));
             if(serverData=='""'){
                 //console.log('not logged, trying log again');
                 //重新登入後 再執行一次serverRequest
