@@ -595,7 +595,6 @@ viewRender.header={
 viewRender.bt={};
 viewRender.bt.parsed=[];
 viewRender.bt.initialize=function(rawBT){
-    
     if(!rawBT||!rawBT.colNames){
         return;
     }

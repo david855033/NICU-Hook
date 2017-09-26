@@ -129,8 +129,8 @@ var updateMedicationInfo=function(patientID,caseNo,seq,callback){
 
 var preSelectBirthSheet=function(patientID,caseNo,callback){
     if(patientID==PreSelect.BirthSheet.patientID&&
-        caseNo==PreSelect.BirthSheet.caseNo&&
-        Parser.getSecondDifference(PreSelect.BirthSheet.timeStamp,Parser.getDateTime()<=60)){
+    caseNo==PreSelect.BirthSheet.caseNo&&
+    Parser.getSecondDifference(PreSelect.BirthSheet.timeStamp,Parser.getDateTime()<=60)){
         callback&&callback(PreSelect.BirthSheet.data_preSelect);
     }else{
         PreSelect.BirthSheet.timeStamp=Parser.getDateTime();
@@ -177,22 +177,18 @@ var updateNISHandOver=function(patientID,caseNo,callback){
     });
 }
 var preSelectFlowSheet=function(patientID,caseNo,callback){
-    if(false&&patientID==PreSelect.FlowSheet.patientID&&
+    if(patientID==PreSelect.FlowSheet.patientID&&
     caseNo==PreSelect.FlowSheet.caseNo&&
     Parser.getSecondDifference(PreSelect.FlowSheet.timeStamp,Parser.getDateTime()<=60)){
         callback&&callback();
     }else{
         PreSelect.FlowSheet.timeStamp=Parser.getDateTime();
-        queryData("preSelectBirthSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
+        queryData("preSelectFlowSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
             PreSelect.FlowSheet.patientID=patientID;
             PreSelect.FlowSheet.caseNo=caseNo;
             callback&&callback(data, timeStamp);
         });
-    }    
-
-    queryData("preSelectFlowSheet_"+patientID+"_"+caseNo,function(data, timeStamp){
-        callback&&callback(data, timeStamp);
-    });
+    }   
 };
 
 var requestFlowSheet=function(patientID,caseNo,date,callback){
