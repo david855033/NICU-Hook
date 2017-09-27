@@ -159,6 +159,13 @@ var Parser={
             return ((dayDiff-remainDay)/365).toFixed(0)+"y"+(month>0?(" "+month+"m"):"");
         }
     },
+    addDate:function(dateObj,delta)
+    {
+        var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        toParse.setDate(toParse.getDate() +delta);
+        return Parser.getDate(toParse);
+    },
     //DOM manipulate
     getDOM:function(htmlText){
         var doc = document.implementation.createHTMLDocument("example");

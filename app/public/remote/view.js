@@ -594,15 +594,16 @@ viewRender.header={
 
 viewRender.bt={};
 viewRender.bt.parsed=[];
-viewRender.bt.initialize=function(rawBT){
-    if(!rawBT||!rawBT.colNames){
+viewRender.bt.limit=[36,38];
+viewRender.bt.initialize=function(rawData){
+    if(!rawData||!rawData.colNames){
         return;
     }
-    var indexDate = rawBT.colNames.indexOf("日期時間");
-    var indexBT = rawBT.colNames.indexOf("體溫");
+    var indexDate = rawData.colNames.indexOf("日期時間");
+    var indexBT = rawData.colNames.indexOf("體溫");
     var parsedbt=[];
     var lastPushedDateTime="";
-    rawBT.data.forEach(function(x){
+    rawData.data.forEach(function(x){
         if(x[indexDate]!=lastPushedDateTime){
             parsedbt.push({dateTime:x[indexDate],bt:Parser.getNumberPartFromString(x[indexBT])});
             lastPushedDateTime=x[indexDate];
@@ -614,30 +615,105 @@ viewRender.bt.initialize=function(rawBT){
 viewRender.bt.toShow=[];
 viewRender.bt.selectDate=function(date){
     var parsedbt=viewRender.bt.parsed;
-    var tommorow = new Date(date);
-    tommorow.setDate(tommorow.getDate() +1);
-    tommorow=Parser.getDate(tommorow);
+    var tommorow =Parser.addDate(date,1);
 
     var startDateTime=date+" 07:00";
     var endDateTime=Parser.getDate(tommorow)+" 07:00";
+
     var startIndex=1 + parsedbt.findLastIndexOf(function(x){
-        return new Date(x.dateTime)<new Date(startDateTime);
+        return new Date(x.dateTime)< new Date(startDateTime);
     });
     var endIndex= parsedbt.findLastIndexOf(function(x){
         return new Date(x.dateTime) < new Date(endDateTime);
     });
   
     var toShow=[];
+    var pushedData=[];
     for(var i = startIndex; i<=endIndex;i++)
     {
         var hour = Parser.getHour(parsedbt[i].dateTime)
         hour-=7;
         if(hour<0){hour+=24;}
         toShow[hour]||(toShow[hour]="");
-        toShow[hour]+=div(parsedbt[i].bt);
+        pushedData[hour]||(pushedData[hour]=[]);   //用來排除同樣資料
+        if(!pushedData[hour].find(function(x){return x==parsedbt[i].bt;})){
+            var limit=viewRender.bt.limit;
+    
+            if(limit[1]&&parsedbt[i].bt>=limit[1]){
+                toShow[hour]+=div(parsedbt[i].bt,['red','heavy-weight']);
+            }else if(limit[0]&&parsedbt[i].bt<limit[0]){
+                toShow[hour]+=div(parsedbt[i].bt,['blue','heavy-weight']);
+            }else{
+                toShow[hour]+=div(parsedbt[i].bt);
+            }
+            pushedData[hour].push(parsedbt[i].bt);
+        }
     }
     viewRender.bt.toShow=toShow;
 }
+
+viewRender.hrbp={};
+viewRender.hrbp.parsed={};
+viewRender.hrbp.toShow={hr:[],sbp:[],dbp:[],mbp:[]};
+
+viewRender.hrbp.initialize=function(rawData){
+    if(!rawData||!rawData.colNames){
+        return;
+    }
+    
+    var indexDate = rawData.colNames.indexOf("日期時間");
+    var indexhr = rawData.colNames.indexOf("脈膊");
+    var indexbp = rawData.colNames.indexOf("收縮壓/舒張壓");
+    var parsed=[];
+    var lastPushedDateTime="";
+    rawData.data.forEach(function(x){
+        var dateTime = x[indexDate];
+        if(dateTime!=lastPushedDateTime){
+            var hr=Parser.getNumberPartFromString(x[indexhr]);
+            var part = x[indexbp].split('/');
+            var sbp=part[0]&&Parser.getNumberPartFromString(part[0]);
+            var dbp=part[1]&&Parser.getNumberPartFromString(part[1]);
+            var mbp=sbp&&dbp&&(Math.round(sbp/3+dbp*2/3));
+            var thisData={dateTime:dateTime,hr:hr,sbp:sbp,dbp:dbp,mbp:mbp};
+            parsed.push(thisData);
+            lastPushedDateTime=dateTime;
+        }
+    });
+    viewRender.hrbp.parsed=parsed;
+};
+viewRender.hrbp.selectDate=function(date){
+    var parsed=viewRender.hrbp.parsed;
+    var tommorow =Parser.addDate(date,1);
+    var startDateTime=date+" 07:00";
+    var endDateTime=Parser.getDate(tommorow)+" 07:00";
+
+    var startIndex=1 + parsed.findLastIndexOf(function(x){
+        return new Date(x.dateTime)<new Date(startDateTime);
+    });
+    var endIndex= parsed.findLastIndexOf(function(x){
+        return new Date(x.dateTime) < new Date(endDateTime);
+    });
+
+    var toShow={hr:[],sbp:[],dbp:[],mbp:[]};
+    var pushedData={hr:[],sbp:[],dbp:[],mbp:[]};
+    for(var i = startIndex; i<=endIndex;i++)
+    {
+        var hour = Parser.getHour(parsed[i].dateTime);
+        hour-=7;
+        if(hour<0){hour+=24;}
+        toShow.hr[hour]||(toShow.hr[hour]="");
+        toShow.sbp[hour]||(toShow.sbp[hour]="");
+        toShow.dbp[hour]||(toShow.hr[hour]="");
+        toShow.mbp[hour]||(toShow.hr[hour]="");
+        pushedData.hr[hour]||(pushedData.hr[hour]=[]);   //用來排除同樣資料
+        pushedData.sbp[hour]||(pushedData.sbp[hour]=[]);
+        pushedData.dbp[hour]||(pushedData.dbp[hour]=[]);
+        pushedData.mbp[hour]||(pushedData.mbp[hour]=[]);
+        if(!pushedData.hr[hour].find(function(x){return x==parsed[i];})){
+
+        }
+    }
+};
 
 viewRender.chart = {
     initialize:function(){
@@ -645,14 +721,14 @@ viewRender.chart = {
         var TPRTable={
             classes:['tpr'],
             rows:[this.header(),
-                this.tprRow("體溫","(&#8451;)",[36,38],viewRender.bt.toShow),
-                this.tprRow("心律","(/min)",[100,180],[]),
+                this.tprRow("體溫","(&#8451;)",viewRender.bt.limit,viewRender.bt.toShow),
+                this.tprRow("心律","(/min)",[100,180],viewRender.hrbp.toShow.hr),
                 this.tprRow("呼吸","(/min)",[30,60],[]),
                 this.tprRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
                 this.spacerRow(),
-                this.tprRow("SBP","(mmHg)",[45,],[]),
-                this.tprRow("DBP","(mmHg)",[20,],[]),
-                this.tprRow("MBP","(mmHg)",[35,],[]),
+                this.tprRow("SBP","(mmHg)",[45,],viewRender.hrbp.toShow.sbp),
+                this.tprRow("DBP","(mmHg)",[20,],viewRender.hrbp.toShow.dbp),
+                this.tprRow("MBP","(mmHg)",[35,],viewRender.hrbp.toShow.mbp),
             ]
         };
         chartArray.push(TPRTable);
@@ -877,17 +953,21 @@ viewRender.queryCaseNo=function(patientID, caseNo){
         requestVitalSign(patientID, caseNo, "TMP",function(data,timeStamp){ 
             viewRender.bt.initialize(data);
 
-            requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
-                if(FS.admissionList.slice(-1)[0].section=="NB"){
-                    requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
-                        data.data=data.data.concat(firstAddata.data);
+            requestVitalSign(patientID, caseNo, "BPP",function(data,timeStamp){ 
+                viewRender.hrbp.initialize(data);
+
+                requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
+                    if(FS.admissionList.slice(-1)[0].section=="NB"){
+                        requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
+                            data.data=data.data.concat(firstAddata.data);
+                            viewRender.bw.initialize(data);
+                            viewRender.queryDate(qdate);
+                        });
+                    }else{
                         viewRender.bw.initialize(data);
-                        viewRender.queryDate(qdate);
-                    });
-                }else{
-                    viewRender.bw.initialize(data);
-                    viewRender.queryDate(patientID,caseNo,qdate);
-                }
+                        viewRender.queryDate(patientID,caseNo,qdate);
+                    }
+                });
             });
         });
     };
@@ -896,6 +976,7 @@ viewRender.queryCaseNo=function(patientID, caseNo){
 viewRender.queryDate=function(patientID,caseNo,date){
     FS.currentDate=date;
     viewRender.bt.selectDate(date);
+    viewRender.hrbp.selectDate(date);
     requestFlowSheet(patientID,caseNo, Parser.getShortDate(date),function(data,timeStamp)
     {
         console.log(data);

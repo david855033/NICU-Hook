@@ -94,6 +94,9 @@ body{
 .red{
     color: hsl(0,90%,50%);
 }
+.blue{
+    color: hsl(220,90%,40%);
+}
 /* scroll */
 .y-scroll{
     overflow-y: auto;
