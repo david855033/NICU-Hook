@@ -655,7 +655,7 @@ viewRender.bt.selectDate=function(date){
 viewRender.hrbp={};
 viewRender.hrbp.parsed={};
 viewRender.hrbp.toShow={hr:[],sbp:[],dbp:[],mbp:[]};
-
+viewRender.hrbp.limit={hr:[90,180],sbp:[60],dbp:[30],mbp:[40]};
 viewRender.hrbp.initialize=function(rawData){
     if(!rawData||!rawData.colNames){
         return;
@@ -679,6 +679,7 @@ viewRender.hrbp.initialize=function(rawData){
             lastPushedDateTime=dateTime;
         }
     });
+    parsed.sort(function(a,b){return new Date(a.dateTime)-new Date(b.dateTime)});
     viewRender.hrbp.parsed=parsed;
 };
 viewRender.hrbp.selectDate=function(date){
@@ -688,12 +689,11 @@ viewRender.hrbp.selectDate=function(date){
     var endDateTime=Parser.getDate(tommorow)+" 07:00";
 
     var startIndex=1 + parsed.findLastIndexOf(function(x){
-        return new Date(x.dateTime)<new Date(startDateTime);
+        return new Date(x.dateTime) < new Date(startDateTime);
     });
     var endIndex= parsed.findLastIndexOf(function(x){
         return new Date(x.dateTime) < new Date(endDateTime);
     });
-
     var toShow={hr:[],sbp:[],dbp:[],mbp:[]};
     var pushedData={hr:[],sbp:[],dbp:[],mbp:[]};
     for(var i = startIndex; i<=endIndex;i++)
@@ -705,14 +705,29 @@ viewRender.hrbp.selectDate=function(date){
         toShow.sbp[hour]||(toShow.sbp[hour]="");
         toShow.dbp[hour]||(toShow.hr[hour]="");
         toShow.mbp[hour]||(toShow.hr[hour]="");
-        pushedData.hr[hour]||(pushedData.hr[hour]=[]);   //用來排除同樣資料
+        //用來排除同樣資料
+        pushedData.hr[hour]||(pushedData.hr[hour]=[]);   
+        console.log(parsed[i]);
+        if(!pushedData.hr[hour].find(function(x){return x==parsed[i].hr;})){
+            var limit=viewRender.hrbp.limit.hr;
+            var value = parsed[i].hr;
+            if(value){
+                if(limit[1]&&value>=limit[1]){
+                    toShow.hr[hour]+=div(value,['red','heavy-weight']);
+                }else if(limit[0]&&value<limit[0]){
+                    toShow.hr[hour]+=div(value,['red','heavy-weight']);
+                }else{
+                    toShow.hr[hour]+=div(value);
+                }
+                pushedData.hr[hour].push(value);
+            }
+        };
         pushedData.sbp[hour]||(pushedData.sbp[hour]=[]);
         pushedData.dbp[hour]||(pushedData.dbp[hour]=[]);
         pushedData.mbp[hour]||(pushedData.mbp[hour]=[]);
-        if(!pushedData.hr[hour].find(function(x){return x==parsed[i];})){
-
-        }
     }
+
+    viewRender.hrbp.toShow=toShow;
 };
 
 viewRender.chart = {
@@ -722,13 +737,13 @@ viewRender.chart = {
             classes:['tpr'],
             rows:[this.header(),
                 this.tprRow("體溫","(&#8451;)",viewRender.bt.limit,viewRender.bt.toShow),
-                this.tprRow("心律","(/min)",[100,180],viewRender.hrbp.toShow.hr),
+                this.tprRow("心律","(/min)",viewRender.hrbp.limit.hr,viewRender.hrbp.toShow.hr),
                 this.tprRow("呼吸","(/min)",[30,60],[]),
                 this.tprRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
                 this.spacerRow(),
-                this.tprRow("SBP","(mmHg)",[45,],viewRender.hrbp.toShow.sbp),
-                this.tprRow("DBP","(mmHg)",[20,],viewRender.hrbp.toShow.dbp),
-                this.tprRow("MBP","(mmHg)",[35,],viewRender.hrbp.toShow.mbp),
+                this.tprRow("SBP","(mmHg)",viewRender.hrbp.limit.sbp,viewRender.hrbp.toShow.sbp),
+                this.tprRow("DBP","(mmHg)",viewRender.hrbp.limit.dbp,viewRender.hrbp.toShow.dbp),
+                this.tprRow("MBP","(mmHg)",viewRender.hrbp.limit.mbp,viewRender.hrbp.toShow.mbp),
             ]
         };
         chartArray.push(TPRTable);
