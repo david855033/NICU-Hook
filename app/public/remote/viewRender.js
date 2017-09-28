@@ -468,13 +468,14 @@ viewRender.queryCaseNo=function(patientID, caseNo){
         FS.admissionDate=admission.admissionDate;
         FS.dischargeDate=admission.dischargeDate;
         var qdate = FS.dischargeDate||Parser.getDate();
-   
+       
+
         requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
             if(FS.admissionList.slice(-1)[0].section=="NB"){
                 requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
                     data.data=data.data.concat(firstAddata.data);
                     viewRender.bw.initialize(data);
-                    viewRender.queryDate(qdate);
+                    viewRender.queryDate(patientID,caseNo,qdate);
                 });
             }else{
                 viewRender.bw.initialize(data);
@@ -502,6 +503,7 @@ viewRender.queryDate=function(patientID,caseNo,date){
     queryDateList.push(Parser.addDate(date,1));
     queryDateList.push(Parser.addDate(date,-1));
     queryDateList.push(Parser.addDate(date,-2));
+
 
     var promise = getFlowSheetByDate(queryDateList[0])
         .then(function(){

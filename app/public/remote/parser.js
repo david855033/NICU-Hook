@@ -83,6 +83,7 @@ var Parser={
         return inputString.regSelectAll(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)+" "+inputString.regSelectAll(/[0-9]{2}\.[0-9]{2}/).regReplaceAll('\.',":");
     },
     getShortDate:function(inputString){
+        if(!inputString){return null};
         var result=inputString.regReplaceAll(/(\/|-|\\)/g,"");
         if(result.length>8) {result=result.slice(0,8);}
         return result;

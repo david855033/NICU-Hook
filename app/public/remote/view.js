@@ -374,7 +374,7 @@ var view= new Vue({
 
             view.flowSheet.bwForCalculate=view.flowSheet.inputBW=fixBW;
             view.flowSheet.showBW=false;
-            viewRender.queryDate(view.flowSheet.currentDate);
+            viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo, view.flowSheet.currentDate);
         },
         clearBW:function(){
             var index= bwHolder.indexOf(function(x){x.patientID==view.flowSheet.patientID;});
@@ -383,7 +383,7 @@ var view= new Vue({
             }
             view.flowSheet.bwForCalculate=view.flowSheet.inputBW="";
             view.flowSheet.showBW=false;
-            viewRender.queryDate(view.flowSheet.currentDate);
+            viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo, view.flowSheet.currentDate);
         },
         selectFlowSheetFn:function(fn){
             view.flowSheet.selectedfootbarMenu=fn;
