@@ -92,10 +92,16 @@ body{
     color: hsl(0,0%,60%);
 }
 .red{
-    color: hsl(0,90%,50%);
+    color: hsl(0,90%,35%);
 }
 .blue{
-    color: hsl(220,90%,40%);
+    color: hsl(220,90%,35%);
+}
+.red-bg{
+    background-color: hsl(0,30%,90%);
+}
+.blue-bg{
+    background-color: hsl(220,40%,90%);
 }
 /* scroll */
 .y-scroll{

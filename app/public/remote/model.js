@@ -2,6 +2,8 @@
 var queryData=function(query, callback){
     var notPreSelect=query.indexOf('preSelect')<0;
     var serverRequest=queryToServerRequest(query);
+    var secDiff = -1;
+    var maxReqInterval = serverRequest.maxReqInterval||120;
     
     // from datastructure;
     var queryDataSet_local={};
@@ -9,17 +11,15 @@ var queryData=function(query, callback){
         var queryDataSet = dataManager.get(query);
         if(queryDataSet){
             queryDataSet_local = queryDataSet;
-            callback(queryDataSet.data, queryDataSet.timeStamp);  
-            console.log('from local: '+query);
+            secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
+            if(secDiff<maxReqInterval){
+                callback(queryDataSet.data, queryDataSet.timeStamp);  
+                console.log('from local: '+query);
+            }
         }
     }
 
     //from server
-    var secDiff = -1;
-    if(queryDataSet_local.timeStamp){
-        secDiff = Parser.getSecondDifference(queryDataSet_local.timeStamp,Parser.getDateTime());
-    };
-    var maxReqInterval = serverRequest.maxReqInterval||120;
     if(secDiff==-1||secDiff>=maxReqInterval||!queryDataSet_local){   //限制對同一資源的存取間隔
         
         server.request(serverRequest, function(serverData, timeStamp){ 

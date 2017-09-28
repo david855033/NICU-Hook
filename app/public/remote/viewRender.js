@@ -186,30 +186,51 @@ viewRender.flowSheet.selectDate=function(date){
     var dataContainer=viewRender.flowSheet.dataContainer;
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
-    viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow)
-
+    viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight','s-word']});
+    viewRender.flowSheet.parseChart('heartRate','hr',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('respiratoryRate','resp',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('saturation','spo2',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow);
+    //viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
+    console.log(dataContainer);
     viewRender.initialize();
 };
-viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
+viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow,option){
     var dataDay1=flowSheetToday[fieldOrigin].map(function(x){x.hr=Number(x.time.split(':')[0]);return x;});
     var dataDay2=flowSheetTommorrow[fieldOrigin].map(function(x){x.hr=Number(x.time.split(':')[0]);return x;});
     var dataDay1=dataDay1.filter(function(x){return x.hr>=7;});
     var dataDay2=dataDay2.filter(function(x){return x.hr<=6;});
     var dataAll=dataDay1.concat(dataDay2);
     var parsed=[];
-    
+    var limit = viewRender.flowSheet.toShow[fieldTarget].limit||[];
     dataAll.forEach(function(x){
         var index = x.hr-7;
         if(index<0){index+=24;}
-        parsed[index]=x.value;
-    })
-    
-    console.log(parsed);
+        var value=x.value;
+        parsed[index]="";
+        var underLimitStyle=(option&&option.underLimitStyle)||['red','red-bg','heavy-weight','s-word'];
+        var overLimitStyle=(option&&option.overLimitStyle)||['red','red-bg','heavy-weight','s-word'];
 
+        if(limit[0]&&x.value<limit[0]){
+            parsed[index]+=div(value,underLimitStyle);
+        }else if(limit[1]&&x.value>=limit[1]){
+            parsed[index]+=div(value,[overLimitStyle]);
+        }else{
+            parsed[index]+=div(value);
+        }
+        
+    })
     viewRender.flowSheet.toShow[fieldTarget].data=parsed;
 };
 viewRender.flowSheet.toShow={
     bt:{limit:[36,38],data:[]},
+    hr:{limit:[100,180],data:[]},
+    resp:{limit:[30,60],resp:[]},
+    spo2:{limit:[85],data:[]},
+    sbp:{limit:[60],data:[]},
+    dbp:{limit:[20],data:[]},
+    mbp:{limit:[30],data:[]},
 };
 
 viewRender.chart = {
@@ -220,13 +241,13 @@ viewRender.chart = {
             classes:['tpr'],
             rows:[this.header(),
                 this.tprRow("體溫","(&#8451;)",toShow.bt.limit,toShow.bt.data),
-                this.tprRow("心律","(/min)",[],[]),
-                this.tprRow("呼吸","(/min)",[30,60],[]),
-                this.tprRow("SpO<sub>2</sub>","(/min)",[85,100],[]),
+                this.tprRow("心律","(/min)",toShow.hr.limit,toShow.hr.data),
+                this.tprRow("呼吸","(/min)",toShow.resp.limit,toShow.resp.data),
+                this.tprRow("SpO<sub>2</sub>","(/min)",toShow.spo2.limit,toShow.spo2.data),
                 this.spacerRow(),
-                this.tprRow("SBP","(mmHg)",[],[]),
-                this.tprRow("DBP","(mmHg)",[],[]),
-                this.tprRow("MBP","(mmHg)",[],[])
+                this.tprRow("SBP","(mmHg)",toShow.sbp.limit,toShow.sbp.data),
+                this.tprRow("DBP","(mmHg)",toShow.dbp.limit,toShow.dbp.data),
+                this.tprRow("MBP","(mmHg)",toShow.mbp.limit,toShow.mbp.data)
             ]
         };
         chartArray.push(TPRTable);
@@ -234,15 +255,15 @@ viewRender.chart = {
             classes:['infusion'],
             rows:[
                 this.row("IV","(ml)","NS Drug drug drug",[]),
-                this.row("CVC","(ml)","",[1,2,4,5,222,333]),
+                this.row("CVC","(ml)","",[]),
             ]
         };
         chartArray.push(InfusionTable);
         var transfusionTable={
             classes:['transfusion'],
             rows:[
-                this.row("PRBC","(ml)","",[,,,,,,,,,,,,3.5,3.5,3.5]),
-                this.row("PLT","(ml)","",[,,,,9,9,,,,]),
+                this.row("PRBC","(ml)","",[]),
+                this.row("PLT","(ml)","",[]),
             ]
         };
         chartArray.push(transfusionTable);

@@ -681,15 +681,18 @@ Parser.flowSheet=function(htmlText){
     var respiratoryRate=getProperty("RespRate");
     respiratoryRate&&(result.respiratoryRate=respiratoryRate);
 
+    var saturation=getProperty("Saturation");
+    saturation&&(result.saturation=saturation);
+
     var sbp=getProperty("SBP");
     sbp&&(result.sbp=sbp);
 
-    var dpb=getProperty("DBP");
-    dpb&&(result.dpb=dpb);
+    var dbp=getProperty("DBP");
+    dbp&&(result.dbp=dbp);
 
     var event=getProperty("event_Array");
     event&&(result.event=event);
-
+    
     var peripheral=getProperty("peripheral_Array");
     peripheral&&(result.peripheral=peripheral);
     
