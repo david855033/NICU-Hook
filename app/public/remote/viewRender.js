@@ -195,6 +195,10 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
+    
+    
+    
+    
     console.log(dataContainer);
     viewRender.initialize();
 };
@@ -245,6 +249,9 @@ viewRender.flowSheet.toShow={
     sbp:{limit:[60],data:[]},
     dbp:{limit:[20],data:[]},
     mbp:{limit:[30],data:[]},
+    infusion:[
+        {route,}
+    ]
 };
 
 viewRender.chart = {
