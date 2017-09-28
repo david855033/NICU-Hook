@@ -186,16 +186,30 @@ viewRender.flowSheet.selectDate=function(date){
     var dataContainer=viewRender.flowSheet.dataContainer;
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
+    viewRender.flowSheet.calculateMBP(flowSheetToday);
+    viewRender.flowSheet.calculateMBP(flowSheetTommorrow);
     viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight','s-word']});
     viewRender.flowSheet.parseChart('heartRate','hr',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('respiratoryRate','resp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('saturation','spo2',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow);
-    //viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
     console.log(dataContainer);
     viewRender.initialize();
 };
+viewRender.flowSheet.calculateMBP=function(flowSheet){
+    var sbp=flowSheet.sbp;
+    var dbp=flowSheet.dbp;
+    flowSheet.mbp=[];
+    sbp.forEach(function(thisSBP){
+        var thisDBP = dbp.find(function(x){return x.time==thisSBP.time});
+        if(thisSBP.value&&thisDBP.value){
+            var MBP = Math.round(thisDBP.value*2/3 + thisSBP.value/3);
+            flowSheet.mbp.push({time:thisSBP.time,value:MBP});
+        }
+    })
+}
 viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow,option){
     var dataDay1=flowSheetToday[fieldOrigin].map(function(x){x.hr=Number(x.time.split(':')[0]);return x;});
     var dataDay2=flowSheetTommorrow[fieldOrigin].map(function(x){x.hr=Number(x.time.split(':')[0]);return x;});
