@@ -179,7 +179,7 @@ var updateNISHandOver=function(patientID,caseNo,callback){
 var preSelectFlowSheet=function(patientID,caseNo,callback){
     if(patientID==PreSelect.FlowSheet.patientID&&
     caseNo==PreSelect.FlowSheet.caseNo&&
-    Parser.getSecondDifference(PreSelect.FlowSheet.timeStamp,Parser.getDateTime()<=60)){
+    Parser.getSecondDifference(PreSelect.FlowSheet.timeStamp,Parser.getDateTime())<=60){
         callback&&callback();
     }else{
         PreSelect.FlowSheet.timeStamp=Parser.getDateTime();

@@ -672,6 +672,21 @@ Parser.flowSheet=function(htmlText){
 
     var result={};
 
+    var bodyTemperature=getProperty("bodyTemperature");
+    bodyTemperature&&(result.bodyTemperature=bodyTemperature);
+
+    var heartRate=getProperty("HeartRate");
+    heartRate&&(result.heartRate=heartRate);
+
+    var respiratoryRate=getProperty("RespRate");
+    respiratoryRate&&(result.respiratoryRate=respiratoryRate);
+
+    var sbp=getProperty("SBP");
+    sbp&&(result.sbp=sbp);
+
+    var dpb=getProperty("DBP");
+    dpb&&(result.dpb=dpb);
+
     var event=getProperty("event_Array");
     event&&(result.event=event);
 
