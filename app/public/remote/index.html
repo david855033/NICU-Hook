@@ -37,10 +37,10 @@
                         <input id="password" type="password" v-model="passwordDOC" maxlength="12">
                     </div>
                 </div>
-                <div id="login-status" @click="signIn">
-                    <div class="v-center h-center w1-1" v-if="loginStatus=='logged'">&#10004;</div>
-                    <div class="v-center h-center w1-1" v-if="loginStatus=='failed'">&#128473;</div>
-                    <div class="v-center h-center w1-1" v-if="loginStatus=='unlogged'">&#10148;</div>
+                <div id="login-status" class='h-center' @click="signIn">
+                    <div class="v-center" id="logged" v-if="loginStatus=='logged'">&#10004;</div>
+                    <div class="v-center" id="failed" v-if="loginStatus=='failed'">&#128473;</div>
+                    <div class="v-center" id="unlogged" v-if="loginStatus=='unlogged'">&#10148;</div>
                 </div>
             </div>
             <!-- <div class="leftbox">
@@ -56,7 +56,10 @@
             <div id="query-box">
                 <div id="query-type" :class="queryClass"><div class="v-center h-center">{{queryType}}</div></div>
                 <input type="text" class="h-center" v-model="queryString" maxlength="8" @keyup.13="queryClass&&updatePatientList(queryString)" @keyup.esc="queryString=''">
-                <div id="icon" @click="queryClass&&updatePatientList(queryString)"><div class="v-center h-center">&#128270;</div></div>
+                <div id="icon" @click="queryClass&&updatePatientList(queryString)" :class="{'enable':queryClass}">
+                    <div class="v-center h-center" v-show="queryClass">&#128270;</div>
+                    <div class="v-center h-center" v-show="!queryClass">&#133;</div>
+                </div>
             </div>
             <div id="query-list">
                 <div v-for="i in queryList" @click="updatePatientList(i.query)" :class="i.type">

@@ -182,7 +182,6 @@ var view= new Vue({
             var matchDOC = string.match(/\d{4}/);
             matchDOC=matchDOC&&matchDOC[0];
             var wardList=['NICU','PICU','NBR','A091'];
-            if(!string){return;}
             if(string==matchID)
             {
                 view.queryType="病歷號";
