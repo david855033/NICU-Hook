@@ -12,8 +12,20 @@ var $flowsheetFootbarScrolls=$("#flow-sheet #footbar .scrollbar-outer");
 var $window=$(window);
 
 var Layout={};
-Layout.header={};
 
+Layout.left={};
+Layout.left.initialize=function(){
+    $('#left #query-type').click(function(){
+        $('#left #query-box input').focus();
+        view.queryString="";
+        view.queryClass="";
+        view.queryType="查詢";
+    })
+}
+
+
+
+Layout.header={};
 Layout.header.calculateCardPadding=function(){
     var $flowsheetHeaderCards=$('#flow-sheet .header-card');
     var headerWidth=$flowsheetHeader.width();
@@ -109,6 +121,7 @@ Layout.onWidthChange=function(){
 
 $(function(){
     viewRender.initialize();
+    Layout.left.initialize();
 });
 
 $(window).resize(function(){

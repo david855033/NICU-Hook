@@ -250,7 +250,7 @@ viewRender.flowSheet.toShow={
     dbp:{limit:[20],data:[]},
     mbp:{limit:[30],data:[]},
     infusion:[
-        {route,}
+        {route:"",name:"",data:[]}
     ]
 };
 

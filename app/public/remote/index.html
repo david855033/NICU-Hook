@@ -23,26 +23,49 @@
 <body>
     <div id="view">
         <div id="left" class="shadow">        
-            <div class="leftbox" @click="signIn">
-                login
+            <div class="leftbox" >
+                登入
             </div>
-            <div class="leftbox">
+            <div id="login-container" class="w1-1">
+                <div id="login-form">
+                    <div>
+                        <label>帳號</label>
+                        <input id="account" v-model="accountDOC" maxlength="8">
+                    </div>
+                    <div>
+                        <label>密碼</label>
+                        <input id="password" type="password" v-model="passwordDOC" maxlength="12">
+                    </div>
+                </div>
+                <div id="login-status" @click="signIn">
+                    <div class="v-center h-center w1-1" v-if="loginStatus=='logged'">&#10004;</div>
+                    <div class="v-center h-center w1-1" v-if="loginStatus=='failed'">&#128473;</div>
+                    <div class="v-center h-center w1-1" v-if="loginStatus=='unlogged'">&#10148;</div>
+                </div>
+            </div>
+            <!-- <div class="leftbox">
                 select view
             </div>
             <div class="view">
                 <div class=viewButton v-for="v in viewList" @click="selectedView=v">{{v}}</div>
                 <div class="clear"></div>
-            </div>
+            </div> -->
             <div class="leftbox">
-                selectWard
+                查詢
             </div>
-            <table id="wardList">
-                <tr v-for="row in wardList" @click="updatePatientList(row)">
-                    <td>{{row}}</td>
-                </tr>
-            </table>
+            <div id="query-box">
+                <div id="query-type" :class="queryClass"><div class="v-center h-center">{{queryType}}</div></div>
+                <input type="text" class="h-center" v-model="queryString" maxlength="8" @keyup.13="queryClass&&updatePatientList(queryString)" @keyup.esc="queryString=''">
+                <div id="icon" @click="queryClass&&updatePatientList(queryString)"><div class="v-center h-center">&#128270;</div></div>
+            </div>
+            <div id="query-list">
+                <div v-for="i in queryList" @click="updatePatientList(i.query)" :class="i.type">
+                    {{i.name||i.query}}
+                </div>
+            </div>
+            <div class="clear"></div>
             <div class="leftbox">
-                selectPatient {{patientList.timeStamp}}
+                病人清單
             </div>
             <table id="patientList">
                 <tr v-show="patientList.content&&patientList.content.length>0">
@@ -475,7 +498,11 @@
                 <div class="scrollbar-inner h1-1">
                     <div class="chart shadow">
                         <table v-for="(table,i) in flowSheet.chart" :class="table.classes">
-                            <tr v-if="i==0"><td></td><td colspan="8" class="shift-name">白班</td><td colspan="8" class="shift-name">小夜</td><td colspan="8" class="shift-name">大夜</td></tr>
+                            <tr v-if="i==0"><td></td>
+                                <td colspan="8" class="shift-name">白班</td>
+                                <td colspan="8" class="shift-name">小夜</td>
+                                <td colspan="8" class="shift-name">大夜</td>
+                            </tr>
                             <tr v-for="row in table.rows">
                                 <td v-for = "col in row" v-html="col.htmlText" :class="col.classes" :title="col.tooltip"></td>
                             </tr>

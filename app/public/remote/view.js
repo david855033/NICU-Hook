@@ -6,10 +6,14 @@ var view= new Vue({
     data:{
         accountDOC:"DOC3924B",
         passwordDOC:"888888",
+        loginStatus:"unlogged",
         cookieDOC:"",
         viewList:['dev','flow-sheet'],
         selectedView:"flow-sheet",
-        wardList:["NICU","PICU","NBR","A091"],
+        queryString:'',
+        queryType:"查詢",
+        queryClass:"",
+        queryList:[{query:"NICU",type:"ward"},{query:"PICU",type:"ward"},{query:"NBR",type:"ward"},{query:"A091",type:"ward"},{query:"3840",name:'曹大大',type:"doc"}],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
         selectedCaseNo:"",
@@ -171,6 +175,29 @@ var view= new Vue({
         }
     },
     watch:{
+        queryString:function(){
+            var string = view.queryString;
+            var matchID = string.match(/\d{7,8}/);
+            matchID=matchID&&matchID[0];
+            var matchDOC = string.match(/\d{4}/);
+            matchDOC=matchDOC&&matchDOC[0];
+            var wardList=['NICU','PICU','NBR','A091'];
+            if(!string){return;}
+            if(string==matchID)
+            {
+                view.queryType="病歷號";
+                view.queryClass="id";
+            }else if(string==matchDOC){
+                view.queryType="醫師";
+                view.queryClass="doc"
+            }else if(wardList.find(function(x){return x==string.toUpperCase();})){
+                view.queryType="病房";
+                view.queryClass="ward"
+            }else{
+                view.queryType="查詢";
+                view.queryClass="";
+            }
+        },
         'flowSheet.footbarStatus':function(){
             if(view.flowSheet.footbarStatus=="min"){
                 Layout.footbar.min();
@@ -192,8 +219,12 @@ var view= new Vue({
         signIn:function(callback){
             server.signIn(view.accountDOC,view.passwordDOC,callback);
         },
-        updatePatientList:function(ward){
-            requestPatientList(ward,function(data,timeStamp){
+        updatePatientList:function(query){
+            view.queryString=query;
+            console.log(query);
+            $('#left #query-box input').blur();
+            return ;//
+            requestPatientList(query,function(data,timeStamp){
                 view.patientList.content = data;
                 view.patientList.timeStamp = timeStamp;
             });

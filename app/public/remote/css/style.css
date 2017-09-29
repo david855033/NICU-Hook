@@ -251,21 +251,136 @@ body{
 #left {
 	width: 160px;
     float: left;
-    background-color: #9DBEA5;
+    background-color: hsl(200,5%,80%);
     height:100%;
 }
 .main{
     margin-left:160px;
 }
 .leftbox{
-    padding:10px 5px 10px 5px;
-    background-color: hsl(20,40%,85%);
-    margin:5px 0 5px 0;
+    padding:5px 5px 5px 5px;
+    background-color: hsl(200,30%,60%);
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.leftbox:first-child{
+    margin-top:0px;
 }
 #left .view{
-    padding:10px 5px 10px 5px;
     margin:5px 0 5px 0;
 }
+#left #login-container{
+    height: 40px;
+}
+#left #login-form{
+    float: left;
+    width:120px;
+    height: 100%;
+}
+#left #login-status{
+    float: left;
+    width: 40px;
+    height: 100%;
+    cursor: pointer;
+}
+#left #login-container label{
+    width: 40px;
+    height: 48%;
+    margin-top:1%;
+    margin-bottom:1%;
+    font-size: 12px;
+    padding-left: 5px;
+}
+#left #login-container input{
+    width: 80px;
+    height: 48%;
+    margin-top:1%;
+    margin-bottom:1%;
+    padding-left:3px;
+    background-color: hsl(200,20%,95%);
+    border-radius: 5px;
+    border: 1px solid hsl(200,20%,60%);
+}
+
+#left #query-box{
+    margin:auto;
+    width:150px;
+    background-color: hsl(200,20%,95%);
+    height: 22px;
+    border-radius: 5px;
+    border: 1px solid hsl(200,20%,60%);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+#left #query-box #icon{
+    float:left;
+    width:30px;
+    height:22px;
+    cursor: pointer;
+}
+#left #query-box #icon:hover{
+    background-color: hsl(200,20%,80%);
+}
+#left #query-box input{
+    float:left;
+    width: 80px;
+    border:none;
+    height:20px;
+    background-color: hsl(200,20%,95%);
+}
+#left #query-box #query-type{
+    cursor: pointer;
+    float:left;
+    width:40px;
+    height:22px;
+    background-color: hsl(200,20%,90%);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+#left #query-box #query-type:hover{
+    background-color: hsl(200,20%,90%);
+    background-color: hsl(200,20%,80%);
+}
+#left #query-box #query-type.ward{
+    background-color: hsl(60,60%,70%);
+}
+#left #query-box #query-type.doc{
+    background-color: hsl(0,60%,80%);
+}
+#left #query-box #query-type.id{
+    background-color: hsl(100,60%,80%);
+}
+#left #query-list{
+    margin: auto;
+    width: 150px;
+}
+#left #query-list div{
+    margin: 1px;
+    margin-top: 2px;
+    float: left;
+    font-size:12px;
+    padding: 4px 5px 4px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#left #query-list div.ward{
+    background-color: hsl(60,60%,70%);
+    border:1px solid  hsl(60,60%,50%);
+}
+#left #query-list div.ward:hover{
+    background-color: hsl(60,60%,60%);
+}
+
+#left #query-list div.doc{
+    background-color: hsl(0,60%,80%);
+    border:1px solid  hsl(0,60%,70%);
+}
+#left #query-list div.doc:hover{
+    background-color: hsl(0,60%,70%);
+}
+
+
 .viewButton
 {
     float:left;
