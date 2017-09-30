@@ -197,6 +197,9 @@ var view= new Vue({
                 view.queryClass="";
             }
         },
+        'patientList.content':function(){
+            Layout.left.adjustHeight();
+        },
         'flowSheet.footbarStatus':function(){
             if(view.flowSheet.footbarStatus=="min"){
                 Layout.footbar.min();

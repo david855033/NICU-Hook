@@ -22,6 +22,15 @@ Layout.left.initialize=function(){
         view.queryType="查詢";
     })
 }
+Layout.left.adjustHeight=function(){
+   var patientListPosition=$('#patient-list').offset().top;
+   var windowHeight=$window.height();
+   console.log('top: '+patientListPosition);
+   console.log('window H '+windowHeight);
+   var remainingHeight=windowHeight-patientListPosition;
+   console.log('remain '+remainingHeight);
+   $('#patient-list').height(remainingHeight);
+}
 
 
 
@@ -122,10 +131,11 @@ Layout.onWidthChange=function(){
 $(function(){
     viewRender.initialize();
     Layout.left.initialize();
+    Layout.left.adjustHeight();
 });
 
 $(window).resize(function(){
     Layout.footbar.modeSwitched();
     Layout.onWidthChange();
+    Layout.left.adjustHeight();
 });
-

@@ -382,7 +382,7 @@ body{
     background-color: hsl(60,60%,70%);
 }
 #left #query-box #query-type.doc{
-    background-color: hsl(0,60%,80%);
+    background-color: hsl(250,60%,80%);
 }
 #left #query-box #query-type.id{
     background-color: hsl(100,60%,80%);
@@ -409,13 +409,69 @@ body{
 }
 
 #left #query-list div.doc{
-    background-color: hsl(0,60%,80%);
-    border:1px solid  hsl(0,60%,70%);
+    background-color: hsl(250,60%,80%);
+    border:1px solid  hsl(250,60%,70%);
 }
 #left #query-list div.doc:hover{
-    background-color: hsl(0,60%,70%);
+    background-color: hsl(250,60%,70%);
 }
 
+#left #patient-list .patient{
+    margin: auto;
+    margin-top: 1px;
+    width:140px;
+    background-color: hsl(90,30%,80%);
+    border: 1px solid hsl(90,30%,60%);
+    border-radius: 5px;
+    cursor: pointer;
+    height: 25px;
+}
+#left #patient-list .patient:hover{
+    background-color:hsl(90,30%,75%);
+}
+
+#left #patient-list .patient .bed,
+#left #patient-list .patient .name{
+    float:left;
+    height: 100%;
+    overflow: hidden;
+}
+#left #patient-list .patient .bed{
+    font-size: 14px;
+    width: 52px;
+    padding-left:2px;
+    padding-right: 2px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color:hsl(90,30%,70%);
+    text-align: center;
+}
+#left #patient-list .patient .name{
+    font-size: 16px;
+    width: 84px;
+    text-align: center;
+}
+#left #patient-list .patient.male{
+    background-color: hsl(200,30%,80%);
+    border: 1px solid hsl(200,30%,60%);
+}
+#left #patient-list .patient.male:hover{
+    background-color:hsl(200,30%,75%);
+}
+#left #patient-list .patient.male .bed{
+    background-color:hsl(200,30%,70%);
+}
+
+#left #patient-list .patient.female{
+    background-color: hsl(0,30%,80%);
+    border: 1px solid hsl(0,30%,60%);
+}
+#left #patient-list .patient.female:hover{
+    background-color:hsl(0,30%,75%);
+}
+#left #patient-list .patient.female .bed{
+    background-color:hsl(0,30%,70%);
+}
 
 .viewButton
 {

@@ -68,18 +68,16 @@
             </div>
             <div class="clear"></div>
             <div class="leftbox">
-                病人清單
+                病人清單 (共{{patientList.content.length}}人)
             </div>
-            <table id="patientList">
-                <tr v-show="patientList.content&&patientList.content.length>0">
-                    <th>床號</th>
-                    <th>姓名</th>
-                </tr>
-                <tr v-for="row in patientList.content" @click="updatePatient(row.patientID)">
-                    <td>{{row.bed}}</td>
-                    <td>{{row.name}}</td>
-                </tr>
-            </table>
+            <div id="patient-list">
+                <div class="scrollbar-inner h1-1">
+                    <div class="patient" :class="[{'male':row.gender=='男'},{'female':row.gender=='女'}]" v-for="row in patientList.content" @click="updatePatient(row.patientID)">
+                        <div class='bed'><div class="v-center">{{row.bed}}</div></div>
+                        <div class='name'><div class="v-center">{{row.name}}</div></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="main" id="dev" v-show="selectedView=='dev'">
             <div class="rightbox">
