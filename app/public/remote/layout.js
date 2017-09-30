@@ -25,10 +25,7 @@ Layout.left.initialize=function(){
 Layout.left.adjustHeight=function(){
    var patientListPosition=$('#patient-list').offset().top;
    var windowHeight=$window.height();
-   console.log('top: '+patientListPosition);
-   console.log('window H '+windowHeight);
    var remainingHeight=windowHeight-patientListPosition;
-   console.log('remain '+remainingHeight);
    $('#patient-list').height(remainingHeight);
 }
 

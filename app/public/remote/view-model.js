@@ -5,8 +5,8 @@ PreSelect.BirthSheet={patientID:"",caseNo:"",timeStamp:"",data_preSelect:{}};
 PreSelect.NIS={patientID:"",timeStamp:""};
 PreSelect.FlowSheet={patientID:"",caseNo:"",timeStamp:""};
 
-var requestPatientList=function(ward,callback){
-    queryData("patientList_"+ward,function(data, timeStamp){
+var requestPatientList=function(query,type,callback){
+    queryData("patientList_"+query+"_"+type,function(data, timeStamp){
         callback&&callback(data, timeStamp);
     });
 }

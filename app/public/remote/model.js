@@ -53,10 +53,13 @@ var queryToServerRequest=function(query)
 {
     var queryList = query.split('_');
     if(queryList[0] == "patientList"){
+        var form={};
+        form[queryList[2]]=queryList[1];
+      
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient",
             method:"POST",
-            form:{wd:queryList[1]},
+            form:form,
             parser:Parser.getPatientList
         };
     }else if(queryList[0]  == "preSelectPatient"){

@@ -225,11 +225,16 @@ var view= new Vue({
             view.queryString=query;
             console.log(query);
             $('#left #query-box input').blur();
-            return ;//
-            requestPatientList(query,function(data,timeStamp){
-                view.patientList.content = data;
-                view.patientList.timeStamp = timeStamp;
-            });
+            Vue.nextTick(function(){
+                var type="";
+                if(view.queryType=="醫師"){type="drid";}
+                else if(view.queryType=="病房"){type="wd";}
+                else if(view.queryType=="病歷號"){type="histno";}
+                requestPatientList(query,type,function(data,timeStamp){
+                    view.patientList.content = data;
+                    view.patientList.timeStamp = timeStamp;
+                });
+            })
         },
         updateAdmissionList:function(patientID){
             requestAdmissionList(patientID,function(data,timeStamp){

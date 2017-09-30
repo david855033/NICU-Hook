@@ -63,8 +63,8 @@ var setCookieString=function(cookieObj, str){
     keysInInputObj.forEach(function(x){originObj[x]=inputObj[x]});
     
     //remove start with dt/WAS
-    keysInInputObj=keysInInputObj.filter(function(x){return x.slice(0,2)!='dt'})
-    keysInInputObj=keysInInputObj.filter(function(x){return x.slice(0,3)!='WAS'})    
+    keysInInputObj=keysInInputObj.filter(function(x){return x.slice(0,2)!='dt'&&x.slice(0,3)!='WAS'})
+    
 
     //轉換成string
     var combinedString = Parser.getCookieStringFromKeyValuePairs(originObj);
@@ -111,9 +111,9 @@ server.request=function(serverRequest,callback){
     option.url=serverRequest.url;
     serverRequest.method && (option.method=serverRequest.method);
     serverRequest.form && (option.form=serverRequest.form);
+    serverRequest.body && (option.body=serverRequest.body);
 
     //console.log("send cookie: "+cookieObj.string);
-
     PostHTTPRequest(option, function(data,status,xhr){
         var resObj= JSON.parse(data);
         setCookieString(cookieObj, resObj.cookieString);

@@ -437,7 +437,7 @@ body{
     overflow: hidden;
 }
 #left #patient-list .patient .bed{
-    font-size: 14px;
+    font-size: 12px;
     width: 52px;
     padding-left:2px;
     padding-right: 2px;
@@ -447,7 +447,7 @@ body{
     text-align: center;
 }
 #left #patient-list .patient .name{
-    font-size: 16px;
+    font-size: 14px;
     width: 84px;
     text-align: center;
 }
