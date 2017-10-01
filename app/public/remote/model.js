@@ -53,9 +53,8 @@ var queryToServerRequest=function(query)
 {
     var queryList = query.split('_');
     if(queryList[0] == "patientList"){
-        var form={};
-        form[queryList[2]]=queryList[1];
-      
+        var form={wd:"0",histno:""};
+        form[queryList[2]]=queryList[1].toString();
         return {
             url:"https://web9.vghtpe.gov.tw/emr/qemr/qemr.cfm?action=findPatient",
             method:"POST",

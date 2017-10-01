@@ -5,9 +5,10 @@ var Parser=Parser||{};
 //[{bed:"NICU-1",name:"",patientID:"1234567",gender:"",section:"",admissionDate:""}]
 Parser.getPatientList=function(htmlText){
     var removedhtmlText=Parser.removeHtmlBlank(htmlText);
-    console.log(removedhtmlText);
     var resultArray=[];
     var doc = Parser.getDOM(htmlText);
+    if(htmlText.indexOf('無資料!')!=-1){return resultArray;};
+
     var tbody = doc.getElementsByTagName("tbody");
     var thead = doc.getElementsByTagName("thead");
     tbody = tbody&&tbody[0];
@@ -15,7 +16,6 @@ Parser.getPatientList=function(htmlText){
     var trs = tbody.getElementsByTagName("tr");
     if(!thead){return;}
     if(thead[0].innerText=="-床號姓名病歷號性別科別DRG入院日"){
-        console.log(htmlText);
         for(var i = 0; i < trs.length; i++){
             var tr=trs[i];
             var tds=tr.getElementsByTagName("td");
@@ -36,26 +36,17 @@ Parser.getPatientList=function(htmlText){
             }
         }
     }else{    
-        
-        // for(var i = 0; i < trs.length; i++){
-        //     var tr=trs[i];
-        //     var tds=tr.getElementsByTagName("td");
-        //     var result = {bed:"",name:"",patientID:"",gender:"",section:"",admissionDate:""};
-        //     var td1_id = tds[1].getAttribute('id');
-        //     var td1_idIsTips = td1_id&&td1_id.indexOf("tips")>=0;
-        //     if(td1_idIsTips)
-        //     {
-        //         Parser.removeElementsByTagName(tds[1],"span");
-        //         result.bed=tds[1].innerText.replaceAll(' ','');
-        //         Parser.removeElementsByTagName(tds[2],"font");
-        //         result.name=tds[2].innerText.trim().replaceAll('@','');
-        //         result.patientID=tds[3].innerText.trim();
-        //         result.gender=tds[4].innerText;
-        //         result.section=tds[5].innerText.trim();
-        //         result.admissionDate=Parser.getDateFromShortDate(tds[7].innerText.trim());
-        //         resultArray.push(result);
-        //     }
-        // }
+        for(var i = 0; i < trs.length; i++){
+            var tr=trs[i];
+            var tds=tr.getElementsByTagName("td");
+            var result = {bed:"",name:"",patientID:"",gender:"",section:"",admissionDate:""};
+            result.bed=Parser.removeHtmlBlank(tds[1].innerText).replaceAll(' ','');;
+            if(result.bed.indexOf('BR')!=-1){continue;}
+            result.patientID=Parser.removeHtmlBlank(tds[2].innerText);
+            result.name=Parser.removeHtmlBlank(tds[3].innerText);
+            result.gender=Parser.removeHtmlBlank(tds[4].innerText);
+            resultArray.push(result);
+        }
     }
 
     return resultArray;
