@@ -8,7 +8,7 @@ Parser.getPatientList=function(htmlText){
     var resultArray=[];
     var doc = Parser.getDOM(htmlText);
     if(htmlText.indexOf('無資料!')!=-1){return resultArray;};
-
+    console.log(htmlText);
     var tbody = doc.getElementsByTagName("tbody");
     var thead = doc.getElementsByTagName("thead");
     tbody = tbody&&tbody[0];

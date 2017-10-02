@@ -336,6 +336,7 @@ body{
 #left #query-box{
     margin:auto;
     width:150px;
+    overflow: hidden;
     background-color: hsl(200,20%,95%);
     height: 22px;
     border-radius: 5px;
@@ -349,6 +350,7 @@ body{
     width:30px;
     height:22px;
     cursor: pointer;
+    overflow: hidden;
 }
 #left #query-box #icon.enable{
     background-color:  hsl(200,20%,95%);
@@ -360,10 +362,11 @@ body{
 }
 #left #query-box input{
     float:left;
-    width: 80px;
+    width: 78px;
     border:none;
     height:20px;
     background-color: hsl(200,20%,95%);
+    overflow: hidden;
 }
 #left #query-box #query-type{
     cursor: pointer;
@@ -373,6 +376,7 @@ body{
     background-color: hsl(200,20%,90%);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    overflow: hidden;
 }
 #left #query-box #query-type:hover{
     background-color: hsl(200,20%,90%);
