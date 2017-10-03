@@ -183,23 +183,35 @@ viewRender.header={
 viewRender.flowSheet={};
 viewRender.flowSheet.dataContainer=[];
 viewRender.flowSheet.selectDate=function(date){
+    viewRender.flowSheet.toShow={
+        bt:{limit:[36,38],data:[]},
+        hr:{limit:[100,180],data:[]},
+        resp:{limit:[30,60],resp:[]},
+        spo2:{limit:[85],data:[]},
+        sbp:{limit:[60],data:[]},
+        dbp:{limit:[20],data:[]},
+        mbp:{limit:[30],data:[]},
+        infusion:[]
+    };
     var dataContainer=viewRender.flowSheet.dataContainer;
+    console.log(dataContainer);
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
     viewRender.flowSheet.calculateMBP(flowSheetToday);
     viewRender.flowSheet.calculateMBP(flowSheetTommorrow);
-    viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight','s-word']});
+    viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight']});
     viewRender.flowSheet.parseChart('heartRate','hr',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('respiratoryRate','resp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('saturation','spo2',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseInfusion('peripheral',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseInfusion('aline',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseInfusion('central',flowSheetToday,flowSheetTommorrow);
     
     
     
-    
-    console.log(dataContainer);
     viewRender.initialize();
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
@@ -221,42 +233,80 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
     var dataDay2=dataDay2.filter(function(x){return x.hr<=6;});
     var dataAll=dataDay1.concat(dataDay2);
     var parsed=[];
+    var parsedValue=[];
     var limit = viewRender.flowSheet.toShow[fieldTarget].limit||[];
     dataAll.forEach(function(x){
         var index = x.hr-7;
         if(index<0){index+=24;}
         var value=x.value;
-        parsed[index]="";
-        var underLimitStyle=(option&&option.underLimitStyle)||['red','red-bg','heavy-weight','s-word'];
-        var overLimitStyle=(option&&option.overLimitStyle)||['red','red-bg','heavy-weight','s-word'];
-
-        if(limit[0]&&x.value<limit[0]){
-            parsed[index]+=div(value,underLimitStyle);
-        }else if(limit[1]&&x.value>=limit[1]){
-            parsed[index]+=div(value,[overLimitStyle]);
-        }else{
-            parsed[index]+=div(value);
+        parsedValue[index]=parsedValue[index]||[];
+        if(!parsedValue[index].find(function(x){return x==value})){
+            parsed[index]=parsed[index]||"";
+            var underLimitStyle=(option&&option.underLimitStyle)||['red','red-bg','heavy-weight'];
+            var overLimitStyle=(option&&option.overLimitStyle)||['red','red-bg','heavy-weight'];
+            if(limit[0]&&x.value<limit[0]){
+                parsed[index]+=div(value,underLimitStyle.concat(['td-data','arial']));
+            }else if(limit[1]&&x.value>=limit[1]){
+                parsed[index]+=div(value,overLimitStyle.concat(['td-data','arial']));
+            }else{
+                parsed[index]+=div(value,['td-data','arial']);
+            }
+            parsedValue[index].push(value);
         }
-        
     })
     viewRender.flowSheet.toShow[fieldTarget].data=parsed;
 };
+viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheetTommorrow,option){
+    var dataDay1=flowSheetToday[fieldOrigin].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
+    var dataDay2=flowSheetTommorrow[fieldOrigin].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
+    var keys=[];
+    dataDay1.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    dataDay2.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    var Combined=[];
+    keys.forEach(function(k){
+        var newData = {route:k.route,name:k.name,amount:[]};
+        var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay1.forEach(function(x){
+            for(var i = 0; i <= 16;i++){
+                var h = i + 7;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay2.forEach(function(x){
+            for(var i = 16; i <= 23;i++){
+                var h = i + 7 - 24;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        Combined.push(newData);
+    })
+    Combined.forEach(function(x){viewRender.flowSheet.toShow.infusion.push(x);});
+};
+viewRender.flowSheet.getKeyForDistinctInfusion=function(InfusionArray,keys){
+    var route=String(InfusionArray.route).trim();
+    var name=String(InfusionArray.name).trim();
+    if(!keys.find(function(x){return x.route.toLowerCase()==route.toLowerCase()&&x.name.toLowerCase()==name.toLowerCase();})){
+        keys.push({route:route,name:name});
+    }
+}
 viewRender.flowSheet.toShow={
     bt:{limit:[36,38],data:[]},
-    hr:{limit:[100,180],data:[]},
-    resp:{limit:[30,60],resp:[]},
-    spo2:{limit:[85],data:[]},
-    sbp:{limit:[60],data:[]},
-    dbp:{limit:[20],data:[]},
-    mbp:{limit:[30],data:[]},
-    infusion:[
-        {route:"",name:"",data:[]}
-    ]
+    hr:{limit:[],data:[]},
+    resp:{limit:[],resp:[]},
+    spo2:{limit:[],data:[]},
+    sbp:{limit:[],data:[]},
+    dbp:{limit:[],data:[]},
+    mbp:{limit:[],data:[]},
+    infusion:[]
 };
 
 viewRender.chart = {
     initialize:function(){
         var toShow=viewRender.flowSheet.toShow;
+        console.log(toShow);
         var chartArray =[];
         var TPRTable={
             classes:['tpr'],
@@ -272,14 +322,23 @@ viewRender.chart = {
             ]
         };
         chartArray.push(TPRTable);
+
         var InfusionTable={
             classes:['infusion'],
-            rows:[
-                this.row("IV","(ml)","NS Drug drug drug",[]),
-                this.row("CVC","(ml)","",[]),
-            ]
+            rows:[]
         };
+        if(toShow.infusion.length==0){
+            console.log('no infusion');
+            toShow.infusion=[{route:"IV"}]
+        };
+        console.log(toShow.infusion);
+        toShow.infusion.forEach(function(x){
+            InfusionTable.rows.push(
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+            );
+        });
         chartArray.push(InfusionTable);
+
         var transfusionTable={
             classes:['transfusion'],
             rows:[
@@ -386,7 +445,13 @@ viewRender.closeAll=function(){
     FS.showBW=false;
 }
 viewRender.jquery=function(){
-    Layout.footbar&&Layout.footbar.min();
+    if(view.flowSheet.footbarStatus=="min"){
+        Layout.footbar.min();
+    }else if(view.flowSheet.footbarStatus=="max"){
+        Layout.footbar.max();
+    }else{
+        Layout.footbar.close();
+    };
     $('.scrollbar-inner').scrollbar();
     $('.scrollbar-outer').scrollbar();
     $(window).off("click").on("click",function(){
@@ -452,6 +517,8 @@ viewRender.initialize=function(){
 
 viewRender.queryPatientData=function(patientID){
     FS.patientID=patientID;
+    FS.footbarStatus="min";
+    FS.selectedfootbarMenu="fnOverview";
     requestPatientData(patientID,function(data,timeStamp){
         FS.bed=data&&data.currentBed;
         FS.name=data&&data.patientName;

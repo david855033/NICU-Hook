@@ -79,9 +79,6 @@ Layout.footbar.modeSwitched=function(){
     var headerHeight=$flowsheetHeader.height();
     var TPRHeight= $flowsheetContentTPR.height();
 
-    Layout.footbar.FOOT_BAR_MAX_HEIGHT =  450;
-    Layout.footbar.FOOT_BAR_MIN_HEIGHT =  300;
-
     if(Layout.footbar.mode=='max')
     {
         Layout.footbar.setHeight(Layout.footbar.FOOT_BAR_MAX_HEIGHT);

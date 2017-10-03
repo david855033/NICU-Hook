@@ -8,14 +8,15 @@ Parser.getPatientList=function(htmlText){
     var resultArray=[];
     var doc = Parser.getDOM(htmlText);
     if(htmlText.indexOf('無資料!')!=-1){return resultArray;};
-    console.log(htmlText);
+    
     var tbody = doc.getElementsByTagName("tbody");
     var thead = doc.getElementsByTagName("thead");
     tbody = tbody&&tbody[0];
     if(!tbody){return;}
     var trs = tbody.getElementsByTagName("tr");
     if(!thead){return;}
-    if(thead[0].innerText=="-床號姓名病歷號性別科別DRG入院日"){
+    
+    if(thead[0].innerText.indexOf("功能")==-1){
         for(var i = 0; i < trs.length; i++){
             var tr=trs[i];
             var tds=tr.getElementsByTagName("td");
