@@ -162,7 +162,6 @@ viewRender.header={
             }else{
                 var bwFirstString=Math.round(FS.bwFirst*100)/100+"kg";
             }
-
             bbwString="住院體重："+bwFirstString;
         }
         headerCards.push(new this.headerCard(bwString,currentBWString,bbwString,{cardId:"bw-card"}));
@@ -183,7 +182,7 @@ viewRender.header={
 viewRender.flowSheet={};
 viewRender.flowSheet.dataContainer=[];
 viewRender.flowSheet.selectDate=function(date){
-    viewRender.flowSheet.toShow={
+    viewRender.flowSheet.toShow={  //清空資料 設定初始
         bt:{limit:[36,38],data:[]},
         hr:{limit:[100,180],data:[]},
         resp:{limit:[30,60],resp:[]},
@@ -191,7 +190,10 @@ viewRender.flowSheet.selectDate=function(date){
         sbp:{limit:[60],data:[]},
         dbp:{limit:[20],data:[]},
         mbp:{limit:[30],data:[]},
-        infusion:[]
+        infusion:[],
+        transfusion:[],
+        feeding:[],
+        excretion:[]
     };
     var dataContainer=viewRender.flowSheet.dataContainer;
     console.log(dataContainer);
@@ -209,9 +211,15 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseInfusion('peripheral',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseInfusion('aline',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseInfusion('central',flowSheetToday,flowSheetTommorrow);
-    
-    
-    
+    viewRender.flowSheet.sortInfusion();
+    viewRender.flowSheet.parseTransfusion(flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseFeeding('POAmount','PO',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseFeeding('NGAmount','NG/OG',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseFeeding('RVAmount','RV',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseFeeding('NGDrain','NG/OG Drain',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseExcretion('urine','Urine',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseExcretion('stool','Stool',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
     viewRender.initialize();
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
@@ -220,7 +228,7 @@ viewRender.flowSheet.calculateMBP=function(flowSheet){
     flowSheet.mbp=[];
     sbp.forEach(function(thisSBP){
         var thisDBP = dbp.find(function(x){return x.time==thisSBP.time});
-        if(thisSBP.value&&thisDBP.value){
+        if(thisSBP.value&&thisDBP&&thisDBP.value){
             var MBP = Math.round(thisDBP.value*2/3 + thisSBP.value/3);
             flowSheet.mbp.push({time:thisSBP.time,value:MBP});
         }
@@ -232,7 +240,6 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
     var dataDay1=dataDay1.filter(function(x){return x.hr>=7;});
     var dataDay2=dataDay2.filter(function(x){return x.hr<=6;});
     var dataAll=dataDay1.concat(dataDay2);
-    var parsed=[];
     var parsedValue=[];
     var limit = viewRender.flowSheet.toShow[fieldTarget].limit||[];
     dataAll.forEach(function(x){
@@ -241,24 +248,105 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
         var value=x.value;
         parsedValue[index]=parsedValue[index]||[];
         if(!parsedValue[index].find(function(x){return x==value})){
-            parsed[index]=parsed[index]||"";
-            var underLimitStyle=(option&&option.underLimitStyle)||['red','red-bg','heavy-weight'];
-            var overLimitStyle=(option&&option.overLimitStyle)||['red','red-bg','heavy-weight'];
-            if(limit[0]&&x.value<limit[0]){
-                parsed[index]+=div(value,underLimitStyle.concat(['td-data','arial']));
-            }else if(limit[1]&&x.value>=limit[1]){
-                parsed[index]+=div(value,overLimitStyle.concat(['td-data','arial']));
-            }else{
-                parsed[index]+=div(value,['td-data','arial']);
-            }
             parsedValue[index].push(value);
         }
+    })
+
+    var parsed=[];
+    parsedValue.forEach(function(value,index){
+        parsed[index]=parsed[index]||"";
+        var underLimitStyle=(option&&option.underLimitStyle)||['red','red-bg','heavy-weight'];
+        var overLimitStyle=(option&&option.overLimitStyle)||['red','red-bg','heavy-weight'];
+        if(value.length==1)
+        {
+            var defaultStyle=['td-data','arial','h1-1'];
+            if(limit[0]&&value<limit[0]){
+                parsed[index]=div(div(value,['v-center']),underLimitStyle.concat(defaultStyle));
+            }else if(limit[1]&&value>=limit[1]){
+                parsed[index]=div(div(value,['v-center']),overLimitStyle.concat(defaultStyle));
+            }else{
+                parsed[index]=div(div(value,['v-center']),defaultStyle);
+            }
+        }else{
+            var max=d3.max(value);
+            var defaultStyle=['td-data','arial','h1-2'];
+            if(limit[0]&&max<limit[0]){
+                max=div(div(max,['v-center']),underLimitStyle.concat(defaultStyle));
+            }else if(limit[1]&&max>=limit[1]){
+                max=div(div(max,['v-center']),overLimitStyle.concat(defaultStyle));
+            }else{
+                max=div(div(max,['v-center']),defaultStyle);
+            }
+            
+            var min=d3.min(value);
+            
+            if(limit[0]&&min<limit[0]){
+                min=div(div(min,['v-center']),underLimitStyle.concat(defaultStyle));
+            }else if(limit[1]&&min>=limit[1]){
+                min=div(div(min,['v-center']),overLimitStyle.concat(defaultStyle));
+            }else{
+                min=div(div(min,['v-center']),defaultStyle);
+            }
+            
+            parsed[index]=min+max;
+        }
+        
     })
     viewRender.flowSheet.toShow[fieldTarget].data=parsed;
 };
 viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheetTommorrow,option){
     var dataDay1=flowSheetToday[fieldOrigin].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
     var dataDay2=flowSheetTommorrow[fieldOrigin].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
+    var keys=[];
+    dataDay1.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    dataDay2.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    var Combined=[];
+    keys.forEach(function(k){
+        var newData = {route:k.route,name:k.name,amount:[],priority:0};
+        if(fieldOrigin=="peripheral"){newData.priority=1;}
+        else if(fieldOrigin=="aline"){newData.priority=2;}
+        else if(fieldOrigin=="central"){newData.priority=3;}
+        var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay1.forEach(function(x){
+            for(var i = 0; i <= 16;i++){
+                var h = i + 7;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay2.forEach(function(x){
+            for(var i = 16; i <= 23;i++){
+                var h = i + 7 - 24;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        Combined.push(newData);
+    });
+    Combined.forEach(function(x){
+        if(x.amount.find(function(y){return y!=0;})){
+            viewRender.flowSheet.toShow.infusion.push(x);
+        }
+    });
+};
+viewRender.flowSheet.getKeyForDistinctInfusion=function(InfusionArray,keys){
+    var route=String(InfusionArray.route).trim();
+    var name=String(InfusionArray.name).trim();
+    if(!keys.find(function(x){return x.route.toLowerCase()==route.toLowerCase()&&x.name.toLowerCase()==name.toLowerCase();})){
+        keys.push({route:route,name:name});
+    }
+}
+viewRender.flowSheet.sortInfusion=function(){
+    viewRender.flowSheet.toShow.infusion=viewRender.flowSheet.toShow.infusion.sort(function(x,y){ 
+        if(x.priority!=y.priority){return x.priority-y.priority;}
+        else if(x.route!=y.route){return String(x.route).localeCompare(y.route)}
+        else{return String(x.name).localeCompare(y.name)}
+    });
+}
+viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow){
+    var dataDay1=flowSheetToday['transfusion'].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
+    var dataDay2=flowSheetTommorrow['transfusion'].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
     var keys=[];
     dataDay1.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
     dataDay2.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
@@ -282,31 +370,87 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
             }
         })
         Combined.push(newData);
-    })
-    Combined.forEach(function(x){viewRender.flowSheet.toShow.infusion.push(x);});
-};
-viewRender.flowSheet.getKeyForDistinctInfusion=function(InfusionArray,keys){
-    var route=String(InfusionArray.route).trim();
-    var name=String(InfusionArray.name).trim();
-    if(!keys.find(function(x){return x.route.toLowerCase()==route.toLowerCase()&&x.name.toLowerCase()==name.toLowerCase();})){
-        keys.push({route:route,name:name});
-    }
+    });
+    Combined.forEach(function(x){
+        if(x.amount.find(function(y){return y!=0;})){
+            viewRender.flowSheet.toShow.transfusion.push(x);
+        }
+    });
 }
-viewRender.flowSheet.toShow={
-    bt:{limit:[36,38],data:[]},
+viewRender.flowSheet.parseFeeding=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
+    var dataDay1=flowSheetToday[fieldOrigin];
+    var dataDay2=flowSheetTommorrow[fieldOrigin];
+    var newData = [];
+    for(var i = 0; i <= 16;i++){
+        newData[i]=dataDay1[i];
+    }
+    for(var i = 16; i <= 23;i++){
+        newData[i]=dataDay2[i];
+    }
+    var newObj={name:fieldTarget,amount:newData};
+    viewRender.flowSheet.toShow.feeding.push(newObj);
+}
+viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
+    var dataDay1=flowSheetToday[fieldOrigin];
+    var dataDay2=flowSheetTommorrow[fieldOrigin];
+    var newData = [];
+    for(var i = 0; i <= 16;i++){
+        newData[i]=dataDay1[i];
+    }
+    for(var i = 16; i <= 23;i++){
+        newData[i]=dataDay2[i];
+    }
+    if(fieldOrigin=="stool"){
+        newData=newData.map(function(x){return x&&viewRender.flowSheet.translateStool(x)});
+    }
+    var newObj={name:fieldTarget,amount:newData};
+    viewRender.flowSheet.toShow.excretion.push(newObj);
+}
+viewRender.flowSheet.translateStool=function (stoolCode){
+		var newSentence ="";
+		for(var j=0; j < stoolCode.length;j++)
+		{
+			switch(stoolCode[j]) {
+			case "a":newSentence+="成形<br>";break;
+			case "b":newSentence+="腹瀉<br>";break;
+			case "c":newSentence+="軟便<br>";break;
+			case "d":newSentence+="水狀<br>";break;
+			case "e":newSentence+="糊狀<br>";break;
+			case "f":newSentence+="滲便<br>";break;
+			case "g":newSentence+="血便<br>";break;
+			case "h":newSentence+="硬便<br>";break;
+			case "i":newSentence+="黏液<br>";break;
+			case "j":newSentence+="顆粒<br>";break;
+			case "k":newSentence+="胎便<br>";break;
+
+			case "A":newSentence+="黑<br>";break;
+			case "B":newSentence+="綠<br>";break;
+			case "C":newSentence+="褐紫<br>";break;
+			case "D":newSentence+="紅<br>";break;
+			case "E":newSentence+="白<br>";break;
+			case "F":newSentence+="黃<br>";break;	
+			case "G":newSentence+="墨綠<br>";break;
+			}
+        } 
+        return newSentence;
+}
+viewRender.flowSheet.toShow={  //empty container 
+    bt:{limit:[],data:[]},
     hr:{limit:[],data:[]},
     resp:{limit:[],resp:[]},
     spo2:{limit:[],data:[]},
     sbp:{limit:[],data:[]},
     dbp:{limit:[],data:[]},
     mbp:{limit:[],data:[]},
-    infusion:[]
+    infusion:[],
+    transfusion:[],
+    feeding:[],
+    excretion:[]
 };
 
 viewRender.chart = {
     initialize:function(){
         var toShow=viewRender.flowSheet.toShow;
-        console.log(toShow);
         var chartArray =[];
         var TPRTable={
             classes:['tpr'],
@@ -328,10 +472,8 @@ viewRender.chart = {
             rows:[]
         };
         if(toShow.infusion.length==0){
-            console.log('no infusion');
-            toShow.infusion=[{route:"IV"}]
+            toShow.infusion=[{route:"IV"}] //no infusion;
         };
-        console.log(toShow.infusion);
         toShow.infusion.forEach(function(x){
             InfusionTable.rows.push(
                 viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
@@ -341,32 +483,35 @@ viewRender.chart = {
 
         var transfusionTable={
             classes:['transfusion'],
-            rows:[
-                this.row("PRBC","(ml)","",[]),
-                this.row("PLT","(ml)","",[]),
-            ]
+            rows:[]
         };
+        toShow.transfusion.forEach(function(x){
+            transfusionTable.rows.push(
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+            );
+        });
         chartArray.push(transfusionTable);
-    
+        
         var feedingTable={
             classes:['feeding'],
-            rows:[
-                this.row("PO","(ml)","",[,,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"]),,10+div("配方",["nowrap"])]),
-                this.row("NG/OG","(ml)","",[,,,,,,,,,,,,,,10]),
-                this.row("RV","(ml)","",[,,"0",,,,,,,,,,,,]),
-                this.row("NG/OG Drain","(ml)","",[,,,,,,,,,,,,,,10])
-            ]
+            rows:[]
         };
+        toShow.feeding.forEach(function(x){
+            feedingTable.rows.push(
+                viewRender.chart.row(x.name||"","(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}))
+            );
+        });
         chartArray.push(feedingTable);
     
         var excretionTable={
             classes:['excretion'],
-            rows:[
-                this.row("Urine","(ml)","",[]),
-                this.row("Stool","(ml)","",[]),
-                this.row("Enema/Sti.","","",[])
-            ]
+            rows:[]
         };
+        toShow.excretion.forEach(function(x){
+            excretionTable.rows.push(
+                viewRender.chart.row(x.name||"",x.unit||"(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}))
+            );
+        });
         chartArray.push(excretionTable);
     
         var drainTable={
@@ -469,7 +614,7 @@ viewRender.jquery=function(){
 
     $('#datepicker').datepicker({
         onSelect: function(date) {
-            viewRender.queryDate(date);
+            viewRender.queryDate(FS.patientID,FS.caseNo,date);
             FS.showDatePicker=false;
         },
         dateFormat: 'yy-mm-dd'
@@ -575,6 +720,7 @@ viewRender.queryCaseNo=function(patientID, caseNo){
 }
 
 viewRender.queryDate=function(patientID,caseNo,date){
+    $('#datepicker').datepicker("setDate", date);
     var getFlowSheetByDate=function(date){
         return new Promise(function(resolve, reject){
             requestFlowSheet(patientID,caseNo, Parser.getShortDate(date),function(data,timeStamp){

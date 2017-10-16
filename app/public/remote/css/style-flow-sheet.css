@@ -160,7 +160,8 @@
 
 #flow-sheet .chart{
     width: 97%;
-    margin-left:1%;
+    max-width: 1000px;
+    margin: auto;
     border-radius: 10px;
 }
 #flow-sheet .chart table{
@@ -187,12 +188,12 @@
     vertical-align: middle;
     text-align: center;
     font-size: 12px;
-    height: 22px;
+    height: 24px;
     line-height: 18px;
     overflow: hidden;
 }
 #flow-sheet .chart table td:first-child{
-    width: 150px;
+    width: 200px;
     text-align: left;
     padding-left: 0.5%;
     font-size: 14px;
@@ -210,11 +211,9 @@
     height: 0px;
 }
 #flow-sheet .chart table td .td-data{
-    font-size: 14px;
-    font-weight: 500;
-    padding-top:2px;
-    height:16px;
-    line-height: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 12px;
     vertical-align:bottom;
 }
 #flow-sheet .chart table .title{
@@ -248,7 +247,7 @@
     background-color: hsl(160,25%,80%);
 }
 #flow-sheet .chart table.tpr .data-color{
-    background-color: hsl(160,25%,95%);
+    background-color: hsl(160,25%,90%);
 }
 #flow-sheet .chart table.tpr .no-data-color{
     background-color: hsl(160,25%,65%)
@@ -277,7 +276,7 @@
     background-color: hsl(200,25%,80%);
 }
 #flow-sheet .chart table.infusion .data-color{
-    background-color: hsl(200,25%,95%);
+    background-color: hsl(200,25%,90%);
 }
 #flow-sheet .chart table.infusion .no-data-color{
     background-color: hsl(200,25%,65%)
@@ -306,7 +305,7 @@
     background-color: hsl(10,25%,80%);
 }
 #flow-sheet .chart table.transfusion .data-color{
-    background-color: hsl(10,25%,95%);
+    background-color: hsl(10,25%,90%);
 }
 #flow-sheet .chart table.transfusion .no-data-color{
     background-color: hsl(10,25%,65%)
@@ -335,7 +334,7 @@
     background-color: hsl(50,25%,80%);
 }
 #flow-sheet .chart table.feeding .data-color{
-    background-color: hsl(50,25%,95%);
+    background-color: hsl(50,25%,90%);
 }
 #flow-sheet .chart table.feeding .no-data-color{
     background-color: hsl(50,25%,65%)
@@ -364,7 +363,7 @@
     background-color: hsl(100,25%,80%);
 }
 #flow-sheet .chart table.excretion .data-color{
-    background-color: hsl(100,25%,95%);
+    background-color: hsl(100,25%,90%);
 }
 #flow-sheet .chart table.excretion .no-data-color{
     background-color: hsl(100,25%,65%)
@@ -394,7 +393,7 @@
     background-color: hsl(280,25%,80%);
 }
 #flow-sheet .chart table.drain .data-color{
-    background-color: hsl(280,25%,95%);
+    background-color: hsl(280,25%,90%);
 }
 #flow-sheet .chart table.drain .no-data-color{
     background-color: hsl(280,25%,65%)
@@ -429,7 +428,7 @@
 }
 
 #flow-sheet .footbar-fn-button:hover{
-    background-color: hsl(40,10%,95%);
+    background-color: hsl(40,10%,90%);
     box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.05), 1px 1px 1px 1px rgba(0,0,0,0.16);
 }
 

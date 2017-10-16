@@ -443,7 +443,6 @@ var view= new Vue({
                 var admissionDate=new Date(view.flowSheet.admissionDate);
                 if(view.flowSheet.admissionDate&&date<admissionDate){date=admissionDate;}
                 viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo,Parser.getDate(date));
-                
             }
         }
     },
