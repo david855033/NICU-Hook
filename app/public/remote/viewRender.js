@@ -701,7 +701,6 @@ viewRender.queryCaseNo=function(patientID, caseNo){
         FS.admissionDate=admission.admissionDate;
         FS.dischargeDate=admission.dischargeDate;
         var qdate = FS.dischargeDate||Parser.getDate();
-       
 
         requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
             if(FS.admissionList.slice(-1)[0].section=="NB"){
@@ -720,7 +719,7 @@ viewRender.queryCaseNo=function(patientID, caseNo){
 }
 
 viewRender.queryDate=function(patientID,caseNo,date){
-    $('#datepicker').datepicker("setDate", date);
+    
     var getFlowSheetByDate=function(date){
         return new Promise(function(resolve, reject){
             requestFlowSheet(patientID,caseNo, Parser.getShortDate(date),function(data,timeStamp){
@@ -729,7 +728,7 @@ viewRender.queryDate=function(patientID,caseNo,date){
             }); 
         });
     }
-
+    
     FS.currentDate=date;
     var dataContainer=[];
     var queryDateList=[];
@@ -748,7 +747,8 @@ viewRender.queryDate=function(patientID,caseNo,date){
             return getFlowSheetByDate(queryDateList[3]);
         }).then(function(){
             viewRender.flowSheet.dataContainer=dataContainer;
-            viewRender.flowSheet.selectDate(date)
+            viewRender.flowSheet.selectDate(date);
+            $('#datepicker').datepicker("setDate", date);
         });
 }
 
