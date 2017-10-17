@@ -219,8 +219,18 @@
 #flow-sheet .chart table .title{
     font-size: 14px;
 }
-#flow-sheet .chart table .unit{
+#flow-sheet .chart table .unit,
+#flow-sheet .chart table .sum{
     font-size: 10px;
+}
+#flow-sheet .chart table .unit{
+    color: hsl(0,0%,40%);
+}
+#flow-sheet .chart table .sum{
+    color: hsl(0,0%,0%);
+    background-color: hsla(0,0%,100%,0.4);
+    padding: 2px 3px 2px 3px;
+    border-radius: 3px;
 }
 #flow-sheet .chart table .content, #flow-sheet .chart table .limit{
     font-size: 12px;
@@ -255,9 +265,7 @@
 #flow-sheet .chart table.tpr .title{
     font-weight: 800;
 }
-#flow-sheet .chart table.tpr .unit{
-    color: hsl(0,0%,40%);
-}
+
 #flow-sheet .chart table.tpr .limit{
     color: hsl(160,40%,30%)
 }
@@ -273,7 +281,7 @@
     background-color: hsl(200,25%,80%);
 }
 #flow-sheet .chart table.infusion .header-color{
-    background-color: hsl(200,25%,80%);
+    background-color: #BFD0D8;
 }
 #flow-sheet .chart table.infusion .data-color{
     background-color: hsl(200,25%,90%);
@@ -284,11 +292,9 @@
 #flow-sheet .chart table.infusion .title{
     font-weight: 800;
 }
-#flow-sheet .chart table.infusion .unit{
-    color: hsl(0,0%,40%);
-}
 #flow-sheet .chart table.infusion .content{
-    color: hsl(200,40%,30%)
+    color: hsl(200,40%,30%);
+    font-weight: 600;
 }
 /*sets of chart color*/
 #flow-sheet .chart table.transfusion{
@@ -312,9 +318,6 @@
 }
 #flow-sheet .chart table.transfusion .title{
     font-weight: 800;
-}
-#flow-sheet .chart table.transfusion .unit{
-    color: hsl(0,0%,40%);
 }
 #flow-sheet .chart table.transfusion .content{
     color: hsl(10,40%,30%)
@@ -342,9 +345,6 @@
 #flow-sheet .chart table.feeding .title{
     font-weight: 800;
 }
-#flow-sheet .chart table.feeding .unit{
-    color: hsl(0,0%,40%);
-}
 #flow-sheet .chart table.feeding .content{
     color: hsl(50,40%,30%)
 }
@@ -370,9 +370,6 @@
 }
 #flow-sheet .chart table.excretion .title{
     font-weight: 800;
-}
-#flow-sheet .chart table.excretion .unit{
-    color: hsl(0,0%,40%);
 }
 #flow-sheet .chart table.excretion .content{
     color: hsl(100,40%,30%)
@@ -400,9 +397,6 @@
 }
 #flow-sheet .chart table.drain .title{
     font-weight: 800;
-}
-#flow-sheet .chart table.drain .unit{
-    color: hsl(0,0%,40%);
 }
 #flow-sheet .chart table.drain .content{
     color: hsl(280,40%,30%)

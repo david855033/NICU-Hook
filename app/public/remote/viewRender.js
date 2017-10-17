@@ -358,13 +358,14 @@ viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow
     dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     var Combined=[];
     keys.forEach(function(k){
-        var newData = {route:k.route,name:k.name,amount:[]};
+        var newData = {route:k.route,name:k.name,amount:[],sum:0};
         var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
         amountDay1.forEach(function(x){
             for(var i = 0; i <= 16;i++){
                 var h = i + 7;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
@@ -373,9 +374,11 @@ viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow
                 var h = i + 7 - 24;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         newData.amount=newData.amount.map(function(y){return y&&Parser.round1(y)});
+        newData.sum=Parser.round1(newData.sum);
         Combined.push(newData);
     });
     Combined.forEach(function(x){
@@ -388,35 +391,48 @@ viewRender.flowSheet.parseFeeding=function(fieldOrigin,fieldTarget,flowSheetToda
     var dataDay1=flowSheetToday[fieldOrigin];
     var dataDay2=flowSheetTommorrow[fieldOrigin];
     var newData = [];
+    var sum=0;
     for(var i = 0; i <= 16;i++){
         var h = i + 7;
         newData[i]=dataDay1[h];
+        sum+=Number(dataDay1[h])||0;
     }
     for(var i = 16; i <= 23;i++){
         var h = i + 7 - 24;
         newData[i]=dataDay2[h];
+        sum+=Number(dataDay2[h])||0;
     }
-    var newObj={name:fieldTarget,amount:newData};
+    if(fieldOrigin=="RVAmount"){sum=0;}
+    var newObj={name:fieldTarget,amount:newData,sum:sum};
     newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
+    newObj.sum=Parser.round1(newObj.sum);
     viewRender.flowSheet.toShow.feeding.push(newObj);
 }
 viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
     var dataDay1=flowSheetToday[fieldOrigin];
     var dataDay2=flowSheetTommorrow[fieldOrigin];
     var newData = [];
+    var sum=0;
     for(var i = 0; i <= 16;i++){
         var h = i + 7;
         newData[i]=dataDay1[h];
+        sum+=Number(dataDay1[h])||0;
     }
     for(var i = 16; i <= 23;i++){
         var h = i + 7 - 24;
         newData[i]=dataDay2[h];
+        sum+=Number(dataDay2[h])||0;
     }
     if(fieldOrigin=="stool"){
         newData=newData.map(function(x){return x&&viewRender.flowSheet.translateStool(x)});
+        sum=0;
     }
-    var newObj={name:fieldTarget,amount:newData};
+    if(fieldOrigin=="enema"){
+        sum=0;
+    }
+    var newObj={name:fieldTarget,amount:newData,sum:sum};
     newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
+    newObj.sum=Parser.round1(newObj.sum);
     viewRender.flowSheet.toShow.excretion.push(newObj);
 }
 viewRender.flowSheet.translateStool=function (stoolCode){
@@ -456,13 +472,14 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
     var Combined=[];
     console.log(keys);
     keys.forEach(function(k){
-        var newData = {route:k.route,name:k.name,amount:[]};
+        var newData = {route:k.route,name:k.name,amount:[],sum:0};
         var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
         amountDay1.forEach(function(x){
             for(var i = 0; i <= 16;i++){
                 var h = i + 7;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
@@ -471,6 +488,7 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
                 var h = i + 7 - 24;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         Combined.push(newData);
@@ -478,6 +496,7 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
     Combined.forEach(function(x){
         if(x.amount.find(function(y){return y!=0;})){
             x.amount=x.amount.map(function(y){return y&&Parser.round1(y)});
+            x.sum=Parser.round1(x.sum);
             viewRender.flowSheet.toShow.drain.push(x);
         }
     });
@@ -525,7 +544,7 @@ viewRender.chart = {
         };
         toShow.infusion.forEach(function(x){
             InfusionTable.rows.push(
-                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}),x.sum)
             );
         });
         chartArray.push(InfusionTable);
@@ -536,7 +555,7 @@ viewRender.chart = {
         };
         toShow.transfusion.forEach(function(x){
             transfusionTable.rows.push(
-                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}),x.sum)
             );
         });
         transfusionTable.rows&&chartArray.push(transfusionTable);
@@ -547,7 +566,7 @@ viewRender.chart = {
         };
         toShow.feeding.forEach(function(x){
             feedingTable.rows.push(
-                viewRender.chart.row(x.name||"","(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}))
+                viewRender.chart.row(x.name||"","(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}),x.sum)
             );
         });
         chartArray.push(feedingTable);
@@ -558,7 +577,7 @@ viewRender.chart = {
         };
         toShow.excretion.forEach(function(x){
             excretionTable.rows.push(
-                viewRender.chart.row(x.name||"",x.unit||"(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}))
+                viewRender.chart.row(x.name||"",x.unit||"(ml)","",(x.amount||[]).map(function(x){return x===0?div(0,['td-data','arial']):(x&&div(x,['td-data','arial']));}),x.sum)
             );
         });
         chartArray.push(excretionTable);
@@ -569,7 +588,7 @@ viewRender.chart = {
         };
         toShow.drain.forEach(function(x){
             drainTable.rows.push(
-                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}),x.sum)
             );
         });
         drainTable.rows&&chartArray.push(drainTable);
@@ -615,10 +634,10 @@ viewRender.chart = {
         }
         return resultArray;
     },
-    row:function(title,unit,content,data){
+    row:function(title,unit,content,data,sum){
         var resultArray=[];
         data=data||[];
-        var titleString=span(title,["title"])+" "+span(unit,["unit"])+" "+span(content,["content"]);
+        var titleString=span(title,["title"])+" "+(sum?span(sum,["sum"]):span(unit,["unit"]))+" "+span(content,["content"]);
         resultArray.push(new cell(titleString,'title-color')); 
         for(var i = 0; i < 24;i++)
         {
