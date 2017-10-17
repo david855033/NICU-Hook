@@ -219,14 +219,22 @@
 #flow-sheet .chart table .title{
     font-size: 14px;
 }
-#flow-sheet .chart table .unit,
-#flow-sheet .chart table .sum{
-    font-size: 10px;
+#flow-sheet .chart table .down{
+    color:hsl(120,50%,30%);
+    background-color: hsl(120,50%,80%);
+    border-radius: 50%;
+}
+#flow-sheet .chart table .up{
+    color:hsl(0,50%,30%);
+    background-color: hsl(0,50%,80%);
+    border-radius: 50%;
 }
 #flow-sheet .chart table .unit{
+    font-size: 10px;
     color: hsl(0,0%,40%);
 }
 #flow-sheet .chart table .sum{
+    font-size: 10px;
     color: hsl(0,0%,0%);
     background-color: hsla(0,0%,100%,0.4);
     padding: 2px 3px 2px 3px;

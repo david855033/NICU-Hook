@@ -245,7 +245,6 @@ viewRender.flowSheet.limit={
 
 viewRender.flowSheet.selectDate=function(date){
     var ageInDay = Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday)-280;
-    console.log("age D"+ageInDay);
     viewRender.flowSheet.toShow={  //清空資料 設定初始
         bt:{limit:[36,38],data:[]},
         hr:{limit:viewRender.flowSheet.limit.hr(ageInDay),data:[]},
@@ -368,12 +367,14 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
     dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     var Combined=[];
     keys.forEach(function(k){
-        var newData = {route:k.route,name:k.name,amount:[],priority:0,sum:0};
+        var newData = {route:k.route,name:k.name,amount:[],priority:0,sum:0,delta:[]};
         if(fieldOrigin=="peripheral"){newData.priority=1;}
         else if(fieldOrigin=="aline"){newData.priority=2;}
         else if(fieldOrigin=="central"){newData.priority=3;}
         var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        var amount0=0;
         amountDay1.forEach(function(x){
+            amount0+=amountDay1[6]||0
             for(var i = 0; i <= 16;i++){
                 var h = i + 7;
                 newData.amount[i]=newData.amount[i]||0;
@@ -390,6 +391,18 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
                 newData.sum+=x.amount[h]||0;
             }
         })
+        newData.amount.forEach(function(x,index){
+            var delta=0;
+            var previous=0;
+            if(index==0){previous=amount0;}else{previous=newData.amount[index-1];}
+            if(previous&&x)
+            {
+                if(x>previous){delta=1;}
+                else if(x<previous){delta=-1;}
+            }
+            newData.delta.push(delta);
+        })
+        console.log(newData);
         Combined.push(newData);
     });
     Combined.forEach(function(x){
@@ -488,9 +501,6 @@ viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetTo
         newData[i]=dataDay2[h];
         sum+=Number(dataDay2[h])||0;
     }
-    console.log(fieldOrigin);
-    console.log(dataDay1);
-    console.log(dataDay2);
     if(fieldOrigin=="stool"){
         newData=newData.map(function(x){return x&&viewRender.flowSheet.translateStool(x)});
         sum=0;
@@ -501,7 +511,6 @@ viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetTo
     newObj.amount=newObj.amount.map(function(y){return Number(y)||Parser.round1(y)||y});
     newObj.sum=Parser.round1(newObj.sum);
     viewRender.flowSheet.toShow.excretion.push(newObj);
-    console.log(newObj);
 }
 viewRender.flowSheet.translateStool=function (stoolCode){
         var newSentence ="";
@@ -611,7 +620,19 @@ viewRender.chart = {
         };
         toShow.infusion.forEach(function(x){
             InfusionTable.rows.push(
-                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}),x.sum)
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(
+                    function(y,index){
+                        var delta=x.delta[index];
+                        if(delta==1){
+                            var result=div(span("&#9652;",['up'])+y,['td-data','arial']);
+                        }else if(delta==-1){
+                            var result=div(span("&#9662;",['down'])+y,['td-data','arial']);
+                        }else{
+                            var result=div(y,['td-data','arial']);
+                        }
+                        return y&&result;
+                    }
+                ),x.sum)
             );
         });
         chartArray.push(InfusionTable);
@@ -622,7 +643,7 @@ viewRender.chart = {
         };
         toShow.transfusion.forEach(function(x){
             transfusionTable.rows.push(
-                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}),x.sum)
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(y,index){return y&&div(y,['td-data','arial']);}),x.sum)
             );
         });
         transfusionTable.rows&&chartArray.push(transfusionTable);
