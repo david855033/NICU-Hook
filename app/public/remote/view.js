@@ -424,9 +424,13 @@ var view= new Vue({
             viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo, view.flowSheet.currentDate);
         },
         selectFlowSheetFn:function(fn){
-            view.flowSheet.selectedfootbarMenu=fn;
-            if(view.flowSheet.footbarStatus=='close'){
-                view.flowSheet.footbarStatus='min';
+            if(view.flowSheet.selectedfootbarMenu==fn){
+                view.flowSheet.footbarStatus='close'; 
+            }else{
+                view.flowSheet.selectedfootbarMenu=fn;
+                if(view.flowSheet.footbarStatus=='close'){
+                    view.flowSheet.footbarStatus='min';
+                }
             }
         },
         dayChange:function(n){

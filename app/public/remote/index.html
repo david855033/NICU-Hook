@@ -498,7 +498,7 @@
             <div id="content">
                 <div class="scrollbar-inner h1-1">
                     <div class="chart shadow">
-                        <table v-for="(table,i) in flowSheet.chart" :class="table.classes">
+                        <table v-for="(table,i) in flowSheet.chart" :class="table.classes" v-if="table.rows.length>0">
                             <tr v-if="i==0"><td></td>
                                 <td colspan="8" class="shift-name">白班</td>
                                 <td colspan="8" class="shift-name">小夜</td>

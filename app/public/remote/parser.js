@@ -202,5 +202,13 @@ var Parser={
         var matchNum=inputStr.match(/\d+(.\d+)?/);
         matchNum=(matchNum &&Number(matchNum[0]))||null;
         return matchNum;
+    },
+    round1:function(input){
+        var num=Number(input);
+        return Math.round(input*10)/10;
+    },
+    round2:function(input){
+        var num=Number(input);
+        return Math.round(input*100)/100;
     }
 }

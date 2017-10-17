@@ -193,7 +193,8 @@ viewRender.flowSheet.selectDate=function(date){
         infusion:[],
         transfusion:[],
         feeding:[],
-        excretion:[]
+        excretion:[],
+        drain:[]
     };
     var dataContainer=viewRender.flowSheet.dataContainer;
     console.log(dataContainer);
@@ -220,6 +221,7 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseExcretion('urine','Urine',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseExcretion('stool','Stool',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseDrain(flowSheetToday,flowSheetTommorrow);
     viewRender.initialize();
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
@@ -298,11 +300,11 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
     var dataDay1=flowSheetToday[fieldOrigin].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
     var dataDay2=flowSheetTommorrow[fieldOrigin].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
     var keys=[];
-    dataDay1.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
-    dataDay2.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    dataDay1.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
+    dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     var Combined=[];
     keys.forEach(function(k){
-        var newData = {route:k.route,name:k.name,amount:[],priority:0};
+        var newData = {route:k.route,name:k.name,amount:[],priority:0,sum:0};
         if(fieldOrigin=="peripheral"){newData.priority=1;}
         else if(fieldOrigin=="aline"){newData.priority=2;}
         else if(fieldOrigin=="central"){newData.priority=3;}
@@ -312,6 +314,7 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
                 var h = i + 7;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
@@ -320,17 +323,20 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
                 var h = i + 7 - 24;
                 newData.amount[i]=newData.amount[i]||0;
                 newData.amount[i]+=x.amount[h]||0;
+                newData.sum+=x.amount[h]||0;
             }
         })
         Combined.push(newData);
     });
     Combined.forEach(function(x){
         if(x.amount.find(function(y){return y!=0;})){
+            x.amount=x.amount.map(function(y){return y&&Parser.round1(y)});
+            x.sum=Parser.round1(x.sum);
             viewRender.flowSheet.toShow.infusion.push(x);
         }
     });
 };
-viewRender.flowSheet.getKeyForDistinctInfusion=function(InfusionArray,keys){
+viewRender.flowSheet.mergeDistinctKeys=function(InfusionArray,keys){
     var route=String(InfusionArray.route).trim();
     var name=String(InfusionArray.name).trim();
     if(!keys.find(function(x){return x.route.toLowerCase()==route.toLowerCase()&&x.name.toLowerCase()==name.toLowerCase();})){
@@ -348,8 +354,8 @@ viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow
     var dataDay1=flowSheetToday['transfusion'].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
     var dataDay2=flowSheetTommorrow['transfusion'].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
     var keys=[];
-    dataDay1.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
-    dataDay2.forEach(function(x){viewRender.flowSheet.getKeyForDistinctInfusion(x,keys);})
+    dataDay1.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
+    dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     var Combined=[];
     keys.forEach(function(k){
         var newData = {route:k.route,name:k.name,amount:[]};
@@ -369,6 +375,7 @@ viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow
                 newData.amount[i]+=x.amount[h]||0;
             }
         })
+        newData.amount=newData.amount.map(function(y){return y&&Parser.round1(y)});
         Combined.push(newData);
     });
     Combined.forEach(function(x){
@@ -382,12 +389,15 @@ viewRender.flowSheet.parseFeeding=function(fieldOrigin,fieldTarget,flowSheetToda
     var dataDay2=flowSheetTommorrow[fieldOrigin];
     var newData = [];
     for(var i = 0; i <= 16;i++){
-        newData[i]=dataDay1[i];
+        var h = i + 7;
+        newData[i]=dataDay1[h];
     }
     for(var i = 16; i <= 23;i++){
-        newData[i]=dataDay2[i];
+        var h = i + 7 - 24;
+        newData[i]=dataDay2[h];
     }
     var newObj={name:fieldTarget,amount:newData};
+    newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
     viewRender.flowSheet.toShow.feeding.push(newObj);
 }
 viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
@@ -395,15 +405,18 @@ viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetTo
     var dataDay2=flowSheetTommorrow[fieldOrigin];
     var newData = [];
     for(var i = 0; i <= 16;i++){
-        newData[i]=dataDay1[i];
+        var h = i + 7;
+        newData[i]=dataDay1[h];
     }
     for(var i = 16; i <= 23;i++){
-        newData[i]=dataDay2[i];
+        var h = i + 7 - 24;
+        newData[i]=dataDay2[h];
     }
     if(fieldOrigin=="stool"){
         newData=newData.map(function(x){return x&&viewRender.flowSheet.translateStool(x)});
     }
     var newObj={name:fieldTarget,amount:newData};
+    newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
     viewRender.flowSheet.toShow.excretion.push(newObj);
 }
 viewRender.flowSheet.translateStool=function (stoolCode){
@@ -434,6 +447,41 @@ viewRender.flowSheet.translateStool=function (stoolCode){
         } 
         return newSentence;
 }
+viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
+    var dataDay1=flowSheetToday['drain'].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
+    var dataDay2=flowSheetTommorrow['drain'].filter(function(x){return x.amount.slice(0,8).find(function(y){return y;})});
+    var keys=[];
+    dataDay1.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
+    dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
+    var Combined=[];
+    console.log(keys);
+    keys.forEach(function(k){
+        var newData = {route:k.route,name:k.name,amount:[]};
+        var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay1.forEach(function(x){
+            for(var i = 0; i <= 16;i++){
+                var h = i + 7;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        var amountDay2=dataDay2.filter(function(x){return k.route==x.route&&k.name==x.name;});
+        amountDay2.forEach(function(x){
+            for(var i = 16; i <= 23;i++){
+                var h = i + 7 - 24;
+                newData.amount[i]=newData.amount[i]||0;
+                newData.amount[i]+=x.amount[h]||0;
+            }
+        })
+        Combined.push(newData);
+    });
+    Combined.forEach(function(x){
+        if(x.amount.find(function(y){return y!=0;})){
+            x.amount=x.amount.map(function(y){return y&&Parser.round1(y)});
+            viewRender.flowSheet.toShow.drain.push(x);
+        }
+    });
+}
 viewRender.flowSheet.toShow={  //empty container 
     bt:{limit:[],data:[]},
     hr:{limit:[],data:[]},
@@ -445,7 +493,8 @@ viewRender.flowSheet.toShow={  //empty container
     infusion:[],
     transfusion:[],
     feeding:[],
-    excretion:[]
+    excretion:[],
+    drain:[]
 };
 
 viewRender.chart = {
@@ -490,7 +539,7 @@ viewRender.chart = {
                 viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
             );
         });
-        chartArray.push(transfusionTable);
+        transfusionTable.rows&&chartArray.push(transfusionTable);
         
         var feedingTable={
             classes:['feeding'],
@@ -516,14 +565,16 @@ viewRender.chart = {
     
         var drainTable={
             classes:['drain'],
-            rows:[
-                this.row("Drain","(ml)","Colostomy",[]),
-                this.row("Dialysis","(ml)","",[]),
-            ]
+            rows:[]
         };
-        chartArray.push(drainTable);
+        toShow.drain.forEach(function(x){
+            drainTable.rows.push(
+                viewRender.chart.row(x.route||"","(ml)",x.name||"",(x.amount||[]).map(function(x){return x&&div(x,['td-data','arial']);}))
+            );
+        });
+        drainTable.rows&&chartArray.push(drainTable);
     
-    
+
         view.flowSheet.chart=chartArray;
     },
     header:function(){
@@ -621,7 +672,7 @@ viewRender.jquery=function(){
     });
     $('#datepicker').datepicker('option', 'minDate', new Date(FS.admissionDate||FS.birthDate));
     $('#datepicker').datepicker('option', 'maxDate', new Date(FS.dischargeDate||Parser.getDate()));
-    $('#datepicker').datepicker('option', 'currentDate', new Date(FS.currentDate||""));
+    $('#datepicker').datepicker('setDate', new Date(FS.currentDate||""));
     //header DOMs..
     setTimeout(function() {
         Layout.onWidthChange();
@@ -748,7 +799,7 @@ viewRender.queryDate=function(patientID,caseNo,date){
         }).then(function(){
             viewRender.flowSheet.dataContainer=dataContainer;
             viewRender.flowSheet.selectDate(date);
-            $('#datepicker').datepicker("setDate", date);
+            $('#datepicker').datepicker("setDate", FS.currentDate);
         });
 }
 
