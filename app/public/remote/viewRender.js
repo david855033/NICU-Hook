@@ -181,15 +181,79 @@ viewRender.header={
 
 viewRender.flowSheet={};
 viewRender.flowSheet.dataContainer=[];
+viewRender.flowSheet.limit={
+    hr:function(ageInDay){
+        if(ageInDay<0){return [100,180];}
+        else if(ageInDay<365){return [80,160];}
+        else if(ageInDay<365*2){return [80,130];}
+        else if(ageInDay<365*4){return [80,120];}
+        else if(ageInDay<365*6){return [75,115];}
+        else if(ageInDay<365*8){return [70,110];}
+        else if(ageInDay<365*12){return [65,105];}
+        else if(ageInDay<365*14){return [60,100];}
+        else if(ageInDay<365*16){return [55,95];}
+        return [50,90];
+    },
+    resp:function(ageInDay){
+        if(ageInDay<30){return [20,60];}
+        else if(ageInDay<365*3){return [20,40];}
+        else if(ageInDay<365*6){return [18,30];}
+        else if(ageInDay<365*12){return [15,25];}
+        return [12,20];
+    },
+    spo2:function(ageInDay){
+        if(ageInDay<0){return [90,];}
+        return [95,];
+    },
+    sbp:function(ageInDay){
+        if(ageInDay<-7*14){return [40,];}
+        if(ageInDay<-7*12){return [45,];}
+        else if(ageInDay<-7*8){return [50,];}
+        else if(ageInDay<-7*4){return [55,];}
+        else if(ageInDay<30){return [60,85];}
+        else if(ageInDay<365*1){return [70,105];}
+        else if(ageInDay<365*3){return [75,105];}
+        else if(ageInDay<365*6){return [80,115];}
+        else if(ageInDay<365*10){return [90,130];}
+        return [90,140];
+    },
+    dbp:function(ageInDay){
+        if(ageInDay<-7*14){return [20,];}
+        if(ageInDay<-7*12){return [25,];}
+        else if(ageInDay<-7*8){return [30,];}
+        else if(ageInDay<-7*4){return [30,];}
+        else if(ageInDay<30){return [35,];}
+        else if(ageInDay<365*1){return [40,80];}
+        else if(ageInDay<365*3){return [45,85];}
+        else if(ageInDay<365*6){return [50,90];}
+        else if(ageInDay<365*10){return [50,90];}
+        return [50,100];
+    },
+    mbp:function(ageInDay){
+        if(ageInDay<-7*14){return [30,];}
+        if(ageInDay<-7*12){return [35,];}
+        else if(ageInDay<-7*8){return [35,];}
+        else if(ageInDay<-7*4){return [40,];}
+        else if(ageInDay<30){return [45,];}
+        else if(ageInDay<365*1){return [45,];}
+        else if(ageInDay<365*3){return [50,];}
+        else if(ageInDay<365*6){return [55,];}
+        else if(ageInDay<365*10){return [60,];}
+        return [65,];
+    },
+};
+
 viewRender.flowSheet.selectDate=function(date){
+    var ageInDay = Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday)-280;
+    console.log("age D"+ageInDay);
     viewRender.flowSheet.toShow={  //清空資料 設定初始
         bt:{limit:[36,38],data:[]},
-        hr:{limit:[100,180],data:[]},
-        resp:{limit:[30,60],resp:[]},
-        spo2:{limit:[85],data:[]},
-        sbp:{limit:[60],data:[]},
-        dbp:{limit:[20],data:[]},
-        mbp:{limit:[30],data:[]},
+        hr:{limit:viewRender.flowSheet.limit.hr(ageInDay),data:[]},
+        resp:{limit:viewRender.flowSheet.limit.resp(ageInDay),resp:[]},
+        spo2:{limit:viewRender.flowSheet.limit.spo2(ageInDay),data:[]},
+        sbp:{limit:viewRender.flowSheet.limit.sbp(ageInDay),data:[]},
+        dbp:{limit:viewRender.flowSheet.limit.dbp(ageInDay),data:[]},
+        mbp:{limit:viewRender.flowSheet.limit.mbp(ageInDay),data:[]},
         infusion:[],
         transfusion:[],
         feeding:[],
@@ -206,8 +270,8 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseChart('heartRate','hr',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('respiratoryRate','resp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseChart('saturation','spo2',flowSheetToday,flowSheetTommorrow);
-    viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow);
-    viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseChart('sbp','sbp',flowSheetToday,flowSheetTommorrow,{overLimitStyle:['yellow','yellow-bg','heavy-weight']});
+    viewRender.flowSheet.parseChart('dbp','dbp',flowSheetToday,flowSheetTommorrow,{overLimitStyle:['yellow','yellow-bg','heavy-weight']});
     viewRender.flowSheet.parseChart('mbp','mbp',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseInfusion('peripheral',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseInfusion('aline',flowSheetToday,flowSheetTommorrow);
@@ -290,7 +354,7 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
                 min=div(div(min,['v-center']),defaultStyle);
             }
             
-            parsed[index]=min+max;
+            parsed[index]=max+min;
         }
         
     })
@@ -411,6 +475,7 @@ viewRender.flowSheet.parseFeeding=function(fieldOrigin,fieldTarget,flowSheetToda
 viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
     var dataDay1=flowSheetToday[fieldOrigin];
     var dataDay2=flowSheetTommorrow[fieldOrigin];
+    
     var newData = [];
     var sum=0;
     for(var i = 0; i <= 16;i++){
@@ -423,20 +488,23 @@ viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetTo
         newData[i]=dataDay2[h];
         sum+=Number(dataDay2[h])||0;
     }
+    console.log(fieldOrigin);
+    console.log(dataDay1);
+    console.log(dataDay2);
     if(fieldOrigin=="stool"){
         newData=newData.map(function(x){return x&&viewRender.flowSheet.translateStool(x)});
         sum=0;
-    }
-    if(fieldOrigin=="enema"){
+    }else if(fieldOrigin=="enema"){
         sum=0;
     }
     var newObj={name:fieldTarget,amount:newData,sum:sum};
-    newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
+    newObj.amount=newObj.amount.map(function(y){return Number(y)||Parser.round1(y)||y});
     newObj.sum=Parser.round1(newObj.sum);
     viewRender.flowSheet.toShow.excretion.push(newObj);
+    console.log(newObj);
 }
 viewRender.flowSheet.translateStool=function (stoolCode){
-		var newSentence ="";
+        var newSentence ="";
 		for(var j=0; j < stoolCode.length;j++)
 		{
 			switch(stoolCode[j]) {
@@ -470,7 +538,6 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
     dataDay1.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     dataDay2.forEach(function(x){viewRender.flowSheet.mergeDistinctKeys(x,keys);})
     var Combined=[];
-    console.log(keys);
     keys.forEach(function(k){
         var newData = {route:k.route,name:k.name,amount:[],sum:0};
         var amountDay1=dataDay1.filter(function(x){return k.route==x.route&&k.name==x.name;});
