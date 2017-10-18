@@ -38,7 +38,7 @@ viewRender.bw.initialize=function(rawBW){
             lastPushedDateTime=x[indexDate];
         }
     });
-    parsedbw.sort(function(a,b){return new Date(a.dateTime)-new Date(b.dateTime)});
+    parsedbw.sort(function(a,b){return Parser.getDateFromString(a.dateTime)-Parser.getDateFromString(b.dateTime)});
     
     var firstBwObj=(parsedbw&&parsedbw[0])||null;
     if(firstBwObj){
@@ -68,14 +68,13 @@ viewRender.bw.selectBw=function(){
         FS.bwLastDate=null;
     }
 
-    var yesterday = new Date(FS.currentDate);
+    var yesterday = Parser.getDateFromString(FS.currentDate);
     yesterday.setDate(yesterday.getDate() -1);
     yesterday=Parser.getDate(yesterday);
     var lastIndexYesterday=parsedbw.findLastIndexOf(function(x){
         return Parser.getDate(x.dateTime)==yesterday;}
     );
     var yesterdayBwObj=(parsedbw&&parsedbw[lastIndexYesterday])||null;
-    
     if(yesterdayBwObj&&lastBwObj){
         FS.bwDelta = lastBwObj.bw - yesterdayBwObj.bw;
     }else{
@@ -85,7 +84,7 @@ viewRender.bw.selectBw=function(){
 viewRender.header={
     initialize:function(){
         var headerCards=[];
-        FS.weekDay=Parser.getDayString(new Date(FS.currentDate).getDay());
+        FS.weekDay=Parser.getDayString(Parser.getDateFromString(FS.currentDate).getDay());
         FS.dayDifference= Parser.getDayDifferenceString(FS.currentDate);
         headerCards.push(new this.headerCard(FS.bed,FS.name,"主治醫師："+FS.vs));
         
@@ -134,7 +133,7 @@ viewRender.header={
         if(FS.bwLast){
             if(FS.bwLast<=5){
                 currentBWString=Math.round(FS.bwLast*1000)+"g";
-                delta=Math.round(FS.bwDelta*1000); 
+                delta=Math.round(FS.bwDelta*1000);
             }
             else{
                 currentBWString=Math.round(FS.bwLast*100)/100+"kg";
@@ -197,9 +196,9 @@ viewRender.flowSheet.limit={
     resp:function(ageInDay){
         if(ageInDay<30){return [20,60];}
         else if(ageInDay<365*3){return [20,40];}
-        else if(ageInDay<365*6){return [18,30];}
-        else if(ageInDay<365*12){return [15,25];}
-        return [12,20];
+        else if(ageInDay<365*6){return [10,30];}
+        else if(ageInDay<365*12){return [10,25];}
+        return [10,20];
     },
     spo2:function(ageInDay){
         if(ageInDay<0){return [90,];}
@@ -263,6 +262,8 @@ viewRender.flowSheet.selectDate=function(date){
     console.log(dataContainer);
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
+    var flowSheetDay2=dataContainer.find(function(x){return x.date==Parser.addDate(date,-1);}).flowSheet;
+    var flowSheetDay3=dataContainer.find(function(x){return x.date==Parser.addDate(date,-2);}).flowSheet;
     viewRender.flowSheet.calculateMBP(flowSheetToday);
     viewRender.flowSheet.calculateMBP(flowSheetTommorrow);
     viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight']});
@@ -285,6 +286,7 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseExcretion('stool','Stool',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseDrain(flowSheetToday,flowSheetTommorrow);
+    viewRender.flowSheet.parseIO(flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3);
     viewRender.initialize();
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
@@ -402,7 +404,6 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
             }
             newData.delta.push(delta);
         })
-        console.log(newData);
         Combined.push(newData);
     });
     Combined.forEach(function(x){
@@ -577,6 +578,62 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
         }
     });
 }
+viewRender.flowSheet.parseIO=function(flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3){
+    FS.io.morning.input=Math.round(this.sumInput(flowSheetToday,7,14))||"";
+    FS.io.afternoon.input=Math.round(this.sumInput(flowSheetToday,15,22))||"";
+    FS.io.night.input=Math.round(this.sumInput(flowSheetToday,23,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
+    FS.io.day1.input=Math.round(this.sumInput(flowSheetToday,7,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
+    FS.io.day2.input=Math.round(this.sumInput(flowSheetDay2,7,23)+this.sumInput(flowSheetToday,0,6))||"";
+    FS.io.day3.input=Math.round(this.sumInput(flowSheetDay3,7,23)+this.sumInput(flowSheetDay2,0,6))||"";
+
+    FS.io.morning.output=Math.round(this.sumOutput(flowSheetToday,7,14))||"";
+    FS.io.afternoon.output=Math.round(this.sumOutput(flowSheetToday,15,22))||"";
+    FS.io.night.output=Math.round(this.sumOutput(flowSheetToday,23,23)+this.sumOutput(flowSheetTommorrow,0,6))||"";
+    FS.io.day1.output=Math.round(this.sumOutput(flowSheetToday,7,23)+this.sumOutput(flowSheetTommorrow,0,6))||"";
+    FS.io.day2.output=Math.round(this.sumOutput(flowSheetDay2,7,23)+this.sumOutput(flowSheetToday,0,6))||"";
+    FS.io.day3.output=Math.round(this.sumOutput(flowSheetDay3,7,23)+this.sumOutput(flowSheetDay2,0,6))||"";
+
+    this.calculateIO(FS.io.morning);
+    this.calculateIO(FS.io.afternoon);
+    this.calculateIO(FS.io.night);
+    this.calculateIO(FS.io.day1);
+    this.calculateIO(FS.io.day2);
+    this.calculateIO(FS.io.day3);
+
+    FS.io.morning.urine=Math.round(this.sumUrine(flowSheetToday,7,14))||"";
+    FS.io.afternoon.urine=Math.round(this.sumUrine(flowSheetToday,15,22))||"";
+    FS.io.night.urine=Math.round(this.sumUrine(flowSheetToday,23,23)+this.sumUrine(flowSheetTommorrow,0,6))||"";
+    FS.io.day1.urine=Math.round(this.sumUrine(flowSheetToday,7,23)+this.sumUrine(flowSheetTommorrow,0,6))||"";
+    FS.io.day2.urine=Math.round(this.sumUrine(flowSheetDay2,7,23)+this.sumUrine(flowSheetToday,0,6))||"";
+    FS.io.day3.urine=Math.round(this.sumUrine(flowSheetDay3,7,23)+this.sumUrine(flowSheetDay2,0,6))||"";
+}
+viewRender.flowSheet.sumInput=function(flowSheet,start,end){
+    var sum=0;
+    flowSheet.peripheral.forEach(function(x){sum+=d3.sum(x.amount.slice(start,end+1))});
+    flowSheet.central.forEach(function(x){sum+=d3.sum(x.amount.slice(start,end+1))});
+    flowSheet.aline.forEach(function(x){sum+=d3.sum(x.amount.slice(start,end+1))});
+    flowSheet.transfusion.forEach(function(x){sum+=d3.sum(x.amount.slice(start,end+1))});
+    sum+=d3.sum(flowSheet.POAmount.slice(start,end+1));
+    sum+=d3.sum(flowSheet.NGAmount.slice(start,end+1));
+    return sum;
+}
+viewRender.flowSheet.sumOutput=function(flowSheet,start,end){
+    var sum=0;
+    flowSheet.drain.forEach(function(x){sum+=d3.sum(x.amount.slice(start,end+1))});
+    sum+=d3.sum(flowSheet.NGDrain.slice(start,end+1));
+    sum+=d3.sum(flowSheet.urine.slice(start,end+1));
+    return sum;
+}
+viewRender.flowSheet.sumUrine=function(flowSheet,start,end){
+    var sum=0;
+    sum+=d3.sum(flowSheet.urine.slice(start,end+1));
+    return sum;
+}
+viewRender.flowSheet.calculateIO=function(x){
+    x.io=x.input-x.output;
+    if(x.io>0){x.io="+"+x.io;}
+    else if(!x.input&&!x.output){x.io="";}
+}
 viewRender.flowSheet.toShow={  //empty container 
     bt:{limit:[],data:[]},
     hr:{limit:[],data:[]},
@@ -680,7 +737,6 @@ viewRender.chart = {
             );
         });
         drainTable.rows&&chartArray.push(drainTable);
-    
 
         view.flowSheet.chart=chartArray;
     },
@@ -777,9 +833,9 @@ viewRender.jquery=function(){
         },
         dateFormat: 'yy-mm-dd'
     });
-    $('#datepicker').datepicker('option', 'minDate', new Date(FS.admissionDate||FS.birthDate));
-    $('#datepicker').datepicker('option', 'maxDate', new Date(FS.dischargeDate||Parser.getDate()));
-    $('#datepicker').datepicker('setDate', new Date(FS.currentDate||""));
+    $('#datepicker').datepicker('option', 'minDate', Parser.getDateFromString(FS.admissionDate||FS.birthDate));
+    $('#datepicker').datepicker('option', 'maxDate', Parser.getDateFromString(FS.dischargeDate||Parser.getDate()));
+    $('#datepicker').datepicker('setDate', Parser.getDateFromString(FS.currentDate||""));
     //header DOMs..
     setTimeout(function() {
         Layout.onWidthChange();

@@ -157,12 +157,12 @@ var view= new Vue({
             {key:'fnTransfusion',title:'輸血'},{key:'fnSurgery',title:'手術'},{key:'fnNurse',title:'護理'}],
             selectedfootbarMenu:"fnOverview",
             io:{
-                morning:{IV:"",Feed:"",input:"",urine:"",UO:"",IO:""},
-                afternoon:{},
-                night:{},
-                day1:{},
-                day2:{},
-                day3:{},
+                morning:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
+                afternoon:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
+                night:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
+                day1:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""},
+                day2:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""},
+                day3:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""}
             }
         }
     },
@@ -424,7 +424,7 @@ var view= new Vue({
             viewRender.queryDate(view.flowSheet.patientID,view.flowSheet.caseNo, view.flowSheet.currentDate);
         },
         selectFlowSheetFn:function(fn){
-            if(view.flowSheet.selectedfootbarMenu==fn){
+            if(view.flowSheet.selectedfootbarMenu==fn&&view.flowSheet.footbarStatus!='close'){
                 view.flowSheet.footbarStatus='close'; 
             }else{
                 view.flowSheet.selectedfootbarMenu=fn;

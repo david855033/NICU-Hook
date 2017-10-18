@@ -17,9 +17,18 @@ var Parser={
          return keys.map(function(x){return x+"="+keyValuePairs[x];}).join('; ');
     },
     //時間日期
+    getDateFromString:function(str){
+        if(!str){return new Date();}
+        var a=str.split(" ");
+        var d=a[0].split("-").map(function(x){return Number(x)});
+        var t=[];
+        a[1]&&(t=a[1].split(":").map(function(x){return Number(x)}));
+        t[0]=t[0]||0;t[1]=t[1]||0;t[2]=t[2]||0;
+        return new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
+    },
     getDateTime:function(dateObj){
         var toParse = dateObj || new Date();
-        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        if(typeof dateObj=="string"){toParse=Parser.getDateFromString(dateObj);}
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))+" "
@@ -30,7 +39,7 @@ var Parser={
     },
     getDate:function(dateObj){
         var toParse = dateObj || new Date();
-        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        if(typeof dateObj=="string"){toParse= Parser.getDateFromString(dateObj);}
         var str = toParse.getFullYear()+"-"
             +this.get2DigiNum((toParse.getMonth()+1))+"-"
             +this.get2DigiNum((toParse.getDate()))
@@ -38,13 +47,13 @@ var Parser={
     },
     getHour:function(dateObj){
         var toParse = dateObj || new Date();
-        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        if(typeof dateObj=="string"){toParse=Parser.getDateFromString(dateObj);}
         var str = toParse.getHours();
         return str;
     },
     getMMDD:function(dateObj){
         var toParse = dateObj || new Date();
-        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        if(typeof dateObj=="string"){toParse=Parser.getDateFromString(dateObj);}
         var str = this.get2DigiNum((toParse.getMonth()+1))+"/"
             +this.get2DigiNum((toParse.getDate()));
         return str;
@@ -97,15 +106,35 @@ var Parser={
         }
     },
     getSecondDifference:function(dateTime1, dateTime2){
-        var date1 = new Date(dateTime1);
-        var date2 = new Date(dateTime2);
+        dateTime1==dateTime1||new Date();
+        dateTime2==dateTime2||new Date();
+        if(typeof dateTime1=="string"){
+            var date1 = Parser.getDateFromString(dateTime1);
+        }else{
+            var date1 = new Date(dateTime1);
+        }
+        if(typeof dateTime2=="string"){
+            var date2 = Parser.getDateFromString(dateTime2);
+        }else{
+            var date2 = new Date(dateTime2);
+        }
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         var diff = Math.ceil(timeDiff / (1000)); 
         return diff?diff:0;
     },
     getDayDifference:function(dateTime1, dateTime2){
-        var date1 = dateTime1?new Date(dateTime1):new Date();
-        var date2 = dateTime2?new Date(dateTime2):new Date();
+        dateTime1==dateTime1||new Date();
+        dateTime2==dateTime2||new Date();
+        if(typeof dateTime1=="string"){
+            var date1 = Parser.getDateFromString(dateTime1);
+        }else{
+            var date1 = new Date(dateTime1);
+        }
+        if(typeof dateTime2=="string"){
+            var date2 = Parser.getDateFromString(dateTime2);
+        }else{
+            var date2 = new Date(dateTime2);
+        }
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         var diff = Number(Math.floor(timeDiff/1000/24/60/60).toFixed(0));
         return diff?diff:0;
@@ -163,7 +192,7 @@ var Parser={
     addDate:function(dateObj,delta)
     {
         var toParse = dateObj || new Date();
-        if(typeof dateObj=="string"){toParse=new Date(dateObj);}
+        if(typeof dateObj=="string"){toParse=Parser.getDateFromString(dateObj);}
         toParse.setDate(toParse.getDate() +delta);
         return Parser.getDate(toParse);
     },

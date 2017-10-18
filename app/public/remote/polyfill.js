@@ -56,8 +56,6 @@ if (!Array.prototype.lastIndexOf) {
 
 if (!Array.prototype.findLastIndexOf) {
   Array.prototype.findLastIndexOf = function(searchFn /*, fromIndex*/) {
-    'use strict';
-
     if (this === void 0 || this === null) {
       throw new TypeError();
     }
