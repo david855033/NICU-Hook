@@ -81,6 +81,18 @@ viewRender.bw.selectBw=function(){
         FS.bwDelta=null;
     } 
 }
+viewRender.bw.getBWForCalculateByDate=function(dateString){
+    var parsedbw=viewRender.bw.parsed;
+    var realAgeInDay = Number(Parser.getDayDifference(FS.birthday, dateString));
+    if(realAgeInDay<7&&FS.bbw){
+        return {dateTime:FS.birthday,bw:FS.bbw};
+    }
+    var lastIndexToday=parsedbw.findLastIndexOf(function(x){
+        return Parser.getDate(x.dateTime)<=Parser.getDate(dateString)}
+    );
+    var lastBwObj=(parsedbw&&(parsedbw[lastIndexToday]||parsedbw.slice(-1)[0]))||null;
+    return lastBwObj;
+}
 viewRender.header={
     initialize:function(){
         var headerCards=[];
@@ -256,14 +268,30 @@ viewRender.flowSheet.selectDate=function(date){
         transfusion:[],
         feeding:[],
         excretion:[],
-        drain:[]
+        drain:[],
+        ventilation:[
+            {
+                date:"2017-05-13",
+                data:[
+                    {time:"11:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
+                    {time:"12:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
+                    {time:"14:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
+                    {time:"11:00",class:"setting",str:"NIPPV 25/20/18/5"}
+                ]
+            }
+        ]
     };
     var dataContainer=viewRender.flowSheet.dataContainer;
+    dataContainer.forEach(function(x){x.flowSheet.date=x.date});
     console.log(dataContainer);
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
     var flowSheetDay2=dataContainer.find(function(x){return x.date==Parser.addDate(date,-1);}).flowSheet;
     var flowSheetDay3=dataContainer.find(function(x){return x.date==Parser.addDate(date,-2);}).flowSheet;
+    flowSheetToday.bwSelect=viewRender.bw.getBWForCalculateByDate(date);
+    flowSheetDay2.bwSelect=viewRender.bw.getBWForCalculateByDate(Parser.addDate(date,-1));
+    flowSheetDay3.bwSelect=viewRender.bw.getBWForCalculateByDate(Parser.addDate(date,-2));
+
     viewRender.flowSheet.calculateMBP(flowSheetToday);
     viewRender.flowSheet.calculateMBP(flowSheetTommorrow);
     viewRender.flowSheet.parseChart('bodyTemperature','bt',flowSheetToday,flowSheetTommorrow,{underLimitStyle:['blue','blue-bg','heavy-weight']});
@@ -583,9 +611,14 @@ viewRender.flowSheet.parseIO=function(flowSheetToday,flowSheetTommorrow,flowShee
     FS.io.afternoon.input=Math.round(this.sumInput(flowSheetToday,15,22))||"";
     FS.io.night.input=Math.round(this.sumInput(flowSheetToday,23,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
     FS.io.day1.input=Math.round(this.sumInput(flowSheetToday,7,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
-    FS.io.day2.input=Math.round(this.sumInput(flowSheetDay2,7,23)+this.sumInput(flowSheetToday,0,6))||"";
-    FS.io.day3.input=Math.round(this.sumInput(flowSheetDay3,7,23)+this.sumInput(flowSheetDay2,0,6))||"";
+    FS.io.day1.daily=Math.round(FS.io.day1.input/flowSheetToday.bwSelect.bw)||"";
 
+    FS.io.day2.input=Math.round(this.sumInput(flowSheetDay2,7,23)+this.sumInput(flowSheetToday,0,6))||"";
+    FS.io.day2.daily=Math.round(FS.io.day2.input/flowSheetDay2.bwSelect.bw)||"";
+
+    FS.io.day3.input=Math.round(this.sumInput(flowSheetDay3,7,23)+this.sumInput(flowSheetDay2,0,6))||"";
+    FS.io.day3.daily=Math.round(FS.io.day3.input/flowSheetDay3.bwSelect.bw)||"";
+    
     FS.io.morning.output=Math.round(this.sumOutput(flowSheetToday,7,14))||"";
     FS.io.afternoon.output=Math.round(this.sumOutput(flowSheetToday,15,22))||"";
     FS.io.night.output=Math.round(this.sumOutput(flowSheetToday,23,23)+this.sumOutput(flowSheetTommorrow,0,6))||"";
@@ -606,6 +639,38 @@ viewRender.flowSheet.parseIO=function(flowSheetToday,flowSheetTommorrow,flowShee
     FS.io.day1.urine=Math.round(this.sumUrine(flowSheetToday,7,23)+this.sumUrine(flowSheetTommorrow,0,6))||"";
     FS.io.day2.urine=Math.round(this.sumUrine(flowSheetDay2,7,23)+this.sumUrine(flowSheetToday,0,6))||"";
     FS.io.day3.urine=Math.round(this.sumUrine(flowSheetDay3,7,23)+this.sumUrine(flowSheetDay2,0,6))||"";
+
+    FS.io.morning.urinePerKgHr="";
+    if(FS.io.morning.urine){
+        FS.io.morning.urinePerKgHr=Parser.round1(FS.io.morning.urine/this.getAvailableHr(flowSheetToday,7,14)/flowSheetToday.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.morning);
+    }
+    FS.io.afternoon.urinePerKgHr="";
+    if(FS.io.afternoon.urine){
+        FS.io.afternoon.urinePerKgHr=Parser.round1(FS.io.afternoon.urine/this.getAvailableHr(flowSheetToday,15,22)/flowSheetToday.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.afternoon);
+    }
+    FS.io.night.urinePerKgHr="";
+    if(FS.io.night.urine){
+        FS.io.night.urinePerKgHr=Parser.round1(FS.io.night.urine/(this.getAvailableHr(flowSheetToday,23,23)+this.getAvailableHr(flowSheetTommorrow,0,6))/flowSheetToday.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.night);
+    }
+    FS.io.day1.urinePerKgHr="";
+    if(FS.io.day1.urine){
+        FS.io.day1.urinePerKgHr=Parser.round1(FS.io.day1.urine/(this.getAvailableHr(flowSheetToday,7,23)+this.getAvailableHr(flowSheetTommorrow,0,6))/flowSheetToday.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.day1);
+    }
+    FS.io.day2.urinePerKgHr="";
+    if(FS.io.day2.urine){
+        FS.io.day2.urinePerKgHr=Parser.round1(FS.io.day2.urine/(this.getAvailableHr(flowSheetDay2,7,23)+this.getAvailableHr(flowSheetToday,0,6))/flowSheetDay2.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.day2);
+    }
+    FS.io.day3.urinePerKgHr="";
+    if(FS.io.day3.urine){
+        FS.io.day3.urinePerKgHr=Parser.round1(FS.io.day3.urine/(this.getAvailableHr(flowSheetDay3,7,23)+this.getAvailableHr(flowSheetDay2,0,6))/flowSheetDay3.bwSelect.bw)||""
+        this.urinePerKgHrWarn(FS.io.day3);
+    }
+    
 }
 viewRender.flowSheet.sumInput=function(flowSheet,start,end){
     var sum=0;
@@ -629,6 +694,36 @@ viewRender.flowSheet.sumUrine=function(flowSheet,start,end){
     sum+=d3.sum(flowSheet.urine.slice(start,end+1));
     return sum;
 }
+viewRender.flowSheet.getAvailableHr=function(flowSheet,start,end){
+    var minIndex=start;var maxIndex=end;
+    if(flowSheet.date==FS.dischargeDate||flowSheet.date==Parser.getDate()||flowSheet.date==FS.admissionDate)
+    {
+        minIndex=23;var maxIndex=0;
+        var fieldlist=['heartRate','bodyTemperature','respiratoryRate','saturation','sbp','dbp'];
+        for(var i = 0; i < fieldlist.length;i++){
+            var hrs = flowSheet[fieldlist[i]].map(function(x){return Number(x.time.split(':')[0]);});
+            minIndex=Math.min(minIndex,d3.min(hrs)||23);
+            maxIndex=Math.max(maxIndex,d3.max(hrs)||0);
+            if(minIndex==0&&maxIndex==23){
+                break;
+            }
+        }
+        if(maxIndex<minIndex){ return 0};
+        return Math.min(end,maxIndex)-Math.max(start,minIndex)+1;
+    }else if(Parser.getDateFromString(flowSheet.date)<=Parser.getDateFromString(FS.dischargeDate||Parser.getDate())
+    &&Parser.getDateFromString(flowSheet.date)>=Parser.getDateFromString(FS.admissionDate||Parser.getDate())){
+        return end-start+1;
+    }
+    return 0;
+}
+viewRender.flowSheet.urinePerKgHrWarn=function(shift){
+    var urinePerKgHr=shift.urinePerKgHr;
+    if(urinePerKgHr&&urinePerKgHr<1){
+        shift.warn=true;
+    }else if(urinePerKgHr&&urinePerKgHr>=5){
+        shift.warn=true;
+    };
+}
 viewRender.flowSheet.calculateIO=function(x){
     x.io=x.input-x.output;
     if(x.io>0){x.io="+"+x.io;}
@@ -646,7 +741,8 @@ viewRender.flowSheet.toShow={  //empty container
     transfusion:[],
     feeding:[],
     excretion:[],
-    drain:[]
+    drain:[],
+    ventilation:[]
 };
 
 viewRender.chart = {
@@ -739,6 +835,46 @@ viewRender.chart = {
         drainTable.rows&&chartArray.push(drainTable);
 
         view.flowSheet.chart=chartArray;
+
+        view.flowSheet.ventilation="";
+        toShow.ventilation.forEach(function(v){
+            view.flowSheet.ventilation+=viewRender.chart.ventilation_date(v.date);
+            v.data.forEach(function(d){
+                if(d.class=="setting"){
+
+                }else if(d.class=="gas"){
+                    var append='<div class="gas-card w1-1 nowrap">';
+                    append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
+                    append+='<div class="w6-7 h1-1 inline-block">';
+                    if(d.pH>=7.5||d.pH<7.25){
+                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight red">'+d.pH+'</div></div>';
+                    }else{
+                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">'+d.pH+'</div></div>';
+                    }
+                    if(d.pCO2>=50||d.pCO2<35){
+                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight red">'+d.pCO2+'</div></div>';
+                    }else{
+                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pCO2+'</div></div>';
+                    }
+                    if(d.HCO3>=26||d.HCO3<18){
+                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight red">'+d.HCO3+'</div></div>';
+                    }else{
+                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">'+d.HCO3+'</div></div>';
+                    }
+                    if(d.BE>=6||d.BE<-6){
+                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight red">'+d.BE+'</div></div>';
+                    }else{
+                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">'+d.BE+'</div></div>';
+                    }
+                    
+                    // </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pO2+'</div>\
+                    // </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">'+d.Sat+'<span class="xs-word">%</span></div>\
+                    // </div>
+                    append+='</div></div>';
+                    view.flowSheet.ventilation+=append;
+                }
+            })
+        });
     },
     header:function(){
         var resultArray=[];
@@ -797,6 +933,11 @@ viewRender.chart = {
     spacerRow:function(){
         return [new cell("","spacer")];
     },
+    ventilation_date:function(date){
+        return '<div class="day-card w1-1 h-center s-word"><div class="v-center">'+Parser.getMMDD(date)+'</div></div>'
+    },
+    ventilation_gas:function(gas){},
+    ventilation_setting:function(setting){}
 };
 viewRender.closeAll=function(){
     FS.showDatePicker=false;

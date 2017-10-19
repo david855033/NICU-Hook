@@ -150,20 +150,21 @@ var view= new Vue({
             bwFirst:"0.99",
             bbw:"0.999",
             chart:[],
+            io:{
+                morning:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",warn:false},
+                afternoon:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",warn:false},
+                night:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",warn:false},
+                day1:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",warn:false},
+                day2:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",warn:false},
+                day3:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",warn:false}
+            },
+            ventilation:"",
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
             {key:'fnNutrition',title:'營養'},
             {key:'fnLab',title:'檢驗'},{key:'fnInfection',title:'感染'},{key:'fnMedication',title:'藥物'},{key:'fnConsult',title:'會診'},
             {key:'fnTransfusion',title:'輸血'},{key:'fnSurgery',title:'手術'},{key:'fnNurse',title:'護理'}],
-            selectedfootbarMenu:"fnOverview",
-            io:{
-                morning:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
-                afternoon:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
-                night:{input:"",output:"",io:"",urine:"",urinePerKgHr:""},
-                day1:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""},
-                day2:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""},
-                day3:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",delta:""}
-            }
+            selectedfootbarMenu:"fnOverview"
         }
     },
     computed:{

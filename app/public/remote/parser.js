@@ -18,7 +18,7 @@ var Parser={
     },
     //時間日期
     getDateFromString:function(str){
-        if(!str){return new Date();}
+        if(!str){return new Date(str)||new Date();}
         var a=str.split(" ");
         var d=a[0].split("-").map(function(x){return Number(x)});
         var t=[];

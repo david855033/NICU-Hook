@@ -479,40 +479,40 @@
     border-bottom-left-radius: 10px;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #morning{
-    background-color: hsl(40,50%,95%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
+    background-color: hsl(120,50%,90%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #afternoon{
-    background-color: hsl(40,50%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
+    background-color: hsl(120,50%,90%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #night{
-    background-color: hsl(40,50%,85%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
+    background-color: hsl(120,50%,90%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day1{
-    background-color: hsl(60,20%,80%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
+    background-color: hsl(120,50%,85%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day2{
-    background-color: hsl(60,20%,75%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
+    background-color: hsl(120,30%,85%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day3{
-    background-color: hsl(60,20%,70%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(60,20%,60%);
+    background-color: hsl(120,30%,85%);
+    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
 }
 
 

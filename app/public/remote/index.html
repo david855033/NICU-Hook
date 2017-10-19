@@ -526,7 +526,7 @@
                         <div class="footbar-sub-inner h1-1">
                             <div id="morning" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center ms-word nowrap heavy-weight">白班</div>
+                                    <div class="v-center h-center s-word nowrap heavy-weight">白班</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -548,16 +548,16 @@
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                             <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.morning.urine"></div></div>
                                         </div>
-                                        <div class="h1-1 w1-3 float-left">
+                                        <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.morning.warn}">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.morning.urinePerKgHr"></div></div>
+                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.morning.urinePerKgHr" :class="{'red':flowSheet.io.morning.warn}"></div></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="afternoon" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center ms-word nowrap heavy-weight">小夜</div>
+                                    <div class="v-center h-center s-word nowrap heavy-weight">小夜</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -579,16 +579,16 @@
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                             <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.afternoon.urine"></div></div>
                                         </div>
-                                        <div class="h1-1 w1-3 float-left">
+                                        <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.afternoon.warn}">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.afternoon.urinePerKgHr"></div></div>
+                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.afternoon.urinePerKgHr" :class="{'red':flowSheet.io.afternoon.warn}"></div></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="night" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
-                                    <div class="v-center h-center ms-word nowrap heavy-weight">大夜</div>
+                                    <div class="v-center h-center s-word nowrap heavy-weight">大夜</div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
                                     <div class="h1-2 w1-1">
@@ -610,9 +610,9 @@
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                             <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.night.urine"></div></div>
                                         </div>
-                                        <div class="h1-1 w1-3 float-left">
+                                        <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.night.warn}">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.night.urinePerKgHr"></div></div>
+                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.night.urinePerKgHr" :class="{'red':flowSheet.io.night.warn}"></div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -620,11 +620,7 @@
                             <div id="day1" class='shift' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class="w2-13 h1-1 float-left">
                                     <div class="h1-2 v-center h-center">
-                                        <div class="h1-10"></div>
-                                        <div class="h4-10 ms-word nowrap heavy-weight">今日</div>
-                                        <div class="h2-10"></div>
-                                        <div class="h2-10 xs-word grey-40-font" v-html="flowSheet.io.day1.delta"></div>
-                                        <div class="h1-10"></div>
+                                        <div class="v-center h-center s-word nowrap heavy-weight">今日</div>
                                     </div>
                                 </div>
                                 <div class="w11-13 h1-1 float-left h-center">
@@ -647,12 +643,12 @@
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                             <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day1.urine"></div></div>
                                         </div>
-                                        <div class="h1-1 w1-3 float-left">
+                                        <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.day1.warn}">
                                             <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day1.urinePerKgHr"></div></div>
+                                            <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day1.urinePerKgHr"  :class="{'red':flowSheet.io.day1.warn}"></div></div>
                                         </div>
                                         <div class="h1-1 w1-3 float-left">
-                                            <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily per kg</div></div>
+                                            <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily/kg</div></div>
                                             <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day1.daily"></div></div>
                                         </div>
                                     </div>
@@ -660,13 +656,7 @@
                             </div>
                             <div id="day2" class='shift h1-6' v-if="flowSheet.footbarStatus=='max'">
                                     <div class="w2-13 h1-1 float-left">
-                                        <div class="h1-2 v-center h-center">
-                                            <div class="h1-10"></div>
-                                            <div class="h4-10 ms-word nowrap heavy-weight">昨日</div>
-                                            <div class="h2-10"></div>
-                                            <div class="h2-10 xs-word grey-40-font" v-html="flowSheet.io.day2.delta"></div>
-                                            <div class="h1-10"></div>
-                                        </div>
+                                        <div class="v-center h-center s-word nowrap heavy-weight">昨日</div>
                                     </div>
                                     <div class="w11-13 h1-1 float-left h-center">
                                         <div class="h1-2 w1-1">
@@ -688,12 +678,12 @@
                                                 <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                                 <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day2.urine"></div></div>
                                             </div>
-                                            <div class="h1-1 w1-3 float-left">
+                                            <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.day2.warn}">
                                                 <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                                <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day2.urinePerKgHr"></div></div>
+                                                <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day2.urinePerKgHr" :class="{'red':flowSheet.io.day2.warn}"></div></div>
                                             </div>
                                             <div class="h1-1 w1-3 float-left">
-                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily per kg</div></div>
+                                                <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily/kg</div></div>
                                                 <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day2.daily"></div></div>
                                             </div>
                                         </div>
@@ -701,13 +691,7 @@
                                 </div>
                                 <div id="day3" class='shift h1-6' v-if="flowSheet.footbarStatus=='max'">
                                         <div class="w2-13 h1-1 float-left">
-                                            <div class="h1-2 v-center h-center">
-                                                <div class="h1-10"></div>
-                                                <div class="h4-10 ms-word nowrap heavy-weight">前日</div>
-                                                <div class="h2-10"></div>
-                                                <div class="h2-10 xs-word grey-40-font" v-html="flowSheet.io.day3.delta"></div>
-                                                <div class="h1-10"></div>
-                                            </div>
+                                            <div class="v-center h-center s-word nowrap heavy-weight">前日</div>
                                         </div>
                                         <div class="w11-13 h1-1 float-left h-center">
                                             <div class="h1-2 w1-1">
@@ -729,12 +713,12 @@
                                                     <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">UO</div></div>
                                                     <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day3.urine"></div></div>
                                                 </div>
-                                                <div class="h1-1 w1-3 float-left">
+                                                <div class="h1-1 w1-3 float-left" :class="{'red-bg':flowSheet.io.day3.warn}">
                                                     <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">ml/kg/h</div></div>
-                                                    <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day3.urinePerKgHr"></div></div>
+                                                    <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day3.urinePerKgHr" :class="{'red':flowSheet.io.day3.warn}"></div></div>
                                                 </div>
                                                 <div class="h1-1 w1-3 float-left">
-                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily per kg</div></div>
+                                                    <div class="h1-3 w1-1 xs-word grey-40-font"><div class="v-center">Daily/kg</div></div>
                                                     <div class="h2-3 w1-1 ms-word heavy-weight"><div class="v-center" v-html="flowSheet.io.day3.daily"></div></div>
                                                 </div>
                                             </div>
@@ -744,7 +728,7 @@
                     </div>
                     <div id="sub-ventilation" class="footbar-sub float-left h-center">
                         <div class="footbar-sub-inner h1-1 scrollbar-outer">
-                            <div class='h1-1 w1-1'>
+                            <div class='h1-1 w1-1' v-html="flowSheet.ventilation">
                                 <div class="day-card w1-1 h-center s-word">
                                         <div class="v-center">5/12</div>
                                 </div>

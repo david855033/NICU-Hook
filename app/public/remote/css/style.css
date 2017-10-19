@@ -96,6 +96,9 @@ body{
 .red{
     color: hsl(0,90%,35%);
 }
+.bright-red{
+    color: hsl(0,90%,50%);
+}
 .blue{
     color: hsl(220,90%,35%);
 }
