@@ -528,7 +528,7 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card{
     height: 20px;
-    background-color: hsl(120,30%,60%);
+    background-color: hsl(120,30%,40%);
     color: hsl(0,0%,100%);
     font-weight: 900;
     border-top-right-radius: 10px;
@@ -542,18 +542,19 @@
     margin-top:0px;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
-    height: 40px;
+    height: 30px;
     background-color: hsl(120,30%,90%);
     -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
     -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
     box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card-title{
-    height: 10px;
-    background-color: hsl(120,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    height: 18px;
+    background-color: hsl(120,30%,60%);
+    color: hsl(0,0%,100%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
     height: 40px;

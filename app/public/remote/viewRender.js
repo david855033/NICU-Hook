@@ -961,14 +961,15 @@ viewRender.ventilation={
         return '<div class="day-card w1-1 h-center s-word"><div class="v-center">'+Parser.getMMDD(date)+'</div></div>'
     },
     getGasTitleComponentString:function(){
-        return ""+
-        '<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center"></div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div></div>'+
-        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div></div>';
+        return '<div class="gas-card-title w1-1 nowrap">'+
+        '<div class="w1-7 h1-1 s-word inline-block"></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pH</div></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pCO<sub>2</sub></div></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">HCO<sub>3</sub></div></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">BE</div></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pO<sub>2</sub></div></div>'+
+        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">Sat</div></div>'+
+        '</div>';
     },
     getSettingComponentString:function(d){
         var append ='<div class="vent-card w1-1 nowrap">';
@@ -985,7 +986,7 @@ viewRender.ventilation={
         append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
         append+='<div class="w6-7 h1-1 inline-block">';
         if(d.pH>=7.5||d.pH<7.25){
-            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight red">'+d.pH+'</div></div>';
+            append+='<div class="w1-6 h1-1 inline-block warn"><div class="v-center ms-word heavy-weight red">'+d.pH+'</div></div>';
         }else{
             append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">'+d.pH+'</div></div>';
         }
