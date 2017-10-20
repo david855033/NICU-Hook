@@ -12,7 +12,7 @@ var requestPatientList=function(query,type,callback){
 }
 var preSelectPatient=function(patientID, callback){
     if(patientID==PreSelect.Patient.patientID&&
-        Parser.getSecondDifference(PreSelect.Patient.timeStamp,Parser.getDateTime()<=60)){
+        Parser.getSecondDifference(PreSelect.Patient.timeStamp,Parser.getDateTime())<=60){
         callback&&callback();
     }else{
         PreSelect.Patient.patientID=patientID;

@@ -1,5 +1,4 @@
 ;"use strict";
-
 var cell=function(htmlText,classes,tooltip)
 {
     this.htmlText=htmlText;
@@ -18,9 +17,9 @@ var div=function(htmlText,classes)
     if(classes){classString=" class='"+classes.join(" ")+"'";}
     return "<div"+classString+">"+htmlText+"</div>";
 };
-
 var FS=view.flowSheet;
 var Layout=Layout||{};
+
 var viewRender={};
 viewRender.bw={};
 viewRender.bw.parsed=[];
@@ -93,6 +92,7 @@ viewRender.bw.getBWForCalculateByDate=function(dateString){
     var lastBwObj=(parsedbw&&(parsedbw[lastIndexToday]||parsedbw.slice(-1)[0]))||null;
     return lastBwObj;
 }
+
 viewRender.header={
     initialize:function(){
         var headerCards=[];
@@ -190,6 +190,7 @@ viewRender.header={
     }
 };
 
+//flowsheet: 用來處理flowSheet資料並push進入 'toShow'
 viewRender.flowSheet={};
 viewRender.flowSheet.dataContainer=[];
 viewRender.flowSheet.limit={
@@ -253,34 +254,31 @@ viewRender.flowSheet.limit={
         return [65,];
     },
 };
-
 viewRender.flowSheet.selectDate=function(date){
     var ageInDay = Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday)-280;
-    viewRender.flowSheet.toShow={  //清空資料 設定初始
-        bt:{limit:[36,38],data:[]},
-        hr:{limit:viewRender.flowSheet.limit.hr(ageInDay),data:[]},
-        resp:{limit:viewRender.flowSheet.limit.resp(ageInDay),resp:[]},
-        spo2:{limit:viewRender.flowSheet.limit.spo2(ageInDay),data:[]},
-        sbp:{limit:viewRender.flowSheet.limit.sbp(ageInDay),data:[]},
-        dbp:{limit:viewRender.flowSheet.limit.dbp(ageInDay),data:[]},
-        mbp:{limit:viewRender.flowSheet.limit.mbp(ageInDay),data:[]},
-        infusion:[],
-        transfusion:[],
-        feeding:[],
-        excretion:[],
-        drain:[],
-        ventilation:[
-            {
-                date:"2017-05-13",
-                data:[
-                    {time:"11:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
-                    {time:"12:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
-                    {time:"14:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
-                    {time:"11:00",class:"setting",str:"NIPPV 25/20/18/5"}
-                ]
-            }
-        ]
-    };
+    var toShow=viewRender.toShow;
+    //清空資料 設定初始
+    toShow.bt={limit:[36,38],data:[]};
+    toShow.hr={limit:viewRender.flowSheet.limit.hr(ageInDay),data:[]};
+    toShow.resp={limit:viewRender.flowSheet.limit.resp(ageInDay),resp:[]};
+    toShow.spo2={limit:viewRender.flowSheet.limit.spo2(ageInDay),data:[]};
+    toShow.sbp={limit:viewRender.flowSheet.limit.sbp(ageInDay),data:[]};
+    toShow.dbp={limit:viewRender.flowSheet.limit.dbp(ageInDay),data:[]};
+    toShow.mbp={limit:viewRender.flowSheet.limit.mbp(ageInDay),data:[]};
+    toShow.infusion=[];
+    toShow.transfusion=[];
+    toShow.feeding=[];
+    toShow.excretion=[];
+    toShow.drain=[];
+    toShow.ventilatorSetting=[
+        {
+            date:"2017-05-13",
+            data:[
+                {time:"11:00",class:"setting",str:"NIPPV 25/20/18/5",mode:"NIPPV",setting:{FiO2:"25%",Rate:"10",PIP:"20",PEEP:"5"}}
+            ]
+        }
+    ];
+
     var dataContainer=viewRender.flowSheet.dataContainer;
     dataContainer.forEach(function(x){x.flowSheet.date=x.date});
     console.log(dataContainer);
@@ -315,7 +313,6 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseDrain(flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseIO(flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3);
-    viewRender.initialize();
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
     var sbp=flowSheet.sbp;
@@ -336,7 +333,7 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
     var dataDay2=dataDay2.filter(function(x){return x.hr<=6;});
     var dataAll=dataDay1.concat(dataDay2);
     var parsedValue=[];
-    var limit = viewRender.flowSheet.toShow[fieldTarget].limit||[];
+    var limit = viewRender.toShow[fieldTarget].limit||[];
     dataAll.forEach(function(x){
         var index = x.hr-7;
         if(index<0){index+=24;}
@@ -387,7 +384,7 @@ viewRender.flowSheet.parseChart=function(fieldOrigin,fieldTarget,flowSheetToday,
         }
         
     })
-    viewRender.flowSheet.toShow[fieldTarget].data=parsed;
+    viewRender.toShow[fieldTarget].data=parsed;
 };
 viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheetTommorrow,option){
     var dataDay1=flowSheetToday[fieldOrigin].filter(function(x){return x.amount.slice(7,24).find(function(y){return y;})});
@@ -438,7 +435,7 @@ viewRender.flowSheet.parseInfusion=function(fieldOrigin,flowSheetToday,flowSheet
         if(x.amount.find(function(y){return y!=0;})){
             x.amount=x.amount.map(function(y){return y&&Parser.round1(y)});
             x.sum=Parser.round1(x.sum);
-            viewRender.flowSheet.toShow.infusion.push(x);
+            viewRender.toShow.infusion.push(x);
         }
     });
 };
@@ -450,7 +447,7 @@ viewRender.flowSheet.mergeDistinctKeys=function(InfusionArray,keys){
     }
 }
 viewRender.flowSheet.sortInfusion=function(){
-    viewRender.flowSheet.toShow.infusion=viewRender.flowSheet.toShow.infusion.sort(function(x,y){ 
+    viewRender.toShow.infusion=viewRender.toShow.infusion.sort(function(x,y){ 
         if(x.priority!=y.priority){return x.priority-y.priority;}
         else if(x.route!=y.route){return String(x.route).localeCompare(y.route)}
         else{return String(x.name).localeCompare(y.name)}
@@ -489,7 +486,7 @@ viewRender.flowSheet.parseTransfusion=function(flowSheetToday,flowSheetTommorrow
     });
     Combined.forEach(function(x){
         if(x.amount.find(function(y){return y!=0;})){
-            viewRender.flowSheet.toShow.transfusion.push(x);
+            viewRender.toShow.transfusion.push(x);
         }
     });
 }
@@ -512,7 +509,7 @@ viewRender.flowSheet.parseFeeding=function(fieldOrigin,fieldTarget,flowSheetToda
     var newObj={name:fieldTarget,amount:newData,sum:sum};
     newObj.amount=newObj.amount.map(function(y){return y&&Parser.round1(y)});
     newObj.sum=Parser.round1(newObj.sum);
-    viewRender.flowSheet.toShow.feeding.push(newObj);
+    viewRender.toShow.feeding.push(newObj);
 }
 viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetToday,flowSheetTommorrow){
     var dataDay1=flowSheetToday[fieldOrigin];
@@ -539,7 +536,7 @@ viewRender.flowSheet.parseExcretion=function(fieldOrigin,fieldTarget,flowSheetTo
     var newObj={name:fieldTarget,amount:newData,sum:sum};
     newObj.amount=newObj.amount.map(function(y){return Number(y)||Parser.round1(y)||y});
     newObj.sum=Parser.round1(newObj.sum);
-    viewRender.flowSheet.toShow.excretion.push(newObj);
+    viewRender.toShow.excretion.push(newObj);
 }
 viewRender.flowSheet.translateStool=function (stoolCode){
         var newSentence ="";
@@ -602,7 +599,7 @@ viewRender.flowSheet.parseDrain=function(flowSheetToday,flowSheetTommorrow){
         if(x.amount.find(function(y){return y!=0;})){
             x.amount=x.amount.map(function(y){return y&&Parser.round1(y)});
             x.sum=Parser.round1(x.sum);
-            viewRender.flowSheet.toShow.drain.push(x);
+            viewRender.toShow.drain.push(x);
         }
     });
 }
@@ -643,33 +640,33 @@ viewRender.flowSheet.parseIO=function(flowSheetToday,flowSheetTommorrow,flowShee
     FS.io.morning.urinePerKgHr="";
     if(FS.io.morning.urine){
         FS.io.morning.urinePerKgHr=Parser.round1(FS.io.morning.urine/this.getAvailableHr(flowSheetToday,7,14)/flowSheetToday.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.morning);
     }
     FS.io.afternoon.urinePerKgHr="";
     if(FS.io.afternoon.urine){
         FS.io.afternoon.urinePerKgHr=Parser.round1(FS.io.afternoon.urine/this.getAvailableHr(flowSheetToday,15,22)/flowSheetToday.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.afternoon);
     }
     FS.io.night.urinePerKgHr="";
     if(FS.io.night.urine){
         FS.io.night.urinePerKgHr=Parser.round1(FS.io.night.urine/(this.getAvailableHr(flowSheetToday,23,23)+this.getAvailableHr(flowSheetTommorrow,0,6))/flowSheetToday.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.night);
     }
     FS.io.day1.urinePerKgHr="";
     if(FS.io.day1.urine){
         FS.io.day1.urinePerKgHr=Parser.round1(FS.io.day1.urine/(this.getAvailableHr(flowSheetToday,7,23)+this.getAvailableHr(flowSheetTommorrow,0,6))/flowSheetToday.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.day1);
     }
     FS.io.day2.urinePerKgHr="";
     if(FS.io.day2.urine){
         FS.io.day2.urinePerKgHr=Parser.round1(FS.io.day2.urine/(this.getAvailableHr(flowSheetDay2,7,23)+this.getAvailableHr(flowSheetToday,0,6))/flowSheetDay2.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.day2);
     }
     FS.io.day3.urinePerKgHr="";
     if(FS.io.day3.urine){
         FS.io.day3.urinePerKgHr=Parser.round1(FS.io.day3.urine/(this.getAvailableHr(flowSheetDay3,7,23)+this.getAvailableHr(flowSheetDay2,0,6))/flowSheetDay3.bwSelect.bw)||""
-        this.urinePerKgHrWarn(FS.io.day3);
     }
+    this.urinePerKgHrWarn(FS.io.morning);
+    this.urinePerKgHrWarn(FS.io.afternoon);
+    this.urinePerKgHrWarn(FS.io.night);
+    this.urinePerKgHrWarn(FS.io.day1);
+    this.urinePerKgHrWarn(FS.io.day2);
+    this.urinePerKgHrWarn(FS.io.day3);
     
 }
 viewRender.flowSheet.sumInput=function(flowSheet,start,end){
@@ -722,6 +719,8 @@ viewRender.flowSheet.urinePerKgHrWarn=function(shift){
         shift.warn=true;
     }else if(urinePerKgHr&&urinePerKgHr>=5){
         shift.warn=true;
+    }else{
+        shift.warn=false;
     };
 }
 viewRender.flowSheet.calculateIO=function(x){
@@ -729,7 +728,32 @@ viewRender.flowSheet.calculateIO=function(x){
     if(x.io>0){x.io="+"+x.io;}
     else if(!x.input&&!x.output){x.io="";}
 }
-viewRender.flowSheet.toShow={  //empty container 
+
+//將abg資料push進入toShow
+viewRender.abg={};
+viewRender.abg.selectDate=function(date){
+    var toShow=viewRender.toShow;
+    toShow.abg=[
+        {
+            date:"2017-05-13",
+            data:[
+                {time:"15:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
+                {time:"02:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
+                {time:"14:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
+            ]
+        },
+        {
+            date:"2017-05-11",
+            data:[
+                {time:"22:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
+                {time:"01:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
+                {time:"05:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
+            ]
+        }
+    ];
+}
+
+viewRender.toShow={  //empty container 
     bt:{limit:[],data:[]},
     hr:{limit:[],data:[]},
     resp:{limit:[],resp:[]},
@@ -742,12 +766,15 @@ viewRender.flowSheet.toShow={  //empty container
     feeding:[],
     excretion:[],
     drain:[],
+    ventilatorSetting:[],
+    abg:[],
     ventilation:[]
 };
 
+//chart: 將toShoW資料更新至view的Chart+IO
 viewRender.chart = {
     initialize:function(){
-        var toShow=viewRender.flowSheet.toShow;
+        var toShow=viewRender.toShow;
         var chartArray =[];
         var TPRTable={
             classes:['tpr'],
@@ -835,46 +862,6 @@ viewRender.chart = {
         drainTable.rows&&chartArray.push(drainTable);
 
         view.flowSheet.chart=chartArray;
-
-        view.flowSheet.ventilation="";
-        toShow.ventilation.forEach(function(v){
-            view.flowSheet.ventilation+=viewRender.chart.ventilation_date(v.date);
-            v.data.forEach(function(d){
-                if(d.class=="setting"){
-
-                }else if(d.class=="gas"){
-                    var append='<div class="gas-card w1-1 nowrap">';
-                    append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
-                    append+='<div class="w6-7 h1-1 inline-block">';
-                    if(d.pH>=7.5||d.pH<7.25){
-                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight red">'+d.pH+'</div></div>';
-                    }else{
-                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">'+d.pH+'</div></div>';
-                    }
-                    if(d.pCO2>=50||d.pCO2<35){
-                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight red">'+d.pCO2+'</div></div>';
-                    }else{
-                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pCO2+'</div></div>';
-                    }
-                    if(d.HCO3>=26||d.HCO3<18){
-                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight red">'+d.HCO3+'</div></div>';
-                    }else{
-                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">'+d.HCO3+'</div></div>';
-                    }
-                    if(d.BE>=6||d.BE<-6){
-                        append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight red">'+d.BE+'</div></div>';
-                    }else{
-                        append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">'+d.BE+'</div></div>';
-                    }
-                    
-                    // </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pO2+'</div>\
-                    // </div><div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">'+d.Sat+'<span class="xs-word">%</span></div>\
-                    // </div>
-                    append+='</div></div>';
-                    view.flowSheet.ventilation+=append;
-                }
-            })
-        });
     },
     header:function(){
         var resultArray=[];
@@ -932,13 +919,102 @@ viewRender.chart = {
     },
     spacerRow:function(){
         return [new cell("","spacer")];
+    }
+};
+
+//chart: 將toShoW資料更新至view的ventilation
+viewRender.ventilation={
+    initialize:function(){
+        var toShow=viewRender.toShow;
+        var ventilation=toShow.ventilation=[];
+        var abg=toShow.abg;
+        var setting=toShow.ventilatorSetting;
+        abg.forEach(function(x){ventilation.push(x);});
+        setting.forEach(function(x){
+            var matchDate=ventilation.find(function(y){return x.date==y.date;})
+            if(matchDate){
+                x.data.forEach(function(y){matchDate.data.push(y)});
+            }
+            else{
+                ventilation.push(x);
+            }
+        })
+        
+        toShow.ventilation=ventilation.sort(function(a,b){return String(a.date).localeCompare(b.date);});
+
+        view.flowSheet.ventilation="";
+        toShow.ventilation.forEach(function(v){
+            view.flowSheet.ventilation+=viewRender.ventilation.getDateComponentString(v.date);
+            view.flowSheet.ventilation+=viewRender.ventilation.getGasTitleComponentString();
+            v.data=v.data.sort(function(a,b){return String(a.time).localeCompare(b.time);})
+            v.data.forEach(function(d){
+                if(d.class=="setting"){
+                    var append=viewRender.ventilation.getSettingComponentString(d);
+                }else if(d.class=="gas"){
+                    var append=viewRender.ventilation.getGasComponentString(d);
+                }
+                view.flowSheet.ventilation+=append;
+            })
+        });
     },
-    ventilation_date:function(date){
+    getDateComponentString:function(date){
         return '<div class="day-card w1-1 h-center s-word"><div class="v-center">'+Parser.getMMDD(date)+'</div></div>'
     },
-    ventilation_gas:function(gas){},
-    ventilation_setting:function(setting){}
-};
+    getGasTitleComponentString:function(){
+        return ""+
+        '<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center"></div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div></div>'+
+        '<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div></div>';
+    },
+    getSettingComponentString:function(d){
+        var append ='<div class="vent-card w1-1 nowrap">';
+        append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
+        append+='<div class="w6-7 h1-1 inline-block">';
+        append+='<div class="w1-1 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">'+d.str+'</div></div>';
+        //append+='<div class="w1-6 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">'+d.mode+'</div></div>';
+        //...
+        append+='</div></div>'
+        return append;
+    },
+    getGasComponentString:function(d){
+        var append= '<div class="gas-card w1-1 nowrap">';
+        append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
+        append+='<div class="w6-7 h1-1 inline-block">';
+        if(d.pH>=7.5||d.pH<7.25){
+            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight red">'+d.pH+'</div></div>';
+        }else{
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">'+d.pH+'</div></div>';
+        }
+        if(d.pCO2>=50||d.pCO2<35){
+            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight red">'+d.pCO2+'</div></div>';
+        }else{
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pCO2+'</div></div>';
+        }
+        if(d.HCO3>=26||d.HCO3<18){
+            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight red">'+d.HCO3+'</div></div>';
+        }else{
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">'+d.HCO3+'</div></div>';
+        }
+        if(d.BE>=6||d.BE<-6){
+            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight red">'+d.BE+'</div></div>';
+        }else{
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">'+d.BE+'</div></div>';
+        }
+        if(d.pO2){
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pO2+'</div></div>';
+        }
+        if(d.Sat){
+            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">'+d.Sat+'</div></div>';
+        }
+        append+='</div></div>';
+        return append;
+    }
+}
+
 viewRender.closeAll=function(){
     FS.showDatePicker=false;
     FS.showAdPicker=false;
@@ -1006,10 +1082,18 @@ viewRender.jquery=function(){
     }, 0);
 };
 
+viewRender.selectDate=function(date){
+    viewRender.toShow={};
+    viewRender.flowSheet.selectDate(date);
+    viewRender.abg.selectDate(date);
+    viewRender.initialize();
+}
+
 viewRender.initialize=function(){
     viewRender.bw.initialize();
     viewRender.chart.initialize();
     viewRender.header.initialize();
+    viewRender.ventilation.initialize();
     Vue.nextTick(function(){
         viewRender.jquery();
     });
@@ -1019,18 +1103,34 @@ viewRender.queryPatientData=function(patientID){
     FS.patientID=patientID;
     FS.footbarStatus="min";
     FS.selectedfootbarMenu="fnOverview";
-    requestPatientData(patientID,function(data,timeStamp){
-        FS.bed=data&&data.currentBed;
-        FS.name=data&&data.patientName;
-        FS.birthday=data&&data.birthDate;
-        FS.vs=data&&data.visitingStaff&&data.visitingStaff.name;
-        var findBW=bwHolder.find(function(x){return x.patientID==patientID;});
-        FS.bwForCalculate=(findBW&&findBW.bw)||"";
-        requestAdmissionList(patientID,function(data,timeStamp){
-            FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
+    var promisePatientData=function(){
+        return new Promise(function(resolve,reject){
+            requestPatientData(patientID,function(data,timeStamp){
+                FS.bed=data&&data.currentBed;
+                FS.name=data&&data.patientName;
+                FS.birthday=data&&data.birthDate;
+                FS.vs=data&&data.visitingStaff&&data.visitingStaff.name;
+                var findBW=bwHolder.find(function(x){return x.patientID==patientID;});
+                FS.bwForCalculate=(findBW&&findBW.bw)||"";
+                resolve();
+            });
+        })
+    };
+    var promiseAdmissionList=function(){
+        return new Promise(function(resolve,reject){
+            requestAdmissionList(patientID,function(data,timeStamp){
+                FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
+                    resolve();
+                
+            });
+        })
+    };
+    var promiseBirthSheet=function(){
+        return new Promise(function(resolve,reject){
             if(FS.admissionList){
                 var admission=FS.admissionList[0];
                 var caseNo=admission.caseNo;
+                FS.caseNo=caseNo;
                 var firstCaseNo=FS.admissionList.slice(-1)[0].caseNo;
                 updateBirthSheet(patientID,firstCaseNo,function(data,timeStamp){
                     FS.birthSheet=data||{};
@@ -1041,11 +1141,28 @@ viewRender.queryPatientData=function(patientID){
                         FS.GAweek=FS.birthSheet.child.GAweek;
                         FS.GAday=FS.birthSheet.child.GAday;
                     }
-                    viewRender.queryCaseNo(patientID, caseNo);
+                    resolve();
                 })
             }
-        });
-    });
+        })
+    };
+    var promiseCummulative=function(field,FSfield){
+        return new Promise(function(resolve,reject){ 
+            requestCummulative(patientID,240,field,function(data,timeStamp){ //months=240(20y)
+                FS[FSfield]=data;
+                resolve();
+            });
+        })
+    };
+
+    var promise=promisePatientData()
+        .then(function(){return promiseAdmissionList()})
+        .then(function(){return promiseCummulative('DCHEM','smac')})
+        .then(function(){return promiseCummulative('DCBC','cbc')})
+        .then(function(){return promiseCummulative('DGLU1','bs')})
+        .then(function(){return promiseCummulative('DBGAS','gas')})
+        .then(function(){return promiseBirthSheet()})
+        .then(function(){viewRender.queryCaseNo(patientID, FS.caseNo);})
 };
 
 viewRender.queryCaseNo=function(patientID, caseNo){
@@ -1057,24 +1174,31 @@ viewRender.queryCaseNo=function(patientID, caseNo){
         FS.dischargeDate=admission.dischargeDate;
         var qdate = FS.dischargeDate||Parser.getDate();
 
-        requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
-            if(FS.admissionList.slice(-1)[0].section=="NB"){
-                requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
-                    data.data=data.data.concat(firstAddata.data);
-                    viewRender.bw.initialize(data);
-                    viewRender.queryDate(patientID,caseNo,qdate);
+        var promiseVitalSign=function(){
+            return new Promise(function(resolve,reject){
+                requestVitalSign(patientID, caseNo, "HWS",function(data,timeStamp){  //caseNo="all"可查詢全部資料
+                    if(FS.admissionList.slice(-1)[0].section=="NB"){
+                        requestVitalSign(patientID, FS.admissionList.slice(-1)[0].caseNo, "HWS",function(firstAddata,timeStamp){
+                            data.data=data.data.concat(firstAddata.data);
+                            viewRender.bw.initialize(data);
+                            resolve();
+                        });
+                    }else{
+                        viewRender.bw.initialize(data);
+                        resolve();
+                    }
                 });
-            }else{
-                viewRender.bw.initialize(data);
+            });
+        }
+
+        var promise = promiseVitalSign()
+            .then(function(){
                 viewRender.queryDate(patientID,caseNo,qdate);
-            }
-        });
-        
+            });
     };
 }
 
 viewRender.queryDate=function(patientID,caseNo,date){
-    
     var getFlowSheetByDate=function(date){
         return new Promise(function(resolve, reject){
             requestFlowSheet(patientID,caseNo, Parser.getShortDate(date),function(data,timeStamp){
@@ -1092,7 +1216,6 @@ viewRender.queryDate=function(patientID,caseNo,date){
     queryDateList.push(Parser.addDate(date,-1));
     queryDateList.push(Parser.addDate(date,-2));
 
-
     var promise = getFlowSheetByDate(queryDateList[0])
         .then(function(){
             return getFlowSheetByDate(queryDateList[1]);
@@ -1102,7 +1225,7 @@ viewRender.queryDate=function(patientID,caseNo,date){
             return getFlowSheetByDate(queryDateList[3]);
         }).then(function(){
             viewRender.flowSheet.dataContainer=dataContainer;
-            viewRender.flowSheet.selectDate(date);
+            viewRender.selectDate(date);
             $('#datepicker').datepicker("setDate", FS.currentDate);
         });
 }

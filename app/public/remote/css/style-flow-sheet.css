@@ -469,50 +469,56 @@
 {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    /* -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(0,0%,70%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(0,0%,70%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(0,0%,70%)*/
+    /* -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,0%,70%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,0%,70%);
+    box-shadow:inset 0px 0px 0px 1px hsl(0,0%,70%)*/
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io .shift:last-child
 {
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+#flow-sheet #fnOverview .footbar-sub#sub-io .warn{
+    background-color: hsl(0,30%,90%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+}
 #flow-sheet #fnOverview .footbar-sub#sub-io #morning{
     background-color: hsl(120,50%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #afternoon{
     background-color: hsl(120,50%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #night{
     background-color: hsl(120,50%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day1{
     background-color: hsl(120,50%,85%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day2{
     background-color: hsl(120,30%,85%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-io #day3{
     background-color: hsl(120,30%,85%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 
 
@@ -528,9 +534,9 @@
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     margin-top:5px;
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,40%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,40%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,40%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card:first-child{
     margin-top:0px;
@@ -538,29 +544,29 @@
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
     height: 40px;
     background-color: hsl(120,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
-#flow-sheet #fnOverview .footbar-sub#sub-ventilation .gasfull-card{
-    height: 80px;
+#flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card-title{
+    height: 10px;
     background-color: hsl(120,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
     height: 40px;
     background-color: hsl(200,50%,80%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(200,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .warn{
     background-color: hsl(0,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .upper
@@ -583,9 +589,9 @@
     height: 100%;
     background-color: hsl(120,30%,85%);
     border-radius: 8px;
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item{
@@ -594,9 +600,9 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item.warn{
     background-color: hsl(0,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(0,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-group .lab-item:first-child{
     border-top-left-radius: 8px;
@@ -616,9 +622,9 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: hsl(40, 50%, 90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(40,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .title{
     background-color: hsl(40, 50%, 70%);
@@ -626,14 +632,14 @@
     border-top-right-radius: 10px;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .nutrition-group{
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
+    box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .nutrition-group.latest{
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(40,20%,80%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
+    box-shadow:inset 0px 0px 0px 1px hsl(40,20%,80%);
     background-color: hsl(40, 60%, 80%);
 }
 
@@ -641,9 +647,9 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: hsl(280, 50%, 90%);
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,60%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(280,20%,60%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(280,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(280,20%,60%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #event .title{
     background-color: hsl(280, 50%, 70%);
@@ -651,9 +657,9 @@
     border-top-right-radius: 10px;
 }
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #event .event-group{
-    -webkit-box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,80%);
-    -moz-box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,80%);
-    box-shadow:inset 0px 0px 0px 0.5px hsl(280,20%,80%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(280,20%,80%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(280,20%,80%);
+    box-shadow:inset 0px 0px 0px 1px hsl(280,20%,80%);
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-nutrition-event #nutrition .date-card,
