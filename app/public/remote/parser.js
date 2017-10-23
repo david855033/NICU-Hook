@@ -133,7 +133,7 @@ var Parser={
         if(typeof dateTime2=="string"){
             var date2 = Parser.getDateFromString(dateTime2);
         }else{
-            var date2 = new Date(dateTime2);
+            var date2 = new Date();
         }
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         var diff = Number(Math.floor(timeDiff/1000/24/60/60).toFixed(0));
@@ -239,5 +239,35 @@ var Parser={
     round2:function(input){
         var num=Number(input);
         return Math.round(input*100)/100;
+    },
+
+    //ventilation
+    ventilationSettingFromEvent:function(input){
+        input=input.trim();
+        var parts=input.split(' ');
+        var modeString=parts.shift();
+        var settingString=parts.join(' ');
+        settingString=settingString.regReplaceAll(/\+/,' ');
+        settingString=settingString.regReplaceAll(/\s+/,' ');
+        var settingParts=settingString.split(' ');
+        var resultString=settingParts;
+
+        if(modeString.indexOf('HFOV')>=0){
+            modeString='HFOV';
+            var modifiedParts=[];
+            for(var i = 0;i<settingParts.length;i++)
+            {
+                var abbr = settingParts[i].match(/\d+.*\/\d+.*\/\d+.*\/\d+.*/);
+                if(abbr){
+                    abbr=abbr[0];
+                    modifiedParts.push(abbr);
+                }else{
+                    modifiedParts.push(settingParts[i]);
+                };
+            }
+            resultString=modifiedParts.join(' ');
+        }
+
+        return {mode:modeString,setting:resultString};
     }
 }

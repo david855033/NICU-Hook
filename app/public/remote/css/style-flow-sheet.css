@@ -478,12 +478,6 @@
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
-#flow-sheet #fnOverview .footbar-sub#sub-io .warn{
-    background-color: hsl(0,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
-}
 #flow-sheet #fnOverview .footbar-sub#sub-io #morning{
     background-color: hsl(120,50%,90%);
     -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
@@ -528,15 +522,12 @@
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card{
     height: 20px;
-    background-color: hsl(120,30%,40%);
+    background-color: hsl(120,30%,60%);
     color: hsl(0,0%,100%);
     font-weight: 900;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     margin-top:5px;
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
-    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,40%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .day-card:first-child{
     margin-top:0px;
@@ -544,30 +535,31 @@
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card{
     height: 30px;
     background-color: hsl(120,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,60%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card-title{
-    height: 18px;
-    background-color: hsl(120,30%,60%);
-    color: hsl(0,0%,100%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(120,30%,60%);
+    height: 16px;
+    background-color: hsl(120,30%,90%);
+    color: hsl(0,0%,20%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .vent-card{
-    height: 40px;
-    background-color: hsl(200,50%,80%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
-    -moz-box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(200,20%,60%);
+    height: 30px;
+    background-color: hsl(120,50%,85%);
+    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    -moz-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
+    box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .warn{
-    background-color: hsl(0,30%,90%);
-    -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    /* background-color: hsl(0,30%,90%); */
+    color: hsl(0,90%,35%);
+    /* -webkit-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
     -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
-    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
+    box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%); */
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .upper

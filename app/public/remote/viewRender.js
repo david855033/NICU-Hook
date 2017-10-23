@@ -94,10 +94,11 @@ viewRender.bw.getBWForCalculateByDate=function(dateString){
 }
 
 viewRender.header={
-    initialize:function(){
+    initialize:function(){ 
         var headerCards=[];
         FS.weekDay=Parser.getDayString(Parser.getDateFromString(FS.currentDate).getDay());
         FS.dayDifference= Parser.getDayDifferenceString(FS.currentDate);
+        FS.dayDifference+=" / 住院第"+Parser.getDayDifference(FS.currentDate,FS.admissionDate)+"天";
         headerCards.push(new this.headerCard(FS.bed,FS.name,"主治醫師："+FS.vs));
         
         var admissionDateStr="";
@@ -270,14 +271,8 @@ viewRender.flowSheet.selectDate=function(date){
     toShow.feeding=[];
     toShow.excretion=[];
     toShow.drain=[];
-    toShow.ventilatorSetting=[
-        {
-            date:"2017-05-13",
-            data:[
-                {time:"11:00",class:"setting",str:"NIPPV 25/20/18/5",mode:"NIPPV",setting:{FiO2:"25%",Rate:"10",PIP:"20",PEEP:"5"}}
-            ]
-        }
-    ];
+    toShow.ventilatorSetting=[];
+    toShow.events=[];
 
     var dataContainer=viewRender.flowSheet.dataContainer;
     dataContainer.forEach(function(x){x.flowSheet.date=x.date});
@@ -313,6 +308,8 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseDrain(flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseIO(flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3);
+    viewRender.flowSheet.parseEvent([flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3]);
+    console.log(toShow.ventilatorSetting);
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
     var sbp=flowSheet.sbp;
@@ -728,29 +725,73 @@ viewRender.flowSheet.calculateIO=function(x){
     if(x.io>0){x.io="+"+x.io;}
     else if(!x.input&&!x.output){x.io="";}
 }
+viewRender.flowSheet.parseEvent=function(flowSheets){
+    var toShow=viewRender.toShow;
+    flowSheets.forEach(function(x){
+        var date= x.date;
+        x.event.forEach(function(y){
+            var time=y.time;
+            var compareString=String(y.content).toLowerCase();
+
+            if(compareString.slice(0,2)=='@v'||compareString.slice(0,3)==('@ v')){
+                if(compareString.slice(0,2)=='@v'){
+                    compareString=y.content.slice(2)
+                }else{
+                    compareString=y.content.slice(3)
+                }
+                var selectedDate = toShow.ventilatorSetting.find(function(x){return x.date==date;});
+                var parsed=Parser.ventilationSettingFromEvent(compareString);
+                console.log(parsed);
+                var dataToPush={time:time,class:'setting',str:parsed.setting, mode:parsed.mode};
+                if(selectedDate){
+                    selectedDate.data.push(dataToPush);
+                }else{
+                    var newDateObj={date:date,data:[dataToPush]};
+                    toShow.ventilatorSetting.push(newDateObj);
+                }
+            }else{
+                var dataToPush={date:x.date,time:time,str:y.content};
+                toShow.events.push(dataToPush);
+            }
+        });
+    });
+}
+
 
 //將abg資料push進入toShow
 viewRender.abg={};
 viewRender.abg.selectDate=function(date){
     var toShow=viewRender.toShow;
-    toShow.abg=[
-        {
-            date:"2017-05-13",
-            data:[
-                {time:"15:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
-                {time:"02:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
-                {time:"14:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
-            ]
-        },
-        {
-            date:"2017-05-11",
-            data:[
-                {time:"22:00",class:"gas",pH:7.25,pCO2:54,HCO3:16,BE:-1.6,pO2:44,Sat:'44%'},
-                {time:"01:00",class:"gas",pH:7.18,pCO2:38,HCO3:32,BE:12,pO2:44,Sat:'44%'},
-                {time:"05:00",class:"gas",pH:7.59,pCO2:12,HCO3:22,BE:-10,pO2:44,Sat:'44%'},
-            ]
+    toShow.abg=[];
+    var gas = FS.gas;
+    var Index_DateTime=gas.colNames.indexOf('日期');
+    var Index_ph=gas.colNames.indexOf('PH');
+    var Index_po2=gas.colNames.indexOf('PO2');
+    var Index_pco2=gas.colNames.indexOf('PCO2');
+    var Index_hco3=gas.colNames.indexOf('HCO3');
+    var Index_be=gas.colNames.indexOf('BE');
+    var Index_sat=gas.colNames.indexOf('O2SAT');
+    
+    var startDateTime=Parser.getDateFromString(Parser.addDate(date,-2));
+    var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
+    var selectedData = gas.data.filter(function(x){
+        var dt = Parser.getDateFromString(x[Index_DateTime]);
+        return dt>=startDateTime && dt < endDateTime;
+    });
+    
+    selectedData.forEach(function(x){
+        var parts=x[Index_DateTime].split(' ');
+        var date= parts[0];
+        var time=parts[1];
+        var selectedDate = toShow.abg.find(function(x){return x.date==date;});
+        var dataToPush={time:time,class:'gas',pH:(x[Index_ph]&&Parser.round2(x[Index_ph]))||"",pCO2:x[Index_pco2],HCO3:x[Index_hco3],BE:x[Index_be],pO2:x[Index_po2]&&Math.round(x[Index_po2]),Sat:(x[Index_sat]&&Math.round(x[Index_sat])+span('%',['s-word']))};
+        if(selectedDate){
+            selectedDate.data.push(dataToPush);
+        }else{
+            var newDateObj={date:date,data:[dataToPush]};
+            toShow.abg.push(newDateObj);
         }
-    ];
+    });
 }
 
 viewRender.toShow={  //empty container 
@@ -962,54 +1003,53 @@ viewRender.ventilation={
     },
     getGasTitleComponentString:function(){
         return '<div class="gas-card-title w1-1 nowrap">'+
-        '<div class="w1-7 h1-1 s-word inline-block"></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pH</div></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pCO<sub>2</sub></div></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">HCO<sub>3</sub></div></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">BE</div></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">pO<sub>2</sub></div></div>'+
-        '<div class="w1-7 h1-1 inline-block"><div class="upper xs-word v-center">Sat</div></div>'+
+        '<div class="w1-7 h1-1 s-word float-left"></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">pH</div></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">pCO<sub>2</sub></div></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">HCO<sub>3</sub></div></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">BE</div></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">pO<sub>2</sub></div></div>'+
+        '<div class="w1-7 h1-1 float-left"><div class="upper xs-word v-center">Sat</div></div>'+
         '</div>';
     },
     getSettingComponentString:function(d){
         var append ='<div class="vent-card w1-1 nowrap">';
-        append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
-        append+='<div class="w6-7 h1-1 inline-block">';
-        append+='<div class="w1-1 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">'+d.str+'</div></div>';
-        //append+='<div class="w1-6 h1-1 inline-block"><div class="v-center s-word heavy-weight wrap">'+d.mode+'</div></div>';
-        //...
+        append+='<div class="w1-7 h1-1 s-word grey-20-font float-left"><div class="v-center">'+d.time+'</div></div>'
+        append+='<div class="w6-7 h1-1 float-left">';
+        append+='<div class="w1-6 h1-1 float-left"><div class="v-center s-word heavy-weight wrap">'+(d.mode||"")+'</div></div>';
+        append+='<div class="w5-6 h1-1 float-left"><div class="v-center s-word green-30-font heavy-weight wrap">'+(d.str||"")+'</div></div>';
         append+='</div></div>'
         return append;
     },
     getGasComponentString:function(d){
         var append= '<div class="gas-card w1-1 nowrap">';
-        append+='<div class="w1-7 h1-1 s-word grey-20-font inline-block"><div class="v-center">'+d.time+'</div></div>'
-        append+='<div class="w6-7 h1-1 inline-block">';
+        append+='<div class="w1-7 h1-1 s-word grey-20-font float-left"><div class="v-center">'+d.time+'</div></div>'
+        append+='<div class="w6-7 h1-1 float-left">';
         if(d.pH>=7.5||d.pH<7.25){
-            append+='<div class="w1-6 h1-1 inline-block warn"><div class="v-center ms-word heavy-weight red">'+d.pH+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.pH+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pH</div><div class="lower ms-word heavy-weight">'+d.pH+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pH+'</div></div>';
         }
         if(d.pCO2>=50||d.pCO2<35){
-            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight red">'+d.pCO2+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.pCO2+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pCO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pCO2+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pCO2+'</div></div>';
         }
         if(d.HCO3>=26||d.HCO3<18){
-            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight red">'+d.HCO3+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">HCO<sub>3</sub></div><div class="lower ms-word heavy-weight">'+d.HCO3+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
         }
         if(d.BE>=6||d.BE<-6){
-            append+='<div class="w1-6 h1-1 inline-block warn"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight red">'+d.BE+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">BE</div><div class="lower ms-word heavy-weight">'+d.BE+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
         }
         if(d.pO2){
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">pO<sub>2</sub></div><div class="lower ms-word heavy-weight">'+d.pO2+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pO2+'</div></div>';
         }
         if(d.Sat){
-            append+='<div class="w1-6 h1-1 inline-block"><div class="upper xs-word grey-40-font">Sat</div><div class="lower ms-word heavy-weight">'+d.Sat+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.Sat+'</div></div>';
         }
         append+='</div></div>';
         return append;

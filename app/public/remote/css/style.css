@@ -93,6 +93,9 @@ body{
 .grey-60-font{
     color: hsl(0,0%,60%);
 }
+.green-30-font{
+    color: hsl(120,40%,30%);
+}
 .red{
     color: hsl(0,90%,35%);
 }
@@ -184,12 +187,12 @@ body{
 .w2-5{width:40%;}
 .w3-5{width:60%;}
 .w4-5{width:80%;}
-.w1-6{width:16.67%;}
+.w1-6{width:16.66%;}
 .w2-6{width:33.33%;}
 .w3-6{width:50%;}
 .w4-6{width:66.67%;}
 .w5-6{width:83.33%;}
-.w1-7{width:14.29%;}
+.w1-7{width:14.28%;}
 .w2-7{width:28.57%;}
 .w3-7{width:42.86%;}
 .w4-7{width:57.14%;}
