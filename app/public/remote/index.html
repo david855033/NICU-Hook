@@ -742,10 +742,10 @@
                                             <div class="v-center">Glu</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">88</div>
+                                            <div class="v-center">{{flowSheet.lab.glu.value}}</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">8/9</div>
+                                            <div class="v-center">{{flowSheet.lab.glu.date}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1141,21 +1141,9 @@
                             <div id="event" :class="[flowSheet.footbarStatus=='max'?'h22-45':'h15-31']">
                                 <div class="h-center ms-word title h1-7"><div class="v-center">特殊事件</div></div>
                                 <div class="scrollbar-outer h6-7">
-                                    <div class="w1-1 event-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
-                                        <div class="w1-1 s-word content-card">特殊事件1</div>
-                                    </div>
-                                    <div class="w1-1 event-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
-                                        <div class="w1-1 s-word content-card">特殊事件2</div>
-                                    </div>
-                                    <div class="w1-1 event-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
-                                        <div class="w1-1 s-word content-card">特殊事件3</div>
-                                    </div>
-                                    <div class="w1-1 event-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/15 9:30</div>
-                                        <div class="w1-1 s-word content-card">特殊事件4</div>
+                                    <div class="w1-1 event-group" v-for="e in flowSheet.event">
+                                        <div class="w1-1 s-word grey-60-font date-card">{{e.dateTime}}</div>
+                                        <div class="w1-1 s-word content-card">{{e.content}}</div>
                                     </div>
                                 </div>
                             </div>

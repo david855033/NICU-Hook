@@ -160,6 +160,10 @@ var view= new Vue({
             },
             ventilation:"",
             smac:[],cbc:[],bs:[],gas:[],
+            event:[],
+            lab:{
+                glu:{value:"",date:"",tooltip:""}
+            },
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
             {key:'fnNutrition',title:'營養'},

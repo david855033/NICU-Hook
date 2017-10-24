@@ -58,6 +58,13 @@ var Parser={
             +this.get2DigiNum((toParse.getDate()));
         return str;
     },
+    getHHMM:function(dateObj){
+        var toParse = dateObj || new Date();
+        if(typeof dateObj=="string"){toParse=Parser.getDateFromString(dateObj);}
+        var str = this.get2DigiNum(toParse.getHours())+":"
+            +this.get2DigiNum(toParse.getMinutes());
+        return str;
+    },
     getDateFromShortDate:function(dateString){
         if(typeof dateString =="string" && dateString.length==8)
         {
@@ -246,28 +253,60 @@ var Parser={
         input=input.trim();
         var parts=input.split(' ');
         var modeString=parts.shift();
+        var checkModeString=String(modeString).toLocaleLowerCase();
+        if(checkModeString=="oett"||checkModeString=="nett"){
+            modeString=parts.shift();
+        }
         var settingString=parts.join(' ');
-        settingString=settingString.regReplaceAll(/\+/,' ');
-        settingString=settingString.regReplaceAll(/\s+/,' ');
+        settingString=settingString.regReplaceAll(/(\+|\,|\:|\(|\))/g,' ');
+        settingString=settingString.regReplaceAll(/\s+/g,' ');
         var settingParts=settingString.split(' ');
-        var resultString=settingParts;
-
-        if(modeString.indexOf('HFOV')>=0){
+       
+        var parseCols=[];
+        var modeStringCompare=String(modeString).toLocaleLowerCase();
+        if(modeStringCompare.slice(0,4)=='hfov'){
             modeString='HFOV';
-            var modifiedParts=[];
-            for(var i = 0;i<settingParts.length;i++)
-            {
-                var abbr = settingParts[i].match(/\d+.*\/\d+.*\/\d+.*\/\d+.*/);
-                if(abbr){
-                    abbr=abbr[0];
-                    modifiedParts.push(abbr);
-                }else{
-                    modifiedParts.push(settingParts[i]);
-                };
+            if(modeStringCompare.indexOf('+no')>=0){
+                modeString+='<br>NO';
             }
-            resultString=modifiedParts.join(' ');
+            parseCols.push(['FiO2','AMP','MAP','Freq']);
+        }else if(modeStringCompare.slice(0,4)=='simv'){
+            modeString='SIMV';
+            parseCols.push(['FiO2','Rate','PIP','PEEP']);
+        }else if(modeStringCompare.slice(0,2)=='np'){
+            modeString='NP';
+            parseCols.push(['FiO2','PEEP']);
+            parseCols.push(['FiO2','Rate','PIP','PEEP']);
+        }else if(modeStringCompare.slice(0,2)=='uw'){
+            modeString='UW';
+            parseCols.push(['FiO2','PEEP']);
         }
 
+        var modifiedParts=[];
+        for(var i = 0;i<settingParts.length;i++)
+        {
+            var abbr = settingParts[i].match(/\d+(.\d*)?(\/\d+(.\d*)?)*/); //is  */*/*/*  format
+            if(abbr){
+                var abbrparts=abbr[0].split('/');
+                var currentParseCol=parseCols.find(function(x){return x.length==abbrparts.length})
+                if(currentParseCol){
+                    currentParseCol.forEach(function(x,index){modifiedParts.push(x+":"+span(abbrparts[index],['heavy-weight','s-word','blue-25-font']));})
+                    continue;
+                }
+            }
+            
+            var key = settingParts[i];
+            var value = settingParts[i+1]&&settingParts[i+1].match(/\d+(.\d+)?/);
+            if(key&&value&&key.indexOf('/')<0){
+                modifiedParts.push(key+":"+span(value[0],['heavy-weight','s-word','blue-25-font']));
+                i++;
+                continue;
+            }
+            modifiedParts.push(span(settingParts[i],['heavy-weight','s-word','blue-25-font']));
+        }
+        var resultString=modifiedParts.join(', ');
+         
+       
         return {mode:modeString,setting:resultString};
     }
 }

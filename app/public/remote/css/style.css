@@ -96,6 +96,9 @@ body{
 .green-30-font{
     color: hsl(120,40%,30%);
 }
+.blue-25-font{
+    color: hsl(200,90%,25%);
+}
 .red{
     color: hsl(0,90%,35%);
 }

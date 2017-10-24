@@ -279,6 +279,10 @@ viewRender.flowSheet.selectDate=function(date){
     console.log(dataContainer);
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
+    var flowSheetTommorrowEventFiltered={
+       event: flowSheetTommorrow.event.filter(function(x){return x.time.localeCompare("07:00")<0;}),
+       date:flowSheetTommorrow.date
+    }   
     var flowSheetDay2=dataContainer.find(function(x){return x.date==Parser.addDate(date,-1);}).flowSheet;
     var flowSheetDay3=dataContainer.find(function(x){return x.date==Parser.addDate(date,-2);}).flowSheet;
     flowSheetToday.bwSelect=viewRender.bw.getBWForCalculateByDate(date);
@@ -308,8 +312,7 @@ viewRender.flowSheet.selectDate=function(date){
     viewRender.flowSheet.parseExcretion('enema','Enema/Sti.',flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseDrain(flowSheetToday,flowSheetTommorrow);
     viewRender.flowSheet.parseIO(flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3);
-    viewRender.flowSheet.parseEvent([flowSheetToday,flowSheetTommorrow,flowSheetDay2,flowSheetDay3]);
-    console.log(toShow.ventilatorSetting);
+    viewRender.flowSheet.parseEvent([flowSheetToday,flowSheetTommorrowEventFiltered,flowSheetDay2,flowSheetDay3]);
 };
 viewRender.flowSheet.calculateMBP=function(flowSheet){
     var sbp=flowSheet.sbp;
@@ -741,7 +744,6 @@ viewRender.flowSheet.parseEvent=function(flowSheets){
                 }
                 var selectedDate = toShow.ventilatorSetting.find(function(x){return x.date==date;});
                 var parsed=Parser.ventilationSettingFromEvent(compareString);
-                console.log(parsed);
                 var dataToPush={time:time,class:'setting',str:parsed.setting, mode:parsed.mode};
                 if(selectedDate){
                     selectedDate.data.push(dataToPush);
@@ -774,6 +776,7 @@ viewRender.abg.selectDate=function(date){
     
     var startDateTime=Parser.getDateFromString(Parser.addDate(date,-2));
     var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
+    endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
     var selectedData = gas.data.filter(function(x){
         var dt = Parser.getDateFromString(x[Index_DateTime]);
         return dt>=startDateTime && dt < endDateTime;
@@ -809,7 +812,8 @@ viewRender.toShow={  //empty container
     drain:[],
     ventilatorSetting:[],
     abg:[],
-    ventilation:[]
+    ventilation:[],
+    events:[]
 };
 
 //chart: 將toShoW資料更新至view的Chart+IO
@@ -1017,7 +1021,7 @@ viewRender.ventilation={
         append+='<div class="w1-7 h1-1 s-word grey-20-font float-left"><div class="v-center">'+d.time+'</div></div>'
         append+='<div class="w6-7 h1-1 float-left">';
         append+='<div class="w1-6 h1-1 float-left"><div class="v-center s-word heavy-weight wrap">'+(d.mode||"")+'</div></div>';
-        append+='<div class="w5-6 h1-1 float-left"><div class="v-center s-word green-30-font heavy-weight wrap">'+(d.str||"")+'</div></div>';
+        append+='<div class="w5-6 h1-1 float-left"><div class="v-center xs-word wrap">'+(d.str||"")+'</div></div>';
         append+='</div></div>'
         return append;
     },
@@ -1035,12 +1039,12 @@ viewRender.ventilation={
         }else{
             append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pCO2+'</div></div>';
         }
-        if(d.HCO3>=26||d.HCO3<18){
+        if(d.HCO3>=30||d.HCO3<16){
             append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
         }else{
             append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
         }
-        if(d.BE>=6||d.BE<-6){
+        if(d.BE>=10||d.BE<-8){
             append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
         }else{
             append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
@@ -1055,7 +1059,21 @@ viewRender.ventilation={
         return append;
     }
 }
-
+viewRender.event={
+    initialize:function(){
+        var toShow=viewRender.toShow;
+        toShow.events=toShow.events.sort(function(a,b){
+            if(a.date==b.date){
+                return a.time.localeCompare(b.time);
+            }
+            return a.date.localeCompare(b.date);
+        })
+        FS.event=toShow.events.map(function(x){
+            var dateTime = Parser.getMMDD(x.date)+" "+x.time;
+            return {dateTime:dateTime, content:x.str };
+        });
+    }
+}
 viewRender.closeAll=function(){
     FS.showDatePicker=false;
     FS.showAdPicker=false;
@@ -1135,6 +1153,7 @@ viewRender.initialize=function(){
     viewRender.chart.initialize();
     viewRender.header.initialize();
     viewRender.ventilation.initialize();
+    viewRender.event.initialize();
     Vue.nextTick(function(){
         viewRender.jquery();
     });
