@@ -162,7 +162,9 @@ var view= new Vue({
             smac:[],cbc:[],bs:[],gas:[],
             event:[],
             lab:{
-                glu:{value:"",date:"",tooltip:""}
+                glu:{value:"",date:"",warn:false,title:""},
+                wbc:{value:"testWBC",date:"date",warn:true,title:"testWBCtitle"},
+                dc:{value:{sg:"",ly:"",bd:""},date:"",warn:false,title:""},
             },
             footbarStatus:"min",
             footbarMenuList:[{key:'fnOverview',title:'總覽'},{key:'fnIO',title:'輸出入'},{key:'fnVentilation',title:'呼吸'},
