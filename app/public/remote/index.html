@@ -778,15 +778,15 @@
                                             <div class="v-center"  v-html="flowSheet.lab.dc.date"></div>
                                         </div>
                                     </div>
-                                    <div id='Hb' class='lab-item w1-4'>
+                                    <div id='Hb' class='lab-item w1-4' :class="{'warn':flowSheet.lab.hb.warn}" :title="flowSheet.lab.hb.title">
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">Hb</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">10.5</div>
+                                            <div class="v-center" v-html="flowSheet.lab.hb.value">10.5</div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.hb.date">12/14</div>
                                         </div>
                                     </div>
                                     <div id='plt' class='lab-item w1-4'>
