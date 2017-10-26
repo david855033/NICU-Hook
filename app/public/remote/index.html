@@ -778,146 +778,146 @@
                                             <div class="v-center"  v-html="flowSheet.lab.dc.date"></div>
                                         </div>
                                     </div>
-                                    <div id='Hb' class='lab-item w1-4' :class="{'warn':flowSheet.lab.hb.warn}" :title="flowSheet.lab.hb.title">
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='hb' class='lab-item w1-4' :class="{'warn':flowSheet.lab.hb.warn}" :title="flowSheet.lab.hb.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">Hb</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center" v-html="flowSheet.lab.hb.value">10.5</div>
+                                            <div class="v-center" v-html="flowSheet.lab.hb.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center" v-html="flowSheet.lab.hb.date">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.hb.date"></div>
                                         </div>
                                     </div>
-                                    <div id='plt' class='lab-item w1-4'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='plt' class='lab-item w1-4' :class="{'warn':flowSheet.lab.plt.warn}" :title="flowSheet.lab.plt.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">Plt</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">233<span class="xs-word">k</span></div>
+                                            <div class="v-center" v-html="flowSheet.lab.plt.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.plt.date"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="electrolyte" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w1-1'>
-                                    <div id='na' class='lab-item w1-5'>
+                                    <div id='na' class='lab-item w1-5' :class="{'warn':flowSheet.lab.na.warn}" :title="flowSheet.lab.na.title">
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">Na</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">145</div>
+                                            <div class="v-center" v-html="flowSheet.lab.na.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.na.date"></div>
                                         </div>
                                     </div>
-                                    <div id='k' class='lab-item w1-5 warn'>
+                                    <div id='k' class='lab-item w1-5' :class="{'warn':flowSheet.lab.k.warn}" :title="flowSheet.lab.k.title">
                                         <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">K</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center"><span class="red">8.0</span></div>
+                                            <div class="v-center" v-html="flowSheet.lab.k.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.k.date"></div>
                                         </div>
                                     </div>
-                                    <div id='ca' class='lab-item w1-5'>
+                                    <div id='ca' class='lab-item w1-5' :class="{'warn':flowSheet.lab.ca.warn}" :title="flowSheet.lab.ca.title">
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">Ca<sup>2+</sup></div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">0.98</div>
+                                            <div class="v-center" v-html="flowSheet.lab.ca.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.ca.date"></div>
                                         </div>
                                     </div>
-                                    <div id='p' class='lab-item w1-5'>
+                                    <div id='p' class='lab-item w1-5' :class="{'warn':flowSheet.lab.p.warn}" :title="flowSheet.lab.p.title">
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">P</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">4.5</div>
+                                            <div class="v-center" v-html="flowSheet.lab.p.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.p.date"></div>
                                         </div>
                                     </div>
-                                    <div id='mg' class='lab-item w1-5'>
+                                    <div id='mg' class='lab-item w1-5' :class="{'warn':flowSheet.lab.mg.warn}" :title="flowSheet.lab.mg.title">
                                         <div class="lab-tittle h1-4 xs-word  grey-40-font">
                                             <div class="v-center">Mg</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">1.7</div>
+                                            <div class="v-center" v-html="flowSheet.lab.mg.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.mg.date"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="liver-renal" class='lab-row' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']">
                                 <div class='lab-group w2-5'>
-                                    <div id='bun' class='lab-item w1-2'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='bun' class='lab-item w1-2' :class="{'warn':flowSheet.lab.bun.warn}" :title="flowSheet.lab.bun.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">BUN</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">21</div>
+                                            <div class="v-center" v-html="flowSheet.lab.bun.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.bun.date"></div>
                                         </div>
                                     </div>
-                                    <div id='cr' class='lab-item w1-2'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
-                                            <div class="v-center">Cr</div>
+                                    <div id='cr' class='lab-item w1-2' :class="{'warn':flowSheet.lab.cr.warn}" :title="flowSheet.lab.cr.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
+                                            <div class="v-center">Crea</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">1.2</div>
+                                            <div class="v-center" v-html="flowSheet.lab.cr.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.cr.date"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class='lab-group w3-5' :class="[flowSheet.footbarStatus=='max'?'h1-6':'h1-4']"> 
-                                    <div id='alt' class='lab-item w1-3'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='alt' class='lab-item w1-3' :class="{'warn':flowSheet.lab.alt.warn}" :title="flowSheet.lab.alt.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">ALT</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">24</div>
+                                            <div class="v-center" v-html="flowSheet.lab.alt.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.alt.date"></div>
                                         </div>
                                     </div>
-                                    <div id='ast' class='lab-item w1-3'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='ast' class='lab-item w1-3' :class="{'warn':flowSheet.lab.ast.warn}" :title="flowSheet.lab.ast.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">AST</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">33</div>
+                                            <div class="v-center" v-html="flowSheet.lab.ast.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center">12/14</div>
+                                            <div class="v-center" v-html="flowSheet.lab.ast.date"></div>
                                         </div>
                                     </div>
-                                    <div id='ggt' class='lab-item w1-3'>
-                                        <div class="lab-tittle h1-4 xs-word  grey-40-font">
+                                    <div id='ggt' class='lab-item w1-3' :class="{'warn':flowSheet.lab.ggt.warn}" :title="flowSheet.lab.ggt.title">
+                                        <div class="lab-tittle h1-4 xs-word grey-40-font">
                                             <div class="v-center">gGT</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
-                                            <div class="v-center">-</div>
+                                            <div class="v-center" v-html="flowSheet.lab.ggt.value"></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center"></div>
+                                            <div class="v-center" v-html="flowSheet.lab.ggt.date"></div>
                                         </div>
                                     </div>
                                 </div>
