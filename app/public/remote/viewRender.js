@@ -276,7 +276,7 @@ viewRender.flowSheet.selectDate=function(date){
 
     var dataContainer=viewRender.flowSheet.dataContainer;
     dataContainer.forEach(function(x){x.flowSheet.date=x.date});
-    console.log(dataContainer);
+    //console.log(dataContainer);
     var flowSheetToday=dataContainer.find(function(x){return x.date==date}).flowSheet;
     var flowSheetTommorrow=dataContainer.find(function(x){return x.date==Parser.addDate(date,1);}).flowSheet;
     var flowSheetTommorrowEventFiltered={
@@ -778,14 +778,13 @@ viewRender.abg.selectDate=function(date){
     var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
     endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
     var selectedData = gas.data.filter(function(x){
-        var dt = Parser.getDateFromString(x[Index_DateTime]);
+        var dt = x[Index_DateTime];
         return dt>=startDateTime && dt < endDateTime;
     });
     
     selectedData.forEach(function(x){
-        var parts=x[Index_DateTime].split(' ');
-        var date= parts[0];
-        var time=parts[1];
+        var date= Parser.getDate(x[0]);
+        var time= Parser.getHHMM(x[0]);
         var selectedDate = toShow.abg.find(function(x){return x.date==date;});
         var dataToPush={time:time,class:'gas',pH:(x[Index_ph]&&Parser.round2(x[Index_ph]))||"",pCO2:x[Index_pco2],HCO3:x[Index_hco3],BE:x[Index_be],pO2:x[Index_po2]&&Math.round(x[Index_po2]),Sat:(x[Index_sat]&&Math.round(x[Index_sat])+span('%',['s-word']))};
         if(selectedDate){
@@ -796,6 +795,31 @@ viewRender.abg.selectDate=function(date){
         }
     });
 }
+
+viewRender.smac={};
+viewRender.smac.selectDate=function(date){
+    var smac = FS.smac;
+    
+}
+viewRender.cbc={};
+viewRender.cbc.selectDate=function(date){
+
+}
+viewRender.bs={};
+viewRender.bs.selectDate=function(date){
+    var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
+    endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
+   
+    var bs = FS.bs;
+    var index_bs=bs.colNames.indexOf('Glucose');
+    if(index_bs>=0){
+        var selected = bs.data.filter(function(x){return x[0]<=endDateTime});
+        selected = selected.sort(function(a,b){return dates.compare(b[0],a[0])});
+        selected=selected.slice(0,7);
+    }
+    console.log(selected.map(function(x){return Parser.getDateTime(x[0]);}));
+}
+
 
 viewRender.toShow={  //empty container 
     bt:{limit:[],data:[]},
@@ -1145,6 +1169,9 @@ viewRender.selectDate=function(date){
     viewRender.toShow={};
     viewRender.flowSheet.selectDate(date);
     viewRender.abg.selectDate(date);
+    viewRender.smac.selectDate(date);
+    viewRender.cbc.selectDate(date);
+    viewRender.bs.selectDate(date);
     viewRender.initialize();
 }
 

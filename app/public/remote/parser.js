@@ -19,12 +19,17 @@ var Parser={
     //時間日期
     getDateFromString:function(str){
         if(!str){return new Date(str)||new Date();}
-        var a=str.split(" ");
-        var d=a[0].split("-").map(function(x){return Number(x)});
-        var t=[];
-        a[1]&&(t=a[1].split(":").map(function(x){return Number(x)}));
-        t[0]=t[0]||0;t[1]=t[1]||0;t[2]=t[2]||0;
-        return new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
+        var match_d=str.match(/\d{1,4}-\d{1,2}-\d{1,2}/);
+        match_d=(match_d&&match_d[0])||"";
+        if(match_d){
+            var match_t=str.match(/\d{1,2}(:|\.)\d{1,2}((:|\.)\d{1,2})?/);
+            match_t=(match_t&&match_t[0])||"";
+            var d=match_d.split("-").map(function(x){return Number(x)});
+            var t=[];
+            t=match_t.split(":").map(function(x){return Number(x)});
+            t[0]=t[0]||0;t[1]=t[1]||0;t[2]=t[2]||0;
+            return new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
+        };
     },
     getDateTime:function(dateObj){
         var toParse = dateObj || new Date();

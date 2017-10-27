@@ -330,6 +330,7 @@ Parser.getCummulative=function(htmlText){
             newDataRow[0]="20"+newDataRow[0];
         }
         newDataRow[0]=newDataRow[0].regReplaceAll(/\./,":");
+        newDataRow[0]=Parser.getDateFromString(newDataRow[0]);
         result.data.push(newDataRow);
     }
     return result;
