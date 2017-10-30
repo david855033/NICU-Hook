@@ -105,7 +105,7 @@ var Parser={
     },
     getShortDate:function(inputString){
         if(!inputString){return null};
-        var result=inputString.regReplaceAll(/(\/|-|\\)/g,"");
+        var result=String(inputString).regReplaceAll(/(\/|-|\\)/g,"");
         if(result.length>8) {result=result.slice(0,8);}
         return result;
     },

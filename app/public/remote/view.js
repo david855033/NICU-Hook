@@ -163,8 +163,10 @@ var view= new Vue({
             event:[],
             lab:{
                 glu:{value:"",date:"",warn:false,title:""},
-                wbc:{value:"testWBC",date:"date",warn:false,title:"title test"},
-                dc:{value:{sg:"",ly:"",bd:""},date:"",warn:false,title:""},
+                wbc:{value:"",date:"",warn:false,title:""},
+                seg:{value:"",date:"",warn:false,title:""},
+                lymp:{value:"",date:"",warn:false,title:""},
+                band:{value:"",date:"",warn:false,title:""},
                 hb:{value:"",date:"",warn:false,title:""},
                 plt:{value:"",date:"",warn:false,title:""},
                 na:{value:"",date:"",warn:false,title:""},

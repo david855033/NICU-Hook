@@ -126,6 +126,11 @@ $(function(){
     viewRender.initialize();
     Layout.left.initialize();
     Layout.left.adjustHeight();
+    $(document).tooltip({
+        content: function() {
+            return $(this).attr('title');
+        }
+    });
 });
 
 $(window).resize(function(){

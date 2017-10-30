@@ -761,21 +761,21 @@
                                             <div class="v-center" v-html="flowSheet.lab.wbc.date"></div>
                                         </div>
                                     </div>
-                                    <div id='dc' class='lab-item w1-4' :title="flowSheet.lab.dc.title">
-                                        <div class="h1-4">
+                                    <div id='dc' class='lab-item w1-4' :class="{'warn':(flowSheet.lab.seg.warn||flowSheet.lab.lymp.warn||flowSheet.lab.band.warn)}">
+                                        <div class="h1-4" :title="flowSheet.lab.seg.title" >
                                             <div class="w1-3 h1-1 inline-block xs-word grey-40-font h-right"><div class="v-center">Sg</div>
-                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center" v-html="flowSheet.lab.dc.value.sg"></div></div>
+                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center value" :class="{'warn':flowSheet.lab.seg.warn}" v-html="flowSheet.lab.seg.value"></div></div>
                                         </div>
-                                        <div class="h1-4">
+                                        <div class="h1-4" :title="flowSheet.lab.lymp.title">
                                             <div class="w1-3 h1-1 inline-block xs-word grey-40-font h-right"><div class="v-center">Ly</div>
-                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center" v-html="flowSheet.lab.dc.value.ly"></div></div>
+                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center value"  :class="{'warn':flowSheet.lab.lymp.warn}" v-html="flowSheet.lab.lymp.value"></div></div>
                                         </div>
-                                        <div class="h1-4">
+                                        <div class="h1-4" :title="flowSheet.lab.band.title">
                                             <div class="w1-3 h1-1 inline-block xs-word grey-40-font h-right"><div class="v-center">Bd</div>
-                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center" v-html="flowSheet.lab.dc.value.bd"></div></div>
+                                            </div><div class="w2-3 h1-1 inline-block s-word heavy-weight"><div class="v-center value" :class="{'warn':flowSheet.lab.band.warn}" v-html="flowSheet.lab.band.value"></div></div>
                                         </div>
                                         <div class="lab-timeStamp h1-4 xs-word grey-60-font">
-                                            <div class="v-center"  v-html="flowSheet.lab.dc.date"></div>
+                                            <div class="v-center"  v-html="flowSheet.lab.seg.date"></div>
                                         </div>
                                     </div>
                                     <div id='hb' class='lab-item w1-4' :class="{'warn':flowSheet.lab.hb.warn}" :title="flowSheet.lab.hb.title">

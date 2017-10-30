@@ -255,8 +255,9 @@ viewRender.flowSheet.limit={
         return [65,];
     },
 };
+viewRender.ageInDay="";
 viewRender.flowSheet.selectDate=function(date){
-    var ageInDay = Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday)-280;
+    var ageInDay=viewRender.ageInDay;
     var toShow=viewRender.toShow;
     //清空資料 設定初始
     toShow.bt={limit:[36,38],data:[]};
@@ -608,13 +609,13 @@ viewRender.flowSheet.parseIO=function(flowSheetToday,flowSheetTommorrow,flowShee
     FS.io.afternoon.input=Math.round(this.sumInput(flowSheetToday,15,22))||"";
     FS.io.night.input=Math.round(this.sumInput(flowSheetToday,23,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
     FS.io.day1.input=Math.round(this.sumInput(flowSheetToday,7,23)+this.sumInput(flowSheetTommorrow,0,6))||"";
-    FS.io.day1.daily=Math.round(FS.io.day1.input/flowSheetToday.bwSelect.bw)||"";
+    flowSheetToday.bwSelect&&(FS.io.day1.daily=Math.round(FS.io.day1.input/flowSheetToday.bwSelect.bw)||"");
 
     FS.io.day2.input=Math.round(this.sumInput(flowSheetDay2,7,23)+this.sumInput(flowSheetToday,0,6))||"";
-    FS.io.day2.daily=Math.round(FS.io.day2.input/flowSheetDay2.bwSelect.bw)||"";
+    flowSheetDay2.bwSelect&&(FS.io.day2.daily=Math.round(FS.io.day2.input/flowSheetDay2.bwSelect.bw)||"");
 
     FS.io.day3.input=Math.round(this.sumInput(flowSheetDay3,7,23)+this.sumInput(flowSheetDay2,0,6))||"";
-    FS.io.day3.daily=Math.round(FS.io.day3.input/flowSheetDay3.bwSelect.bw)||"";
+    flowSheetDay3.bwSelect&&(FS.io.day3.daily=Math.round(FS.io.day3.input/flowSheetDay3.bwSelect.bw)||"");
     
     FS.io.morning.output=Math.round(this.sumOutput(flowSheetToday,7,14))||"";
     FS.io.afternoon.output=Math.round(this.sumOutput(flowSheetToday,15,22))||"";
@@ -795,7 +796,12 @@ viewRender.abg.selectDate=function(date){
         }
     });
 }
-
+viewRender.labLimit={
+    wbc:function(){
+        viewRender.ageInDay;
+        return [10000,30000];
+    }
+};
 viewRender.smac={};
 viewRender.smac.selectDate=function(date){
     var smac = FS.smac;
@@ -803,21 +809,71 @@ viewRender.smac.selectDate=function(date){
 }
 viewRender.cbc={};
 viewRender.cbc.selectDate=function(date){
-
+    viewRender.getLabDataByDate(date,'cbc','WBC','wbc',viewRender.labLimit.wbc(),function(x){
+        var value = Math.round(Number(x));
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+    viewRender.getLabDataByDate(date,'cbc','SEG','seg',[,90],function(x){
+        var value =Math.round(Number(x));
+        return value+span('%',['xs-word']);
+    });
+    viewRender.getLabDataByDate(date,'cbc','LYM','lymp',[],function(x){
+        var value =Math.round(Number(x));
+        return value+span('%',['xs-word']);
+    });
+    viewRender.getLabDataByDate(date,'cbc','BAND','band',[,1],function(x){
+        var value = Math.round(Number(x));
+        return value+span('%',['xs-word']);
+    });
+    viewRender.getLabDataByDate(date,'cbc','HGB','hgb',[],function(x){
+        var value = Parser.round1(Numver(x));
+        return value;
+    });
 }
 viewRender.bs={};
 viewRender.bs.selectDate=function(date){
+    viewRender.getLabDataByDate(date,'bs','Glucose','glu',[60,120]);
+}
+viewRender.getLabDataByDate=function(date, rawDataSetName, rawDataColName, labObjectName,limit, fnDataMap){
+    var lowerLimit=limit&&limit[0], upperLimit=limit&&limit[1];
     var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
     endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
-   
-    var bs = FS.bs;
-    var index_bs=bs.colNames.indexOf('Glucose');
-    if(index_bs>=0){
-        var selected = bs.data.filter(function(x){return x[0]<=endDateTime});
-        selected = selected.sort(function(a,b){return dates.compare(b[0],a[0])});
-        selected=selected.slice(0,7);
+    var labObject = FS.lab[labObjectName];
+    var rawDataSet=FS[rawDataSetName];
+    var selectedColIndex=rawDataSet.colNames.indexOf(rawDataColName);
+
+    if(selectedColIndex>=0){
+        var selectedData = rawDataSet.data.filter(function(x){return x[0]<=endDateTime&&x[selectedColIndex]});
+        selectedData = selectedData.sort(function(a,b){return dates.compare(b[0],a[0])});
+        selectedData = selectedData.slice(0,7);
     }
-    console.log(selected.map(function(x){return Parser.getDateTime(x[0]);}));
+    if(selectedData.length==0){
+        labObject.date="";
+        labObject.value="-";
+        labObject.title="";
+        labObject.warn=false;
+        return;
+    }
+    labObject.date=Parser.getMMDD(selectedData[0][0]);
+
+    var value = selectedData[0][selectedColIndex];
+    labObject.value=fnDataMap ? fnDataMap(value) : value;
+    console.log(selectedData);
+    console.log(labObjectName);
+    console.log(value);
+    console.log(labObject.value);
+    labObject.warn = (upperLimit&&value>=upperLimit) || (lowerLimit&&value<lowerLimit);
+    
+    labObject.title="";
+    for(var i = 1; i < selectedData.length;i++){
+        var style=['heavy-weight','arial'];
+        var thisValue = selectedData[i][selectedColIndex];
+        if((upperLimit&&thisValue>=upperLimit) || (lowerLimit&&thisValue<lowerLimit)){
+            style.push('red');
+        }
+        var parsedData=fnDataMap ? fnDataMap(thisValue) : thisValue;
+        labObject.title+=Parser.getMMDD(selectedData[i][0])+" "+Parser.getHHMM(selectedData[i][0])+" "+span(parsedData,style)+"<br>";
+    }
 }
 
 
@@ -1162,11 +1218,17 @@ viewRender.jquery=function(){
         $('#bw').off().on('click',function(){
             return false;
         });
+        $(document).tooltip({
+            content: function() {
+                return $(this).attr('title');
+            }
+        });
     }, 0);
 };
 
 viewRender.selectDate=function(date){
     viewRender.toShow={};
+    viewRender.ageInDay = Number(Parser.getDayDifference(FS.birthday, FS.currentDate))+Number(FS.GAweek)*7+Number(FS.GAday)-280;
     viewRender.flowSheet.selectDate(date);
     viewRender.abg.selectDate(date);
     viewRender.smac.selectDate(date);

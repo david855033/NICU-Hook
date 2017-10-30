@@ -458,6 +458,7 @@
     padding-right: 0.5%;
     padding-top:0.5%;
     padding-bottom:0.5%;
+    cursor: default;
 }
 
 #flow-sheet #fnOverview .footbar-sub#sub-io
@@ -540,7 +541,7 @@
     box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
 }
 #flow-sheet #fnOverview .footbar-sub#sub-ventilation .gas-card-title{
-    height: 16px;
+    height: 20px;
     background-color: hsl(120,30%,90%);
     color: hsl(0,0%,20%);
     -webkit-box-shadow:inset 0px 0px 0px 1px hsl(120,20%,70%);
@@ -600,6 +601,7 @@
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item.warn .value{
     color: hsl(0,90%,35%);
 }
+
 #flow-sheet #fnOverview .footbar-sub#sub-lab .lab-group .lab-item:first-child{
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
