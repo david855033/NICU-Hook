@@ -777,7 +777,7 @@ viewRender.abg.selectDate=function(date){
     
     var startDateTime=Parser.getDateFromString(Parser.addDate(date,-2));
     var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
-    endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
+    endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
     var selectedData = gas.data.filter(function(x){
         var dt = x[Index_DateTime];
         return dt>=startDateTime && dt < endDateTime;
@@ -804,8 +804,89 @@ viewRender.labLimit={
 };
 viewRender.smac={};
 viewRender.smac.selectDate=function(date){
-    var smac = FS.smac;
-    
+    viewRender.getLabDataByDate(date,'smac','NA','na',[133,145],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','K','k',[3.0,5.0],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','IP','p',[2.0,6.0],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','CA','tCa',[8,11],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','BUN','bun',[,20],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','CREA','cr',[,1.2],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','AST','ast',[,50],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','ALT','alt',[,50],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','GGT','ggt',[,50],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','CRP','crp',[,0.5],function(x){
+        if(!Number(x)){return x};
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','ALKP','alkp',[,300],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','ALB','alb',[3.0,4.5],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','IRON','iron',[],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','TIBC','tibc',[],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','BILIT','tbil',[0,2],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','DBILI','dbil',[0,1],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'smac','TROP','tropi',[0,0.5],function(x){
+        if(!Number(x)){return x;}
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'anemia','Ferritin','ferritin',[],function(x){
+        if(!Number(x)){return x;}
+        var value = Math.round(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'jaundice','Micro-Bil','microTCB',[],function(x){
+        if(!Number(x)){return x;}
+        var value = Math.round(Number(x));
+        return value;
+    });
+    var iron=Number(FS.lab.iron.value);
+    var tibc=Number(FS.lab.tibc.value);
+    if(iron&&tibc){FS.lab.feSat.value=Math.round(iron/tibc*100)+span('%',['xs-word']);}else{FS.lab.feSat.value="-";}
 }
 viewRender.cbc={};
 viewRender.cbc.selectDate=function(date){
@@ -825,8 +906,20 @@ viewRender.cbc.selectDate=function(date){
         var value = Math.round(Number(x));
         return value+span('%',['xs-word']);
     });
-    viewRender.getLabDataByDate(date,'cbc','HGB','hgb',[],function(x){
-        var value = Parser.round1(Numver(x));
+    viewRender.getLabDataByDate(date,'cbc','HGB','hb',[10,18],function(x){
+        var value = Parser.round1(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'cbc','PLT','plt',[100000,500000],function(x){
+        var value = Math.round(Number(x));
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    });
+    viewRender.getLabDataByDate(date,'cbc','INR(PT)','inr',[0.9,1.5],function(x){
+        var value = Parser.round2(Number(x));
+        return value;
+    });
+    viewRender.getLabDataByDate(date,'cbc','APTT','aptt',[25,45],function(x){
+        var value = Parser.round1(Number(x));
         return value;
     });
 }
@@ -834,19 +927,21 @@ viewRender.bs={};
 viewRender.bs.selectDate=function(date){
     viewRender.getLabDataByDate(date,'bs','Glucose','glu',[60,120]);
 }
-viewRender.getLabDataByDate=function(date, rawDataSetName, rawDataColName, labObjectName,limit, fnDataMap){
+viewRender.getLabDataByDate=function(date, rawDataSetName, rawDataColName, labObjectName, limit, fnDataMap){
     var lowerLimit=limit&&limit[0], upperLimit=limit&&limit[1];
     var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
-    endDateTime=endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
+    var startDateTime=Parser.getDateFromString(Parser.addDate(date,-30));
+    endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
     var labObject = FS.lab[labObjectName];
     var rawDataSet=FS[rawDataSetName];
     var selectedColIndex=rawDataSet.colNames.indexOf(rawDataColName);
-
+    if(!labObject||!rawDataSet){return;}
     if(selectedColIndex>=0){
-        var selectedData = rawDataSet.data.filter(function(x){return x[0]<=endDateTime&&x[selectedColIndex]});
+        var selectedData = rawDataSet.data.filter(function(x){return x[0]<=endDateTime&&x[0]>startDateTime&&x[selectedColIndex]});
         selectedData = selectedData.sort(function(a,b){return dates.compare(b[0],a[0])});
         selectedData = selectedData.slice(0,7);
     }
+    
     if(selectedData.length==0){
         labObject.date="";
         labObject.value="-";
@@ -854,16 +949,12 @@ viewRender.getLabDataByDate=function(date, rawDataSetName, rawDataColName, labOb
         labObject.warn=false;
         return;
     }
-    labObject.date=Parser.getMMDD(selectedData[0][0]);
 
+    labObject.date=Parser.getMMDD(selectedData[0][0]);
     var value = selectedData[0][selectedColIndex];
-    labObject.value=fnDataMap ? fnDataMap(value) : value;
-    console.log(selectedData);
-    console.log(labObjectName);
-    console.log(value);
-    console.log(labObject.value);
+    labObject.value=fnDataMap ? fnDataMap(value) : value
     labObject.warn = (upperLimit&&value>=upperLimit) || (lowerLimit&&value<lowerLimit);
-    
+    if(labObjectName=='glu'&&!  (labObject.value)){labObject.warn=true;}
     labObject.title="";
     for(var i = 1; i < selectedData.length;i++){
         var style=['heavy-weight','arial'];
@@ -876,7 +967,28 @@ viewRender.getLabDataByDate=function(date, rawDataSetName, rawDataColName, labOb
     }
 }
 
+viewRender.treatment={
+    selectDate:function(date){
+        var startDateTime=Parser.getDateFromString(Parser.addDate(date,-3));
+        var endDateTime=Parser.getDateFromString(Parser.addDate(date,1));
+        endDateTime.setTime(endDateTime.getTime()+(7*60*60*1000));
 
+        var toShow=viewRender.toShow;
+        toShow.diet=[];
+        var dietTreatment = FS.treatment.filter(function(x){
+            var thisStartTime= Parser.getDateFromString(x.startDate).getTime();
+            var thisEndTime=Parser.getDateFromString(x.endDate).getTime();
+            return (thisEndTime>=startDateTime.getTime()||
+                thisEndTime >= endDateTime.getTime() && thisStartTime<=endDateTime.getTime())
+                        &&x.item.indexOf('配方')>=0;
+        });
+        dietTreatment.forEach(function(x){
+            var match = x.info.match(/；.*/);
+            match=match&&match[0].replace(/；/,"").trim();
+            toShow.diet.push({date:x.startDate,str:match||x.info});
+        })
+    }
+}
 viewRender.toShow={  //empty container 
     bt:{limit:[],data:[]},
     hr:{limit:[],data:[]},
@@ -893,7 +1005,7 @@ viewRender.toShow={  //empty container
     ventilatorSetting:[],
     abg:[],
     ventilation:[],
-    events:[]
+    events:[],diet:[]
 };
 
 //chart: 將toShoW資料更新至view的Chart+IO
@@ -1154,6 +1266,18 @@ viewRender.event={
         });
     }
 }
+viewRender.diet={
+    initialize:function(){
+        var toShow=viewRender.toShow;
+        toShow.diet=toShow.diet.sort(function(a,b){
+            return a.date.localeCompare(b.date);
+        })
+        FS.diet=toShow.diet.map(function(x){
+            var dateTime = Parser.getMMDD(x.date);
+            return {dateTime:dateTime, content:x.str };
+        });
+    }
+}
 viewRender.closeAll=function(){
     FS.showDatePicker=false;
     FS.showAdPicker=false;
@@ -1234,6 +1358,7 @@ viewRender.selectDate=function(date){
     viewRender.smac.selectDate(date);
     viewRender.cbc.selectDate(date);
     viewRender.bs.selectDate(date);
+    viewRender.treatment.selectDate(date);
     viewRender.initialize();
 }
 
@@ -1243,6 +1368,7 @@ viewRender.initialize=function(){
     viewRender.header.initialize();
     viewRender.ventilation.initialize();
     viewRender.event.initialize();
+    viewRender.diet.initialize();
     Vue.nextTick(function(){
         viewRender.jquery();
     });
@@ -1269,8 +1395,7 @@ viewRender.queryPatientData=function(patientID){
         return new Promise(function(resolve,reject){
             requestAdmissionList(patientID,function(data,timeStamp){
                 FS.admissionList = data.filter(function(x){return x.section!="SER"&&x.section!="PER";});
-                    resolve();
-                
+                resolve();
             });
         })
     };
@@ -1310,6 +1435,8 @@ viewRender.queryPatientData=function(patientID){
         .then(function(){return promiseCummulative('DCBC','cbc')})
         .then(function(){return promiseCummulative('DGLU1','bs')})
         .then(function(){return promiseCummulative('DBGAS','gas')})
+        .then(function(){return promiseCummulative('DNM2','anemia')})
+        .then(function(){return promiseCummulative('DBILI','jaundice')})
         .then(function(){return promiseBirthSheet()})
         .then(function(){viewRender.queryCaseNo(patientID, FS.caseNo);})
 };
@@ -1340,7 +1467,17 @@ viewRender.queryCaseNo=function(patientID, caseNo){
             });
         }
 
+        var promiseTreatment=function(){
+            return new Promise(function(resolve,reject){
+                requestTreatment(patientID, caseNo,function(data,timeStamp){
+                    FS.treatment=data;
+                    resolve();
+                });
+            });
+        }
+
         var promise = promiseVitalSign()
+            .then(function(){return promiseTreatment()})
             .then(function(){
                 viewRender.queryDate(patientID,caseNo,qdate);
             });

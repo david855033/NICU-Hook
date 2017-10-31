@@ -255,63 +255,95 @@ var Parser={
 
     //ventilation
     ventilationSettingFromEvent:function(input){
-        input=input.trim();
-        var parts=input.split(' ');
-        var modeString=parts.shift();
-        var checkModeString=String(modeString).toLocaleLowerCase();
-        if(checkModeString=="oett"||checkModeString=="nett"){
-            modeString=parts.shift();
-        }
-        var settingString=parts.join(' ');
-        settingString=settingString.regReplaceAll(/(\+|\,|\:|\(|\))/g,' ');
-        settingString=settingString.regReplaceAll(/\s+/g,' ');
-        var settingParts=settingString.split(' ');
-       
-        var parseCols=[];
-        var modeStringCompare=String(modeString).toLocaleLowerCase();
-        if(modeStringCompare.slice(0,4)=='hfov'){
-            modeString='HFOV';
-            if(modeStringCompare.indexOf('+no')>=0){
-                modeString+='<br>NO';
-            }
-            parseCols.push(['FiO2','AMP','MAP','Freq']);
-        }else if(modeStringCompare.slice(0,4)=='simv'){
-            modeString='SIMV';
-            parseCols.push(['FiO2','Rate','PIP','PEEP']);
-        }else if(modeStringCompare.slice(0,2)=='np'){
-            modeString='NP';
-            parseCols.push(['FiO2','PEEP']);
-            parseCols.push(['FiO2','Rate','PIP','PEEP']);
-        }else if(modeStringCompare.slice(0,2)=='uw'){
-            modeString='UW';
-            parseCols.push(['FiO2','PEEP']);
-        }
+        console.log(input);
 
-        var modifiedParts=[];
-        for(var i = 0;i<settingParts.length;i++)
-        {
-            var abbr = settingParts[i].match(/\d+(.\d*)?(\/\d+(.\d*)?)*/); //is  */*/*/*  format
-            if(abbr){
-                var abbrparts=abbr[0].split('/');
-                var currentParseCol=parseCols.find(function(x){return x.length==abbrparts.length})
-                if(currentParseCol){
-                    currentParseCol.forEach(function(x,index){modifiedParts.push(x+":"+span(abbrparts[index],['heavy-weight','s-word','blue-25-font']));})
-                    continue;
+               
+
+        input=input.trim();
+        var parts=input.regReplaceAll(/(\+|\,|\:|\(|\)|\/)/g,' ').split(' ').map(function(x){return String(x).toLocaleLowerCase()});
+        console.log(parts);
+        var parseCols=[];
+        var modeString=""
+        var BreakException = {};
+        try {
+            [
+                {searchMode:'hfov',modeString:'HFOV',parseCols:[['FiO2','AMP','MAP','Freq']]},
+                {searchMode:'simv',modeString:'SIMV',parseCols:[['FiO2','Rate','PIP','PEEP']]},
+                {searchMode:'imv',modeString:'IMV',parseCols:[['FiO2','Rate','PIP','PEEP']]},
+                {searchMode:'uw',modeString:'UW',parseCols:[['FiO2','PEEP']]},
+                {searchMode:'nc',modeString:'NC',parseCols:[['Flow']]},
+                {searchMode:'hf',modeString:'HighFlow',parseCols:[['FiO2','Flow','PEEP']]},
+                {searchMode:'np',modeString:'NP',parseCols:[['FiO2','Rate','PIP','PEEP'],['FiO2','PEEP']]},
+            ].forEach(function(x){
+                if(parts.indexOf(x.searchMode)>=0){
+                    input=input.replace(new RegExp(x.searchMode,'i'),'');
+                    modeString=x.modeString;
+                    parseCols=x.parseCols;
+                    throw BreakException;
                 }
-            }
-            
-            var key = settingParts[i];
-            var value = settingParts[i+1]&&settingParts[i+1].match(/\d+(.\d+)?/);
-            if(key&&value&&key.indexOf('/')<0){
-                modifiedParts.push(key+":"+span(value[0],['heavy-weight','s-word','blue-25-font']));
-                i++;
-                continue;
-            }
-            modifiedParts.push(span(settingParts[i],['heavy-weight','s-word','blue-25-font']));
+            });
+        } catch (e) {
+            if (e !== BreakException) throw e;
         }
-        var resultString=modifiedParts.join(', ');
+       
+        [
+            {searchMode:'oett',modeString:'OETT'},
+            {searchMode:'nett',modeString:'NETT'},
+            {searchMode:'np',modeString:'NP'},
+            {searchMode:'no',modeString:'NO'},
+            {searchMode:'ra',modeString:'RA'}
+        ].forEach(function(x){
+            if(parts.indexOf(x.searchMode)>=0){
+                input=input.replace(new RegExp(x.searchMode,'i'),'');
+                modeString+='<br>'+x.modeString;
+            }
+        });
+
+        var settingString="";
+        
+        parseCols.forEach(function(x){
+            var regString = '\\d+(\\.\\d+)?(\\/\\d+(\\.\\d+)?){'+(x.length-1)+'}';
+            var abbrSentence=input.match(new RegExp(regString))
+            abbrSentence=abbrSentence&&abbrSentence[0];
+            if(abbrSentence){
+                input=input.replaceAll(abbrSentence,'')
+                var abbrParts=abbrSentence.split('/');
+                x.forEach(function(y,index){
+                    settingString+=" "+y+":"+div(abbrParts[index],['heavy-weight','s-word','blue-25-font','highlight-bg','inline-block']);
+                })
+            };
+            console.log(x);
+            console.log(abbrSentence);
+        })
+
+        var remainingParts=input.regReplaceAll(/(\+|\,|\:|\(|\)|\/)/g,' ').regReplaceAll(/\s+/g,' ').trim().split(' ').map(function(x){return String(x).toLocaleLowerCase()});
+        console.log(remainingParts);
+        remainingParts.forEach(function(x){if(x){settingString+=" "+x;}});
+        // var modifiedParts=[];
+        // for(var i = 0;i<settingParts.length;i++)
+        // {
+        //     var abbr = settingParts[i].match(/\d+(.\d*)?(\/\d+(.\d*)?)*/); //is  */*/*/*  format
+        //     if(abbr){
+        //         var abbrparts=abbr[0].split('/');
+        //         var currentParseCol=parseCols.find(function(x){return x.length==abbrparts.length})
+        //         if(currentParseCol){
+        //             currentParseCol.forEach(function(x,index){modifiedParts.push(x+":"+span(abbrparts[index],['heavy-weight','s-word','blue-25-font']));})
+        //             continue;
+        //         }
+        //     }
+            
+        //     var key = settingParts[i];
+        //     var value = settingParts[i+1]&&settingParts[i+1].match(/\d+(.\d+)?/);
+        //     if(key&&value&&key.indexOf('/')<0){
+        //         modifiedParts.push(key+":"+span(value[0],['heavy-weight','s-word','blue-25-font']));
+        //         i++;
+        //         continue;
+        //     }
+        //     modifiedParts.push(span(settingParts[i],['heavy-weight','s-word','blue-25-font']));
+        // }
+        // var resultString=modifiedParts.join(', ');
          
        
-        return {mode:modeString,setting:resultString};
+         return {mode:modeString,setting:settingString.trim()};
     }
 }

@@ -598,7 +598,7 @@
     -moz-box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
     box-shadow:inset 0px 0px 0px 1px hsl(0,20%,60%);
 }
-#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item.warn .value{
+#flow-sheet #fnOverview .footbar-sub#sub-lab .lab-item.warn {
     color: hsl(0,90%,35%);
 }
 

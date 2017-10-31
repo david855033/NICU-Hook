@@ -120,6 +120,10 @@ body{
 .yellow-bg{
     background-color: hsl(40,50%,90%);
 }
+.highlight-bg{
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 1px 1px 1px 1px;
+}
 /* scroll */
 .y-scroll{
     overflow-y: auto;

@@ -320,7 +320,7 @@
                     <td>{{row.qty}}</td>
                     <td>{{row.duration}}</td>
                     <td>{{row.startDate}}</td>
-                    <td>{{row.endData}}</td>
+                    <td>{{row.endDate}}</td>
                     <td>{{row.status}}</td>
                 </tr>
             </table>
@@ -952,7 +952,7 @@
                                 <div class='lab-group w3-5'>
                                     <div id='microTCB' class='lab-item w1-3' :class="{'warn':flowSheet.lab.microTCB.warn}" :title="flowSheet.lab.microTCB.title">
                                         <div class="lab-tittle h1-4 xs-word grey-40-font">
-                                            <div class="v-center">micro/TCB</div>
+                                            <div class="v-center">micro</div>
                                         </div>
                                         <div class="lab-data h1-2 lm-word heavy-weight">
                                             <div class="v-center" v-html="flowSheet.lab.microTCB.value"></div>
@@ -1127,21 +1127,9 @@
                             <div id="nutrition" :class="[flowSheet.footbarStatus=='max'?'h22-45':'h15-31']">
                                 <div class="h-center ms-word title h1-7"><div class="v-center">飲食醫囑</div></div>
                                 <div class="scrollbar-outer h6-7">
-                                    <div class="w1-1 nutrition-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/12 10:30</div>
-                                        <div class="w1-1 s-word content-card">SSC24 BMF 20ml q3h</div>
-                                    </div>
-                                    <div class="w1-1 nutrition-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/13 9:30</div>
-                                        <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
-                                    </div>
-                                    <div class="w1-1 nutrition-group">
-                                        <div class="w1-1 s-word grey-60-font date-card">5/14 9:30</div>
-                                        <div class="w1-1 s-word content-card">SSC24 BMF 22ml q3h</div>
-                                    </div>
-                                    <div class="w1-1 nutrition-group latest">
-                                        <div class="w1-1 s-word grey-20-font date-card">5/15 9:30 (最新)</div>
-                                        <div class="w1-1 s-word content-card heavy-weight">SSC24 BMF 25ml q3h</div>
+                                    <div class="w1-1 event-group" v-for="e in flowSheet.diet">
+                                        <div class="w1-1 s-word grey-60-font date-card">{{e.dateTime}}</div>
+                                        <div class="w1-1 s-word content-card">{{e.content}}</div>
                                     </div>
                                 </div>
                             </div>

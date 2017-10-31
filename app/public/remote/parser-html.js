@@ -371,7 +371,7 @@ Parser.getVitalSign=function(htmlText){
     return result;
 };
 //治療處置
-//{item:"",info:"",class:"",freq:"",qty:"",duration:"",startDate:"", endData:"",status:""};
+//{item:"",info:"",class:"",freq:"",qty:"",duration:"",startDate:"", endDate:"",status:""};
 Parser.getTreatment=function(htmlText){
     var resultArray=[];
     var doc = Parser.getDOM(htmlText);
@@ -385,7 +385,7 @@ Parser.getTreatment=function(htmlText){
         var tds=tr.getElementsByTagName('td');
         if(tds.length<8){continue;}
         var result ={item:"",info:"",class:"",freq:"",qty:"",
-            duration:"",startDate:"", endData:"",status:""};
+            duration:"",startDate:"", endDate:"",status:""};
         var span = tds[0].getElementsByTagName('span');
         if(span&&span[0]){
             result.info=span[0].innerText.trim();
@@ -397,7 +397,7 @@ Parser.getTreatment=function(htmlText){
         result.qty=tds[3].innerText.trim();
         result.duration=Number(tds[4].innerText);
         result.startDate=tds[5].innerText.trim();
-        result.endData=tds[6].innerText.trim();
+        result.endDate=tds[6].innerText.trim();
         result.status=tds[7].innerText.trim();
         resultArray.push(result);
     }

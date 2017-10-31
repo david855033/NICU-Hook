@@ -13,7 +13,8 @@ var view= new Vue({
         queryString:'',
         queryType:"查詢",
         queryClass:"",
-        queryList:[{query:"NICU",type:"ward"},{query:"PICU",type:"ward"},{query:"NBR",type:"ward"},{query:"A091",type:"ward"},{query:"3840",name:'曹大大',type:"doc"}],
+        queryList:[{query:"NICU",type:"ward"},{query:"PICU",type:"ward"},{query:"NBR",type:"ward"},{query:"3840",name:'曹',type:"doc"}
+        ,{query:"3972",name:'李',type:"doc"},{query:"3872",name:'鄭',type:"doc"},{query:"3821",name:'宋',type:"doc"}],
         patientList:{content:[], timeStamp:""},
         selectedPatientID:"",
         selectedCaseNo:"",
@@ -159,8 +160,10 @@ var view= new Vue({
                 day3:{input:"",output:"",io:"",urine:"",urinePerKgHr:"",daily:"",warn:false}
             },
             ventilation:"",
-            smac:[],cbc:[],bs:[],gas:[],
+            smac:[],cbc:[],bs:[],gas:[],jaundice:[],anemia:[],
             event:[],
+            treatment:[],
+            diet:[],
             lab:{
                 glu:{value:"",date:"",warn:false,title:""},
                 wbc:{value:"",date:"",warn:false,title:""},
