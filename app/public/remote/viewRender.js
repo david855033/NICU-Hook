@@ -1221,32 +1221,29 @@ viewRender.ventilation={
         var append= '<div class="gas-card w1-1 nowrap">';
         append+='<div class="w1-7 h1-1 s-word grey-20-font float-left"><div class="v-center">'+d.time+'</div></div>'
         append+='<div class="w6-7 h1-1 float-left">';
-        if(d.pH>=7.5||d.pH<7.25){
-            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.pH+'</div></div>';
+        if(Number(d.pH)>=7.5||Number(d.pH)<7.25){
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+(d.pH||"-")+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pH+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.pH||"-")+'</div></div>';
         }
-        if(d.pCO2>=50||d.pCO2<35){
-            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.pCO2+'</div></div>';
+        if(Number(d.pCO2)>=50||Number(d.pCO2)<35){
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+(d.pCO2||"-")+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pCO2+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.pCO2||"-")+'</div></div>';
         }
-        if(d.HCO3>=30||d.HCO3<16){
-            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
+        if(Number(d.HCO3)>=30||Number(d.HCO3)<16){
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+(d.HCO3||"-")+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.HCO3+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.HCO3||"-")+'</div></div>';
         }
-        if(d.BE>=10||d.BE<-8){
-            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
+        if(Number(d.BE)>=10||Number(d.BE)<-8){
+            append+='<div class="w1-6 h1-1 float-left warn"><div class="v-center ms-word heavy-weight">'+(d.BE||"-")+'</div></div>';
         }else{
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.BE+'</div></div>';
+            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.BE||"-")+'</div></div>';
         }
-        if(d.pO2){
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.pO2+'</div></div>';
-        }
-        if(d.Sat){
-            append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+d.Sat+'</div></div>';
-        }
+    
+        append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.pO2||"-")+'</div></div>';
+        append+='<div class="w1-6 h1-1 float-left"><div class="v-center ms-word heavy-weight">'+(d.Sat||"-")+'</div></div>';
         append+='</div></div>';
         return append;
     }
